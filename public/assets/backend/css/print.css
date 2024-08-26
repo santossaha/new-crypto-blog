@@ -1,0 +1,137 @@
+/*Test Report*/
+@page
+{
+    size: auto;   /* auto is the initial value */
+    margin: 5mm;  /* this affects the margin in the printer settings */
+}
+
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+        background: rgb(204,204,204);
+        margin: 0 15px;
+        box-shadow: 0;
+    }
+}
+body[size="A4"] {
+    width: 21cm;
+    height: 29.7cm;
+}
+body[size="A4"][layout="landscape"] {
+    width: 29.7cm;
+    height: 21cm;
+}
+body[size="A3"] {
+    width: 29.7cm;
+    height: 42cm;
+}
+body[size="A3"][layout="landscape"] {
+    width: 42cm;
+    height: 29.7cm;
+}
+body[size="A5"] {
+    width: 14.8cm;
+    height: 21cm;
+}
+body[size="A5"][layout="landscape"] {
+    width: 21cm;
+    height: 14.8cm;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+/*Pathology Test*/
+
+
+.testReport .companyAddress{
+    font-size: 16px;
+}
+
+.testReport .comdiv {
+    padding: 10px 35px;
+    background-color: #eee !important;
+    -webkit-print-color-adjust: exact;
+    clip-path: polygon(4% 0, 100% 0%, 96% 100%, 0 100%);
+}
+
+.testReport .subject{
+    margin-bottom: 15px;
+    -webkit-clip-path: polygon(0 1%, 100% 0, 88% 100%, 12% 100%);
+    clip-path: polygon(0 1%, 100% 0, 88% 100%, 12% 100%);
+    background-color: #f06c71 !important;
+    font-size: 17px;
+    font-weight: bold;
+    color: #eee !important;
+}
+
+.testReport tr.bold{
+    font-weight: bold;
+}
+
+.testReport tr.low td{
+    font-weight: bold;
+    color: #f0ad4e !important;
+}
+
+.testReport tr.bottom td{
+    font-weight: bold;
+    color: #00b393 !important;
+}
+
+.testReport tr.high td{
+    font-weight: bold;
+    color: #f06c71 !important;
+}
+
+.testReport .footer{
+    bottom: 0;
+    position: fixed;
+    border-top: 2px solid #eee;
+    padding-top: 10px;
+}
+.testReport .signature{
+   max-height: 100px !important;
+}
+
+/*Pathology Money Receipt*/
+
+body[size="MoneyReceipt"] {
+    width: 21cm;
+    height: 14.5cm;
+}
+
+.moneyReceipt .header{
+    border-bottom: 2px solid #d6d6d6;
+}
+
+.moneyReceipt .patientDetails p{
+    margin : 0px !important;
+}
+
+.moneyReceipt .table>tbody>tr>td, .moneyReceipt .table>thead>tr>th{
+    padding: 1px 15px 1px 4px;
+}
+
+.moneyReceipt .subject{
+    margin-bottom: 15px;
+    -webkit-clip-path: polygon(0 1%, 100% 0, 88% 100%, 12% 100%);
+    clip-path: polygon(0 1%, 100% 0, 88% 100%, 12% 100%);
+    background-color: #f06c71 !important;
+    font-size: 17px;
+    font-weight: bold;
+    color: #eee !important;
+}
+
+.moneyReceipt .authSign{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.moneyReceipt .test-heading {
+    background: #eee !important;
+    font-weight: bold;
+    padding: 3px 0px;
+}
+
