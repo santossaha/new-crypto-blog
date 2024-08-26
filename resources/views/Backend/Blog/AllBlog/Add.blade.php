@@ -20,7 +20,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Content</label>
+            <label for="title" class="col-sm-3 control-label">Description</label>
+            <div class="col-sm-9">
+                <textarea type="text" name="content" class="form-control summernote" rows="20" ></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Short Description</label>
             <div class="col-sm-9">
                 <textarea type="text" name="content" class="form-control summernote" rows="20" ></textarea>
             </div>
@@ -30,6 +37,28 @@
             <div class="col-sm-9">
                 <small>Mix File size 2MB</small>, <small >File accept Only (jpeg,jpg png,gif,svg)</small>
                 <input type="file" name="image" id="image"  class="validate[required]] form-control" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Meta Title<span class="requiredAsterisk">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" name="meta_title" class="validate[required] form-control" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Meta Keyword<span class="requiredAsterisk">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" name="meta_keyword" class="validate[required] form-control" >
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Meta Description</label>
+            <div class="col-sm-9">
+                <textarea type="text" name="content" class="form-control" rows="5" ></textarea>
             </div>
         </div>
 
