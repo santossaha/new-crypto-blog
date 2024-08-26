@@ -93,4 +93,29 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
     //     Route::get('delete/{id}',['as' => 'deleteCategory', 'middleware' => ['web', 'permission:delete-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@delete']);
     // });
 
+
+
+
+    Route::group(['prefix' => 'blog'], function () {
+        // Category
+        Route::get('/allCat',['as' => 'allBlogCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allBlogCat']);
+        Route::get('/allCatDatabase',['as' => 'allCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allCatDatabase']);
+        Route::get('/addCat',['as' => 'addCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@addCat']);
+        Route::post('/saveCat/',['as' => 'saveCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@saveCat']);
+        Route::get('/editCat/{id?}',['as' => 'editCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@editCat']);
+        Route::post('updateCat/{id?}',['as' => 'updateCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@updateCat']);
+        Route::get('deleteCat/{id?}',['as' => 'deleteCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@deleteCat']);
+        //Blog
+        Route::get('/allBlog',['as' => 'allBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlog']);
+        Route::get('/allBlogDatabase',['as' => 'allBlogDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlogDatabase']);
+        Route::get('/addBlog',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
+        Route::post('/saveBlog/',['as' => 'saveBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@saveBlog']);
+        Route::get('/editBlog/{id?}',['as' => 'editBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@editBlog']);
+        Route::post('updateBlog/{id?}',['as' => 'updateBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@updateBlog']);
+        Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
+    
+       
+    
+    });
+
 });

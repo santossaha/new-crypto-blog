@@ -25,3 +25,5 @@ Route::group(['middleware'=> 'UserMiddleware'], function () {
 Route::get('dashboard',['as'=> 'user_dashboard','uses'=>'App\Http\Controllers\UserDashboardController@dashboard']);
 
 });
+
+
