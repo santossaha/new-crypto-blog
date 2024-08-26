@@ -52,7 +52,7 @@
             logOutURL: '{{route('logout')}}',
             lockedURL: '{{route('locked')}}',
             idleCheckURL: '{{route('checkIdle')}}',
-            countryWiseStateListURL: '{{route('countrywiseStateOptions')}}',
+        
             LoaderGif: '{{url('assets/backend/img/loader.gif')}}'
         }
     </script>

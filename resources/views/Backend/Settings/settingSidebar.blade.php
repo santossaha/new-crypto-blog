@@ -31,7 +31,7 @@
         </li>
         @endpermission
 
-        @permission('view-country')
+        {{-- @permission('view-country')
         <li>
             <a href="{{route('countries')}}">
                 <div class="box-header with-border">
@@ -39,10 +39,10 @@
                 </div>
             </a>
         </li>
-        @endpermission
+        @endpermission --}}
 
 
-        @permission('view-state')
+        {{-- @permission('view-state')
         <li>
             <a href="{{route('states')}}">
                 <div class="box-header with-border">
@@ -50,7 +50,7 @@
                 </div>
             </a>
         </li>
-        @endpermission
+        @endpermission --}}
 
         @permission('view-permission')
         <li>
@@ -72,7 +72,7 @@
         </li>
         @endpermission
 
-        @permission('view-tax')
+        {{-- @permission('view-tax')
         <li>
             <a href="{{route('tax')}}">
                 <div class="box-header with-border">
@@ -80,7 +80,7 @@
                 </div>
             </a>
         </li>
-        @endpermission
+        @endpermission --}}
 
 
 

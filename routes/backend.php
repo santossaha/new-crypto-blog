@@ -38,26 +38,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('/emailSetting', ['as' => 'emailSetting', 'middleware' => ['web', 'permission:view-email-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\EmailSettingsController@index']);
         Route::post('/saveEmailSetting/{id}', ['as' => 'saveEmailSetting', 'middleware' => ['web', 'permission:update-email-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\EmailSettingsController@saveEmailSetting']);
 
-        //Country Setting
-        Route::get('/countries', ['as' => 'countries', 'middleware' => ['web', 'permission:view-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@index']);
-        Route::get('/countriesDatatable', ['as' => 'countriesDatatable', 'middleware' => ['web', 'permission:view-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@datatable']);
-        Route::get('/addCountry', ['as' => 'addCountry', 'middleware' => ['web', 'permission:add-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@add']);
-        Route::post('/saveCountry', ['as' => 'saveCountry', 'middleware' => ['web', 'permission:add-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@save']);
-        Route::get('/editCountry/{id}', ['as' => 'editCountry', 'middleware' => ['web', 'permission:view-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@edit']);
-        Route::post('/updateCountry/{id}', ['as' => 'updateCountry', 'middleware' => ['web', 'permission:update-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@update']);
-        Route::get('/deleteCountry/{id}', ['as' => 'deleteCountry', 'middleware' => ['web', 'permission:delete-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@delete']);
-        Route::get('/countryOptions', ['as' => 'countryOptions', 'middleware' => ['web', 'permission:view-country'], 'uses' => 'App\Http\Controllers\Backend\Settings\CountryController@countryOptions']);
 
-        //State Setting
-        Route::get('/states', ['as' => 'states', 'middleware' => ['web', 'permission:view-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@index']);
-        Route::get('/statesDatatable', ['as' => 'statesDatatable', 'middleware' => ['web', 'permission:view-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@datatable']);
-        Route::get('/addState', ['as' => 'addState', 'middleware' => ['web', 'permission:add-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@add']);
-        Route::post('/saveState', ['as' => 'saveState', 'middleware' => ['web', 'permission:add-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@save']);
-        Route::get('/editState/{id}', ['as' => 'editState', 'middleware' => ['web', 'permission:view-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@edit']);
-        Route::post('/updateState/{id}', ['as' => 'updateState', 'middleware' => ['web', 'permission:update-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@update']);
-        Route::get('/deleteState/{id}', ['as' => 'deleteState', 'middleware' => ['web', 'permission:delete-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@delete']);
-        Route::get('/stateOptions', ['as' => 'stateOptions', 'middleware' => ['web', 'permission:view-state'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@stateOptions']);
-        Route::get('/countryWiseStateOptions/{CountryID?}', ['as' => 'countrywiseStateOptions', 'middleware' => ['web'], 'uses' => 'App\Http\Controllers\Backend\Settings\StateController@countryWiseStateOptions']);
 
         //Permission Setting
         Route::get('/permission', ['as' => 'permission', 'middleware' => ['web', 'permission:view-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@index']);
@@ -73,14 +54,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::post('/updateRole/{id}', ['as' => 'updateRole', 'middleware' => ['web', 'permission:update-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@updateRole']);
         Route::get('/deleteRole/{id}', ['as' => 'deleteRole', 'middleware' => ['web', 'permission:delete-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@deleteRole']);
 
-        //Taxes Setting
-        Route::get('/tax', ['as' => 'tax', 'middleware' => ['web', 'permission:view-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@index']);
-        Route::get('/taxDatatable', ['as' => 'taxDatatable', 'middleware' => ['web', 'permission:view-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@datatable']);
-        Route::get('/addTax', ['as' => 'addTax', 'middleware' => ['web', 'permission:add-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@addTax']);
-        Route::post('/saveTax', ['as' => 'saveTax', 'middleware' => ['web', 'permission:add-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@saveTax']);
-        Route::get('/editTax/{id}', ['as' => 'editTax', 'middleware' => ['web', 'permission:view-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@editTax']);
-        Route::post('/updateTax/{id}', ['as' => 'updateTax', 'middleware' => ['web', 'permission:update-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@updateTax']);
-        Route::get('/deleteTax/{id}', ['as' => 'deleteTax', 'middleware' => ['web', 'permission:delete-tax'], 'uses' => 'App\Http\Controllers\Backend\Settings\TaxController@deleteTax']);
+
     });
 
     //Profile
@@ -107,5 +81,16 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::post('save/{id}',['as' => 'updateUser', 'middleware' => ['web', 'permission:update-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@update']);
         Route::get('delete/{id}',['as' => 'deleteUser', 'middleware' => ['web', 'permission:delete-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@delete']);
     });
+
+    //Category
+    // Route::group(['prefix' => 'category'], function () {
+    //     Route::get('/all',['as' => 'allCategory', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@index']);
+    //     Route::get('/allCategoryDatatable',['as' => 'allCategoryDatatable', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@datatable']);
+    //     Route::get('/add',['as' => 'addCategory', 'middleware' => ['web', 'permission:add-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@add']);
+    //     Route::post('/save',['as' => 'saveCategory', 'middleware' => ['web', 'permission:add-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@save']);
+    //     Route::get('/edit/{id}',['as' => 'editCategory', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@edit']);
+    //     Route::post('save/{id}',['as' => 'updateCategory', 'middleware' => ['web', 'permission:update-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@update']);
+    //     Route::get('delete/{id}',['as' => 'deleteCategory', 'middleware' => ['web', 'permission:delete-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@delete']);
+    // });
 
 });
