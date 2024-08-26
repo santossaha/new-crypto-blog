@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
          $this->call(BasicSetup::class);
-        // $this->call(GeneralSettingSeeder::class);
-        // $this->call(CompanySettingSeeder::class);
-        // $this->call(EmailSettingSeeder::class);
+        $this->call(GeneralSettingSeeder::class);
+        $this->call(CompanySettingSeeder::class);
+        $this->call(EmailSettingSeeder::class);
       
     }
 }
