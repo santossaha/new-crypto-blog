@@ -26,6 +26,8 @@ class CreateBlogDetailsTable extends Migration
             $table->string('meta_keyword');
             $table->string('meta_title');
             $table->string('meta_description');
+            $table->string('author')->nullable();
+            $table->string('canonical')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('blog_categories')

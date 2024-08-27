@@ -26,7 +26,13 @@ class BlogController extends Controller
             'title' => 'required|unique:blog_details,title,NULL,id,deleted_at,NULL',
             'meta_title'=>'required',
             'meta_description'=> 'required',
-            'meta_keyword'=>'required'
+            'meta_keyword'=>'required',
+            'image'=> 'required',
+            'cat_name'=> 'required',
+            'description'=> 'required',
+            'short_description'=> 'required',
+            'author'=> 'required',
+            'canonical'=> 'required',
         ]);
         $user_id = Auth::User()->id;
         $save = new BlogDetail();
@@ -34,7 +40,13 @@ class BlogController extends Controller
         $save->user_id = $user_id;
         $save->title = $request->get('title');
         $save->slug = Str::slug($request->get('title'));
-        $save->content = $request->get('content');
+        $save->content = $request->get('description');
+        $save->meta_title = $request->get('meta_title');
+        $save->meta_description = $request->get('meta_description');
+        $save->author = $request->get('author');
+        $save->short_description = $request->get('short_description');
+        $save->canonical = $request->get('canonical');
+        $save->meta_keyword = $request->get('meta_keyword');
         if ($request->hasFile('image')) {
             $file            = $request->file('image');
             $destinationPath = '/uploads/generalSetting/';
@@ -62,10 +74,10 @@ class BlogController extends Controller
             ->addColumn('action', function ($data) {
                 $url_update = route('editBlog', ['id' => $data->id]);
                 $url_delete = route('deleteBlog', ['id' => $data->id]);
-                $url_comment = route('allComment', ['id' => $data->id]);
+                // $url_comment = route('allComment', ['id' => $data->id]);
                 $edit = '<a class="label label-primary" data-title="Edit Blog" data-act="ajax-modal" data-append-id="AjaxModelContent" data-action-url="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
                 $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete Blog Name: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
-                $edit .= '&nbsp<a href="' . $url_comment . '" class="label label-success"</span><i class="fa fa-envelope-o"></i> Comments </a>';
+                // $edit .= '&nbsp<a href="' . $url_comment . '" class="label label-success"</span><i class="fa fa-envelope-o"></i> Comments </a>';
                 return $edit;
             })
             ->rawColumns(['id','action','image'])
@@ -91,6 +103,15 @@ class BlogController extends Controller
     $update->title = $request->get('title');
     $update->slug = Str::slug($request->get('title'));
     $update->content = $request->get('content');
+
+    $update->meta_title = $request->get('meta_title');
+    $update->meta_description = $request->get('meta_description');
+    $update->author = $request->get('author');
+    $update->short_description = $request->get('short_description');
+    $update->canonical = $request->get('canonical');
+    $update->meta_keyword = $request->get('meta_keyword');
+
+
     if(!empty($request->file('image'))){
         $file            = $request->file('image');
         $destinationPath = '/uploads/generalSetting/';

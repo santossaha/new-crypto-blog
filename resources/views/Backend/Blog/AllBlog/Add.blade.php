@@ -1,6 +1,6 @@
 <form id="validation2" action="{{route('saveBlog')}}" class="form-horizontal" enctype="multipart/form-data" method="post">
     {{csrf_field()}}
-    <div class="modal-body clearfix">
+    <div class="modal-body clearfix"  style="max-height: 600px; overflow-y: auto;">
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Category Name<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
@@ -22,14 +22,14 @@
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Description</label>
             <div class="col-sm-9">
-                <textarea type="text" name="content" class="form-control summernote" rows="20" ></textarea>
+                <textarea type="text" name="description" class="form-control summernote" rows="20" ></textarea>
             </div>
         </div>
 
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Short Description</label>
             <div class="col-sm-9">
-                <textarea type="text" name="content" class="form-control summernote" rows="20" ></textarea>
+                <textarea type="text" name="short_description" class="form-control summernote" rows="20" ></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -43,7 +43,7 @@
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Meta Title<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="meta_title" class="validate[required] form-control" >
+                <input type="text" name="meta_title" class="validate[required] form-control" value="" >
             </div>
         </div>
 
@@ -53,12 +53,22 @@
                 <input type="text" name="meta_keyword" class="validate[required] form-control" >
             </div>
         </div>
-
-
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Meta Description</label>
             <div class="col-sm-9">
-                <textarea type="text" name="content" class="form-control" rows="5" ></textarea>
+                <textarea  name="meta_description" class="form-control" rows="5" ></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Author <span class="requiredAsterisk">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" name="author" class="validate[required] form-control" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label">Canonical <span class="requiredAsterisk">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" name="canonical" class="validate[required] form-control" >
             </div>
         </div>
 
