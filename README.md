@@ -2,13 +2,57 @@
  - Table : 'name'
 
 ## Blog Detail
+
+    -> title['string']
+    -> image['string']
+    -> description['string']
+    -> uther['user_id'] with relation
+    -> status['string']
+    -> author['sting']
+    -> link['string']
+    -> canonical['string']
+    -> keywords['string']
+    -> metaDescription['text']
+    -> metaTitle['string']
+    -> created_at['data']
+    -> updated_at['date']
+    -> deleted_at['date']
+
  - Table : 'title', 'image','description', 'auther','status','author','canonical','keywords','metaDescription','metaTitle','created_at', 'updated_at', 'deleted_at'
 
  ## Event DB
-  - 'start_date', 'end_date', 'image', 'token', 'title', 'location' 'link'
+    -> start_date['date']
+    -> end_date['data']
+    -> image['image']
+    -> token['string']
+    -> title['string']
+    -> location['sting']
+    -> link['string']
+    -> auther['user_id'] with relation
+    -> canonical['string']
+    -> keyword['string']
+    -> metaDescription['text']
+    -> metaTitle['string']
+    -> created_at['data']
+    -> updated_at['date']
+    -> deleted_at['date']
+
+  - 'start_date', 'end_date', 'image', 'token', 'title', 'location' 'link', 'author','canonical', 'keywords','metaDescription','metaTitle','created_at', 'updated_at', 'deleted_at'
 
 ## Home PAGE
+
+
 [documentation] (https://www.figma.com/proto/zlr3wItYgkjRnCncVZ7kYe/Untitled?type=design&node-id=32-102&t=dsRolSHXwdAGhTF6-8&scaling=scale-down-width&page-id=0%3A1&hide-ui=1)
+
+## API
+  -> slider api
+  -> category api
+  -> Blog api
+  -> about us api
+  -> latest news api 
+  -> category wise news api
+  -> contact us api 
+
 
 ## Event PAGE
 
