@@ -56,6 +56,10 @@
             LoaderGif: '{{url('assets/backend/img/loader.gif')}}'
         }
     </script>
+    <style>
+        .datepicker{ z-index:99999 !important; }
+
+    </style>
 </head>
 <body class="hold-transition fixed skin-blue sidebar-mini  @if(AppSetting::SidebarMenuCollapse()) sidebar-collapse @endif">
 <!-- Site wrapper -->
@@ -261,9 +265,6 @@
                     </a>
                 </li>
 
-
-
-
                 @permission('view-user')
                 <li>
                     <a href="{{route('allUsers')}}">
@@ -284,6 +285,14 @@
                         <li><a href="{{route('allBlog')}}"><i class="fa fa-circle-o"></i>Blog</a></li>
                     </ul>
                 </li>
+
+                @permission('view-user')
+                <li>
+                    <a href="{{route('allEvent')}}">
+                        <i class="fa fa-users"></i> <span>Events</span>
+                    </a>
+                </li>
+                @endpermission
 
 
 
@@ -433,6 +442,18 @@
     @if (Session::has('error'))
         toastr["error"]("{{ Session::get('error') }}");
     @endif
+
+    $('.modal-body').on('shown.bs.modal', function() {
+        alert('sdf');
+
+    $('.datepicker').datepicker({
+        autoclose: true,
+        // format: "yyyy-mm-dd",
+        format: "mm-dd-yyyy"
+      
+    });
+});
+
 </script>
 
 @stack('script')

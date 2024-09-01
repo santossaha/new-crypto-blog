@@ -115,7 +115,16 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
     
        
-    
     });
+
+     //Events
+     Route::get('/allEvent',['as' => 'allEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEvents']);
+     Route::get('/allEventDatatable',['as' => 'allEventDatatable', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEventsDatabase']);
+     Route::get('/addEvent',['as' => 'addEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@addEvents']);
+     Route::post('/saveEvent/',['as' => 'saveEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@saveEvents']);
+     Route::get('/editEvent/{id?}',['as' => 'editEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@editEvents']);
+     Route::post('updateEvent/{id?}',['as' => 'updateEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@updateEvents']);
+     Route::get('deleteEvent/{id?}',['as' => 'deleteEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@deleteEvents']);
+ 
 
 });
