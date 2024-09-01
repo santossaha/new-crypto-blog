@@ -1,4 +1,4 @@
-<form id="validation2" action="{{route('updateBlog',['id'=>$records->id])}}" class="form-horizontal"  method="post" enctype="multipart/form-data">
+<form id="validation2" action="{{route('updateEvent',['id'=>$records->id])}}" class="form-horizontal"  method="post" enctype="multipart/form-data">
     {{csrf_field()}}
     <div class="modal-body clearfix">
 

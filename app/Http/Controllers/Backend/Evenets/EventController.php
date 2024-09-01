@@ -92,11 +92,9 @@ class EventController extends Controller
 
     $user_id = Auth::User()->id;
     $update = EventsModel::findOrFail($id);
-    $update->category_id = $request->get('cat_name');
     $update->user_id = $user_id;
     $update->title = $request->get('title');
     $update->slug = Str::slug($request->get('title'));
-    $update->content = $request->get('content');
 
     $update->meta_title = $request->get('meta_title');
     $update->meta_description = $request->get('meta_description');
@@ -104,7 +102,9 @@ class EventController extends Controller
     $update->short_description = $request->get('short_description');
     $update->canonical = $request->get('canonical');
     $update->meta_keyword = $request->get('meta_keyword');
-
+    $update->location = $request->get('location');
+    $update->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
+    $update->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
 
     if(!empty($request->file('image'))){
         $file            = $request->file('image');
@@ -120,7 +120,7 @@ class EventController extends Controller
     }
 
     $update->save();
-    Session::flash('success', "Blog has been update");
+    Session::flash('success', "Events has been update");
     return redirect()->back();
     }
     public function deleteEvents($id=null){
