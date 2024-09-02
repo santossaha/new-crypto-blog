@@ -13,20 +13,20 @@
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Start Date<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="start_date" class="validate[required] form-control datepicker" id="start_date">
+                <input type="text" name="start_date" class="validate[required] form-control datepicker" id="start_date" value="{{$records->start_date}}">
             </div>
         </div>
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">End Date<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="end_date" class="validate[required] form-control datepicker" id="end_date" >
+                <input type="text" name="end_date" class="validate[required] form-control datepicker" id="end_date" value="{{$records->end_date}}">
             </div>
         </div>
 
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label"> Location<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="location" class="validate[required] form-control" >
+                <input type="text" name="location" class="validate[required] form-control" value="{{$records->location}}">
             </div>
         </div>
 

@@ -179,6 +179,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         App\Providers\CustomServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
     ],
 
     /*

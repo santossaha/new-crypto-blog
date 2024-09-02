@@ -67,6 +67,9 @@ class Kernel extends HttpKernel
         'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
         'UserMiddleware'=>\App\Http\Middleware\UserMiddleware::class,
+        'jwt.verify' =>'Tymon\JWTAuth\Middleware\GetUserFromToken',
+        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
         
     ];
 }
