@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\EventsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
+Route::get('get-events',[EventsController::class,'get_events']);
+Route::get('get-blogs',[BlogController::class,'get_blogs']);
+Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
+
