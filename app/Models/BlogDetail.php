@@ -5,9 +5,13 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class BlogDetail extends Model
 {
+    use HasFactory;
+
     protected $table = 'blog_details';
     // protected $fillable = ['id','category_id','user_id','title','image','content'];
     // protected $visible = ['category_id','user_id','title','image','content'];

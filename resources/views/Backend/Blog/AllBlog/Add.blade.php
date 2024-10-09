@@ -59,12 +59,7 @@
                 <textarea  name="meta_description" class="form-control" rows="5" ></textarea>
             </div>
         </div>
-        <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Author <span class="requiredAsterisk">*</span></label>
-            <div class="col-sm-9">
-                <input type="text" name="author" class="validate[required] form-control" >
-            </div>
-        </div>
+        
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Canonical <span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
