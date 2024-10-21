@@ -18,7 +18,7 @@ class CreateBlogCategoriesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('type',['blog','event']);
+            $table->enum('type',['blog','news']);
 
             $table->timestamps();
             $table->softDeletes();
