@@ -27,7 +27,7 @@ class BannerController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'. \Storage::url('storage/app/public/.'.$data->image).'" width="80px"/>';
+                    return '<img src="' .  $data->image . '" width="80px"/>';
                 }else{
                     return 'N/A';
                 }
@@ -69,6 +69,7 @@ class BannerController extends Controller
         $save = new Banner();
        
             $file = $Imagename;
+            $save->status = 'Active';
             $save->image=$file;
 
         
@@ -84,6 +85,7 @@ class BannerController extends Controller
     public function edit($id)
     {
         $records = Banner::findOrFail($id);
+  
         return view('Backend.Banner.Edit',['records'=>$records]);
 
     }
@@ -92,28 +94,43 @@ class BannerController extends Controller
 
         $this->validate($request, [
             'image' => 'required|nullable|sometimes',
-            'title' => 'required',
+          
 
 
         ]);
 
         $update =  Banner::findOrFail($id);
+
+   
         if(!empty($request->file('image'))){
-            $filepath=$this->imageUpload($request->image,'banner');
-            $path=public_path().$update->image;
+
+
+
+            
+            $image = $request->file('image');
+
+            $Imagename  = time().'slider'.'.'.$image->getClientOriginalExtension();
+            $image->storeAs('banner', $Imagename, 'public');
+         
+            $path= $update->image;
+
+
             if(file_exists($path)){
                 unlink($path);
             }
-            $pro_photo=$filepath;
+            $pro_photo=$Imagename;
 
         }else{
-            $pro_photo=$update->image;
+
+            $end = explode('/',$update->image);
+            
+            $pro_photo= end($end);
 
         }
 
 
         $update->image = $pro_photo;
-        $update->title = $request->get('title');
+       
         $update->save();
 
         Session::flash('success', "Banner has been updated");
