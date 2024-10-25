@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\About;
 
 use App\Http\Controllers\Controller;
 
-use App\Model\About;
+use App\Models\About;
 use Illuminate\Http\Request;
 use Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 class AboutController extends Controller
 {
     public function allAbout(){
+     
         return view('Backend.About.All');
     }
     public function addAbout(){
@@ -20,16 +21,15 @@ class AboutController extends Controller
     public function saveAbout(Request $request){
         $save = new About();
         $save->title = $request->get('title');
-        $save->content = $request->get('content');
+        $save->description = $request->get('content');
         if ($request->hasFile('image')) {
             $file            = $request->file('image');
-            $destinationPath = '/uploads/generalSetting/';
-            $filename        = rand(100000,9999999).'.'. $file->getClientOriginalExtension();
-            $request->file('image')->move(public_path().$destinationPath, $filename);
-            $save->image=$filename;
+            $Imagename  = time().'aboutus'.'.'. $file->getClientOriginalExtension();
+            $file->storeAs('aboutus', $Imagename, 'public');
+            $save->image= $Imagename;
         }
         $save->save();
-        Session::flash('success', "About us content has been create");
+        \Session::flash('success', "About us content has been create");
         return redirect()->back();
     }
     public function allAboutDatabase(){
@@ -37,7 +37,7 @@ class AboutController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.url('/').'/uploads/generalSetting/'.$data->image.'" width="80px" />';
+                    return '<img src="'.$data->image.'" width="80px" />';
                 }else{
                     return 'N/A';
                 }
@@ -61,24 +61,32 @@ class AboutController extends Controller
     public function updateAbout(Request $request,$id=null){
         $update = About::findOrFail($id);
         $update->title = $request->get('title');
-        $update->content = $request->get('content');
+        $update->description = $request->get('content');
         if(!empty($request->file('image'))){
-            $file            = $request->file('image');
-            $destinationPath = '/uploads/generalSetting/';
-            $filename        = rand(100000,9999999).'.'. $file->getClientOriginalExtension();
-            $request->file('image')->move(public_path().$destinationPath, $filename);
-            if(file_exists(public_path().'/uploads/generalSetting/'.$update->image)){
-                unlink(public_path().'/uploads/generalSetting/'.$update->image);
-            }
-            $update->image = $filename;
-        }
 
+
+            $file  = $request->file('image');
+           
+            $Imagename  = time().'aboutus'.'.'. $file->getClientOriginalExtension();
+            $file->storeAs('aboutus', $Imagename, 'public');
+
+            if(file_exists($update->image)){
+                unlink($update->image);
+            }
+            $pro_photo  = $Imagename;
+        }else{
+
+            $end = explode('/',$update->image);
+            
+            $pro_photo= end($end);
+        }
+        $update->image = $pro_photo;
         $update->save();
         Session::flash('success', "About us content has been update");
         return redirect()->back();
     }
     public function deleteAbout($id=null){
-        $remove = BlogDetail::findOrFail($id);
+        $remove = About::findOrFail($id);
         $remove->delete();
         return redirect()->back();
     }

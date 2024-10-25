@@ -11,7 +11,7 @@
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Content</label>
             <div class="col-sm-9">
-                <textarea type="text" name="content" class="form-control summernote" rows="10" >{!! $records->content !!}</textarea>
+                <textarea type="text" name="content" class="form-control summernote" rows="10" >{!! $records->description !!}</textarea>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
             <div class="col-sm-9">
                 <small>Mix File size 2MB</small>, <small >File accept Only (jpeg,jpg png,gif,svg)</small>
                 <input type="file" name="image" id="image"  class="form-control" >
-                <img src="{{asset('uploads/generalSetting/'.$records->image)}}" alt="" width="50px">
+                <img src="{{$records->image}}" alt="" width="50px">
             </div>
         </div>
     </div>
