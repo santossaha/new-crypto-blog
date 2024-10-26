@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
