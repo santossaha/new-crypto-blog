@@ -65,7 +65,7 @@ class BlogController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.url('/'). Storage::url($data->image).'" width="100px" />';
+                    return '<img src="'.$data->image.'" width="100px" />';
                 }else{
                     return 'N/A';
                 }
