@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\BlogCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -19,9 +20,11 @@ class BlogDetailFactory extends Factory
      */
     public function definition()
     {
-        
+
 
         $user_id = User::inRandomOrder()->first()->id ?? 1;  // Use user ID 1 as fallback if no users exist
+
+        $categoryId = BlogCategory::inRandomOrder()->first()->id ?? 1;
 
 
          // Generate a random image from Lorem Picsum
@@ -31,11 +34,11 @@ class BlogDetailFactory extends Factory
          $imageContents = file_get_contents($imageUrl);
          $imageName = 'blog_images/' . $this->faker->unique()->word . '.jpg'; // Save the image with a unique name
          Storage::disk('public')->put($imageName, $imageContents); // Store the image in the public storage disk
- 
+
 
         return [
             'title' => $this->faker->sentence,
-            'category_id'=>1,
+            'category_id'=>$categoryId,
             'user_id'=>$user_id,
             'slug' => $this->faker->slug,
             'image' => $imageName ,
