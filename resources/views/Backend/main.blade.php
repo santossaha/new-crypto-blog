@@ -273,6 +273,24 @@
                 </li>
                 @endpermission
 
+                
+                <li>
+                    <a href="{{route('allBanner')}}">
+                        <i class="fa fa-newspaper-o"></i> <span>Sliders</span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="{{route('allAddsImage')}}">
+                        <i class="fa fa-image"></i> <span>Ads Image</span>
+                    </a>
+                </li>   
+                <li>
+                    <a href="{{route('allAbout')}}">
+                        <i class="fa fa-newspaper-o"></i> <span>About Us</span>
+                    </a>
+                </li>
+
                 <li class="treeview" style="height: auto;">
                     <a href="">
                         <i class="fa fa-caret-square-o-right"></i> <span>Blog</span>

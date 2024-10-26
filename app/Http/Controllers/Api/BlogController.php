@@ -13,7 +13,6 @@ class BlogController extends Controller
 
   public function get_blogs()
   {
-
     try {
 
       $blogs = BlogDetail::orderBy('id', 'desc')->get();
@@ -21,6 +20,14 @@ class BlogController extends Controller
       return response()->json(['status'=>'success', $get_blogs]);
     } catch (Exception $e) {
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+  }
+
+  public function blogDetail(Request $request){
+    try{
+
+    } catch(Exception $e){
+        
     }
   }
 }

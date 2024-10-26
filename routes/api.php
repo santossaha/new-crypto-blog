@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
+use App\Http\Controllers\Api\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('get-sliders',[HomeController::class,'get_sliders']);
+Route::get('get-adds',[HomeController::class,'get_adds']);
+Route::get('get-aboutus',[HomeController::class,'get_aboutus']);
+Route::get('latest-news',[HomeController::class,'latest_news']);
+
+Route::get('latest-news-category',[HomeController::class,'latest_news_category']);
 
 Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
 Route::get('get-events',[EventsController::class,'get_events']);

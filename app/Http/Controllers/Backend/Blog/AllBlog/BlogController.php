@@ -8,6 +8,9 @@ use App\Models\BlogCategory;
 use App\Models\BlogDetail;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,10 +34,9 @@ class BlogController extends Controller
             'cat_name'=> 'required',
             'description'=> 'required',
             'short_description'=> 'required',
-            'author'=> 'required',
             'canonical'=> 'required',
         ]);
-        $user_id = Auth::User()->id;
+        $user_id = FacadesAuth::User()->id;
         $save = new BlogDetail();
         $save->category_id = $request->get('cat_name');
         $save->user_id = $user_id;
@@ -43,7 +45,7 @@ class BlogController extends Controller
         $save->content = $request->get('description');
         $save->meta_title = $request->get('meta_title');
         $save->meta_description = $request->get('meta_description');
-        $save->author = $request->get('author');
+        $save->author = FacadesAuth::User()->id;
         $save->short_description = $request->get('short_description');
         $save->canonical = $request->get('canonical');
         $save->meta_keyword = $request->get('meta_keyword');
@@ -55,7 +57,7 @@ class BlogController extends Controller
             $save->image=$filename;
         }
         $save->save();
-        Session::flash('success', "blog has been create");
+        FacadesSession::flash('success', "blog has been create");
         return redirect()->back();
     }
     public function allBlogDatabase(){
@@ -63,7 +65,7 @@ class BlogController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.url('/').'/uploads/generalSetting/'.$data->image.'" width="80px" />';
+                    return '<img src="'.$data->image.'" width="100px" />';
                 }else{
                     return 'N/A';
                 }

@@ -18,6 +18,7 @@ class CreateBlogDetailsTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->string('title');
+            $table->enum('type',['Blog','News'])->nullable();
             $table->string('slug');
             $table->string('image')->nullable();
             $table->text('content')->nullable();
