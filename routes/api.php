@@ -25,6 +25,9 @@ Route::get('get-sliders',[HomeController::class,'get_sliders']);
 Route::get('get-adds',[HomeController::class,'get_adds']);
 Route::get('get-aboutus',[HomeController::class,'get_aboutus']);
 Route::get('latest-news',[HomeController::class,'latest_news']);
+
+Route::get('latest-news-category',[HomeController::class,'latest_news_category']);
+
 Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
 Route::get('get-events',[EventsController::class,'get_events']);
 Route::get('get-blogs',[BlogController::class,'get_blogs']);

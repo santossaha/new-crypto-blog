@@ -6,87 +6,92 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\AdsImageModel;
 use App\Models\Banner;
+use App\Models\BlogCategory;
 use App\Models\BlogDetail;
 use Exception;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-  public function get_sliders(){
+  public function get_sliders()
+  {
 
 
-    try{
+    try {
 
-        $getSliders = Banner::where('status','Active')->get()->toArray();
-        $mySliders = array_chunk( $getSliders,3);
-        return response()->json(['status'=>'success','data'=>$mySliders]);
+      $getSliders = Banner::where('status', 'Active')->get()->toArray();
+      $mySliders = array_chunk($getSliders, 3);
+      return response()->json(['status' => 'success', 'data' => $mySliders]);
+    } catch (Exception $e) {
 
-    }catch(Exception $e){
-
-        return response()->json(['status'=>'error','message'=> $e->getMessage()]);
-
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
 
 
-  public function get_adds(){
+  public function get_adds()
+  {
 
-    try{
+    try {
 
-        $getAdds = AdsImageModel::first()->image;
+      $getAdds = AdsImageModel::first()->image;
 
-        return response()->json(['status'=>'success','data'=> $getAdds
-    ]);
-
-
-
-    }catch(Exception $e){
-        return response()->json(['status'=>'error','message'=> $e->getMessage()]);
-
-
+      return response()->json([
+        'status' => 'success',
+        'data' => $getAdds
+      ]);
+    } catch (Exception $e) {
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
-
-
   }
 
 
 
-  public function get_aboutus(){
+  public function get_aboutus()
+  {
 
-    try{
+    try {
 
-        $getAdds = About::first();
+      $getAdds = About::first();
 
-        return response()->json(['status'=>'success','data'=> $getAdds
-    ]);
-
-
-
-    }catch(Exception $e){
-        return response()->json(['status'=>'error','message'=> $e->getMessage()]);
-
-
+      return response()->json([
+        'status' => 'success',
+        'data' => $getAdds
+      ]);
+    } catch (Exception $e) {
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
-
-
   }
 
 
-  public function latest_news(){
+  public function latest_news()
+  {
 
+
+    try {
+
+      $latestNews = BlogDetail::where('type', 'News')->orderBy('id')->limit(6)->get();
+      return response()->json([
+        'status' => 'success',
+        'data' =>  $latestNews
+      ]);
+    } catch (Exception $e) {
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+  }
+
+
+  public function latest_news_category(){
 
     try{
+$data  = BlogCategory::where('type','news')->orderBy('id','desc')->get();
 
-        $latestNews = BlogDetail::where('type','News')->orderBy('id')->limit(6)->get();
-        return response()->json(['status'=>'success','data'=>  $latestNews
-    ]);
-
+return response()->json(['status' => 'success', 'data'=>$data ]);
 
     }catch(Exception $e){
-        return response()->json(['status'=>'error','message'=> $e->getMessage()]);
 
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
 
     }
-
   }
 }
