@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,19 +34,20 @@ class BlogDetail extends Model
 
 
     public function getImageAttribute($value){
-        $url = url('/');
+       // $url = url('/');
+       return Storage::url($value);
 
         // Check if the URL ends with "public"
-        if (substr($url, -strlen('public')) === 'public') {
-            // Remove "public" from the end of the URL
-            $url = substr($url, 0, -strlen('public'));
-            
-            // Ensure no trailing slash
-            $url = rtrim($url, '/');
-        }
-        
-        return $url.'/storage/app/public/'.$value;
+        // if (substr($url, -strlen('public')) === 'public') {
+        //     // Remove "public" from the end of the URL
+        //     $url = substr($url, 0, -strlen('public'));
+
+        //     // Ensure no trailing slash
+        //     $url = rtrim($url, '/');
+        // }
+
+        // return $url.'/storage/app/public/'.$value;
         // return $url.'/storage/app/public/banner/'.$value;
-    
+
     }
 }
