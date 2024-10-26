@@ -44,7 +44,7 @@ class BlogDetail extends Model
             $url = rtrim($url, '/');
         }
         
-        return $url.'/storage/app/public/blog_imaages/'.$value;
+        return $url.'/storage/app/public/'.$value;
         // return $url.'/storage/app/public/banner/'.$value;
     
     }
