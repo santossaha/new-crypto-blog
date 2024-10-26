@@ -1,29 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Banner;
+namespace Banner;
 
 use App\Http\Controllers\Controller;
-// use App\Model\Banner;
-
 use App\Models\Banner;
+use App\Repo\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+use function App\Http\Controllers\Backend\Banner\public_path;
 
 class BannerController extends Controller
 {
 
+   
     public function index(){
-
-       
-
-
-        return view('Backend.Banner.All', [
-            'statuses' => [
-                'active' => Banner::ACTIVE,
-                'Inactive' => Banner::Inactive,
-            ],
-        ]);
+        return view('Backend.AdsImage.All');
 
     }
     public function datatable(){
@@ -31,7 +23,7 @@ class BannerController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="' .  $data->image . '" width="80px"/>';
+                    return '<img src="'.url($data->image).'" width="80px"/>';
                 }else{
                     return 'N/A';
                 }
@@ -49,38 +41,22 @@ class BannerController extends Controller
             ->toJson();
     }
     public function add(){
-
-        return view('Backend.Banner.Add');
+        return view('Backend.AdsImage.Add');
     }
 
     public function save(Request $request){
-
-       
         $this->validate($request, [
             'image' => 'required',
 
         ]);
 
-        if ($request->hasFile('image')) {
-           
-            foreach($request->image as $image){
-              
-
-                $Imagename  = time().'slider'.'.'.$image->getClientOriginalExtension();
-
-                $image->storeAs('banner', $Imagename, 'public');
-
         $save = new Banner();
-       
-            $file = $Imagename;
-            $save->status = 'Active';
+        if ($request->hasFile('image')) {
+            $file = $this->imageUpload($request->image,'banner');
             $save->image=$file;
 
-        
-
+        }
         $save->save();
-
-            }}
 
         Session::flash('success', "Banner has been created successfully");
         return redirect()->back();
@@ -89,8 +65,7 @@ class BannerController extends Controller
     public function edit($id)
     {
         $records = Banner::findOrFail($id);
-  
-        return view('Backend.Banner.Edit',['records'=>$records]);
+        return view('Backend.AdsImage.Edit',['records'=>$records]);
 
     }
 
@@ -98,40 +73,26 @@ class BannerController extends Controller
 
         $this->validate($request, [
             'image' => 'required|nullable|sometimes',
-          
 
 
         ]);
 
         $update =  Banner::findOrFail($id);
-
-   
         if(!empty($request->file('image'))){
-
-            $image = $request->file('image');
-
-            $Imagename  = time().'slider'.'.'.$image->getClientOriginalExtension();
-            $image->storeAs('banner', $Imagename, 'public');
-         
-            $path= $update->image;
-
-
+            $filepath=$this->imageUpload($request->image,'banner');
+            $path=public_path().$update->image;
             if(file_exists($path)){
                 unlink($path);
             }
-            $pro_photo=$Imagename;
+            $pro_photo=$filepath;
 
         }else{
-
-            $end = explode('/',$update->image);
-            
-            $pro_photo= end($end);
+            $pro_photo=$update->image;
 
         }
 
 
         $update->image = $pro_photo;
-       
         $update->save();
 
         Session::flash('success', "Banner has been updated");
