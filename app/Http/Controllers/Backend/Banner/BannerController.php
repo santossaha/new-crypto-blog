@@ -14,6 +14,11 @@ class BannerController extends Controller
 {
 
     public function index(){
+
+    
+
+
+
         return view('Backend.Banner.All', [
             'statuses' => [
                 'active' => Banner::ACTIVE,

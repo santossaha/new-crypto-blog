@@ -30,4 +30,22 @@ class BlogDetail extends Model
     {
         return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
+
+
+    public function getImageAttribute($value){
+        $url = url('/');
+
+        // Check if the URL ends with "public"
+        if (substr($url, -strlen('public')) === 'public') {
+            // Remove "public" from the end of the URL
+            $url = substr($url, 0, -strlen('public'));
+            
+            // Ensure no trailing slash
+            $url = rtrim($url, '/');
+        }
+        
+        return $url.'/uploads/generalSetting/'.$value;
+        
+    
+    }
 }
