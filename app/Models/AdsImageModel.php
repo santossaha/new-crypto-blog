@@ -4,20 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Storage;
 
-class Banner extends Model
+class AdsImageModel extends Model
 {
-    protected $appends = ['file_path'];
-    protected $table='sliders';
-    public $timestamps=true;
-    const Inactive = 'Inactive';
-    const ACTIVE = 'Active';
+    use HasFactory;
 
-    public function getFilePathAttribute() {
-        return $this->attributes['file_path'] = $this->image ? url($this->image) : null;
-    }
+    protected $table = "image_ads";
 
+
+
+    
     public function getImageAttribute($value){
         $url = url('/');
 
@@ -30,7 +26,7 @@ class Banner extends Model
             $url = rtrim($url, '/');
         }
         
-        return $url.'/storage/app/public/banner/'.$value;
+        return $url.'/storage/app/public/adds/'.$value;
         
     
     }
