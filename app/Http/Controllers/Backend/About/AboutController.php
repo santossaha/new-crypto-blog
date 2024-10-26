@@ -12,6 +12,10 @@ use Yajra\DataTables\Facades\DataTables;
 class AboutController extends Controller
 {
     public function allAbout(){
+
+
+
+        
      
         return view('Backend.About.All');
     }
