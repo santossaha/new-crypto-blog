@@ -19,6 +19,11 @@ class BlogSeeder extends Seeder
 
         BlogDetail::factory()->count(25)->create([
             'user_id' => $user->id,
+            'type' => 'News',
+        ]);
+        BlogDetail::factory()->count(25)->create([
+            'user_id' => $user->id,
+            'type' => 'Blog',
         ]);
     }
 }

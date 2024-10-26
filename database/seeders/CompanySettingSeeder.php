@@ -11,7 +11,7 @@ class CompanySettingSeeder extends Seeder
         $data = new CompanySetting();
         $data->company_name  = 'Company Name';
         $data->address  = 'address of your company';
-        $data->city  = 'Durgapur';
+        $data->city  = 'Haveli kharagpur';
         $data->state  = 'West Bengal';
         $data->country  = 'India';
         $data->phone  = '1234567890';
