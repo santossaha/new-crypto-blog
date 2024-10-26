@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\About;
 use App\Models\AdsImageModel;
 use App\Models\Banner;
 use App\Models\BlogDetail;
@@ -33,6 +34,28 @@ class HomeController extends Controller
     try{
 
         $getAdds = AdsImageModel::first()->image;
+
+        return response()->json(['status'=>'success','data'=> $getAdds
+    ]);
+
+
+
+    }catch(Exception $e){
+        return response()->json(['status'=>'error','message'=> $e->getMessage()]);
+
+
+    }
+
+
+  }
+
+
+
+  public function get_aboutus(){
+
+    try{
+
+        $getAdds = About::first();
 
         return response()->json(['status'=>'success','data'=> $getAdds
     ]);
