@@ -34,19 +34,22 @@ class BlogDetail extends Model
 
 
     public function getImageAttribute($value){
-       // $url = url('/');
-       return Storage::url($value);
+       $url = url('/');
+     //  return Storage::url($value);
 
-        // Check if the URL ends with "public"
-        // if (substr($url, -strlen('public')) === 'public') {
-        //     // Remove "public" from the end of the URL
-        //     $url = substr($url, 0, -strlen('public'));
+        //Check if the URL ends with "public"
+        if (substr($url, -strlen('public')) === 'public') {
+            // Remove "public" from the end of the URL
+            $url = substr($url, 0, -strlen('public'));
 
-        //     // Ensure no trailing slash
-        //     $url = rtrim($url, '/');
-        // }
+            // Ensure no trailing slash
+            $url = rtrim($url, '/');
+        }else{
 
-        // return $url.'/storage/app/public/'.$value;
+            return Storage::url($value);
+        }
+
+        return $url.'/storage/app/public/'.$value;
         // return $url.'/storage/app/public/banner/'.$value;
 
     }
