@@ -281,7 +281,7 @@
                 </li>
     
                 <li>
-                    <a href="{{route('allUsers')}}">
+                    <a href="{{route('allAddsImage')}}">
                         <i class="fa fa-image"></i> <span>Ads Image</span>
                     </a>
                 </li>   

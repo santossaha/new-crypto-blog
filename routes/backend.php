@@ -163,4 +163,17 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('deleteAbout/{id?}',['as' => 'deleteAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@deleteAbout']);
     });
 
+
+
+    Route::group(['prefix' => 'addsImage'], function () {
+        // About U
+        Route::get('/allAddsImage',['as' => 'allAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@index']);
+        Route::get('/allAddsImageDatabase',['as' => 'allAddsImageDatabase', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@allAdsDatabase']);
+        Route::get('/addAddsImage',['as' => 'addAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@addImage']);
+        Route::post('/saveAddsImage/{id?}',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@save']);
+        Route::get('/editAddsImage/{id?}',['as' => 'editAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@edit']);
+        Route::post('updateAddsImage/{id?}',['as' => 'updateAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@update']);
+        // Route::get('deleteAddsImage/{id?}',['as' => 'deleteAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@deleteAbout']);
+    });
+
 });
