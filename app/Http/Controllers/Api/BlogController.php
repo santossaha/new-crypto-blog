@@ -62,7 +62,7 @@ class BlogController extends Controller
       $recentViews = RecentViewBlogs::orderBy('blog_id','desc')->get();
      
       $details = RecentViews::collection(  $recentViews );
-      return response()->json(['status'=>'success', $$details]);
+      return response()->json(['status'=>'success', $details]);
 
     }catch(Exception $e){
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);  
