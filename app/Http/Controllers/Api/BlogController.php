@@ -60,8 +60,7 @@ class BlogController extends Controller
     try{
 
       $recentViews = RecentViewBlogs::orderBy('blog_id','desc')->get();
-      dd($recentViews);
-
+     
       $details = RecentViews::collection(  $recentViews );
       return response()->json(['status'=>'success', $$details]);
 
