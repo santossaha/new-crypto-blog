@@ -13,7 +13,7 @@ class CategoryController extends Controller
 	{
 
 		try {
-			$categories = BlogCategory::where('status', 'Active')->select('id', 'name', 'slug', 'type', 'status')->orderBy('id', 'desc')->get();
+			$categories = BlogCategory::where(['status'=> 'Active','type'=>'Blog'])->select('id', 'name', 'slug', 'type', 'status')->orderBy('id', 'desc')->get();
 			return response()->json(['status' => 'success', $categories]);
 		} catch (Exception $e) {
 			return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
