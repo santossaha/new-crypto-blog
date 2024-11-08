@@ -15,8 +15,6 @@ class HomeController extends Controller
 {
   public function get_sliders()
   {
-
-
     try {
 
       $getSliders = Banner::where('status', 'Active')->get()->toArray();
@@ -27,7 +25,6 @@ class HomeController extends Controller
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
-
 
   public function get_adds()
   {
@@ -44,8 +41,6 @@ class HomeController extends Controller
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
-
-
 
   public function get_aboutus()
   {
@@ -66,10 +61,7 @@ class HomeController extends Controller
 
   public function latest_news()
   {
-
-
     try {
-
       $latestNews = BlogDetail::where('type', 'News')->orderBy('id')->limit(6)->get();
       return response()->json([
         'status' => 'success',

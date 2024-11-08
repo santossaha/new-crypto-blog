@@ -22,17 +22,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+/// Home Page ///
+
 Route::get('get-sliders',[HomeController::class,'get_sliders']);
 Route::get('get-adds',[HomeController::class,'get_adds']);
 Route::get('get-aboutus',[HomeController::class,'get_aboutus']);
 Route::get('latest-news',[HomeController::class,'latest_news']);
-Route::get('get-services','App\Http\Controllers\Api\CategoryController@get_services');
-
 Route::get('latest-news-category',[HomeController::class,'latest_news_category']);
 
-Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
+/// End Home Page
+
+
+// Events Menu
 Route::get('get-events',[EventsController::class,'get_events']);
+
+
+// Services Menu
+Route::get('get-services','App\Http\Controllers\Api\ServiceController@get_services');
+
+//blogs
 Route::get('get-blogs',[BlogController::class,'get_blogs']);
+Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
 Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
+
+
