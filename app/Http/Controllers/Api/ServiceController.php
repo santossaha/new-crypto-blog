@@ -19,7 +19,7 @@ class ServiceController extends Controller
            // dd($columns);
 
 
-            $services = BlogCategory::where('status','Active')->orderBy('id')->groupBy('type')->get();
+            $services = BlogCategory::where('status','Active')->groupBy('type')->orderBy('id')->get();
 
             $Category = ServiceResource::collection($services);
 
