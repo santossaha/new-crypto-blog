@@ -14,21 +14,29 @@ class AddColumnToTable extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-          $table->longText('description');
-          $table->enum('status',['Pending','Approved'])->default('Approved');
+            // Check if 'description' column doesn't exist, then add it
+            if (!Schema::hasColumn('events', 'description')) {
+                $table->longText('description')->nullable(false);
+            }
+
+            // Check if 'status' column doesn't exist, then add it
+            if (!Schema::hasColumn('events', 'status')) {
+                $table->enum('status', ['Pending', 'Approved'])->default('Approved');
+            }
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('description');
-            $table->dropColumn('status',['Pending','Approved'])->default('Approved');
+            // Drop columns if they exist
+            if (Schema::hasColumn('events', 'description')) {
+                $table->dropColumn('description');
+            }
+
+            if (Schema::hasColumn('events', 'status')) {
+                $table->dropColumn('status');
+            }
         });
     }
 }
