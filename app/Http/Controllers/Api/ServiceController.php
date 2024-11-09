@@ -16,7 +16,7 @@ class ServiceController extends Controller
 
             $columns = Schema::getColumnListing('blog_categories');
 
-            dd($columns);
+           // dd($columns);
 
 
             $services = BlogCategory::where('status','Active')->orderBy('id')->get();
