@@ -42,8 +42,8 @@ Route::get('get-events',[EventsController::class,'get_events']);
 Route::get('get-services','App\Http\Controllers\Api\ServiceController@get_services');
 
 //blogs
-Route::get('get-blogs',[BlogController::class,'get_blogs']);
-Route::get('get-categories','App\Http\Controllers\Api\CategoryController@categories');
+Route::get('get-blogs',action: [BlogController::class,'get_blogs']);
+Route::get(uri: 'get-categories','App\Http\Controllers\Api\CategoryController@categories');
 Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
