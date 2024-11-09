@@ -94,7 +94,7 @@ b
 
 
 1.events with search  -- api 
-2.services  -- api
+2.services  -- api  -- done
 3.add news section backend
 4. with add field in events section in backend add field pending/aproved -- >status
 5.contact submit in api 

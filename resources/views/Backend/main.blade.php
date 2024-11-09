@@ -304,6 +304,20 @@
                     </ul>
                 </li>
 
+
+                <li class="treeview" style="height: auto;">
+                    <a href="">
+                        <i class="fa fa-caret-square-o-right"></i> <span>News</span>
+                        <span class="pull-right-container">
+                     <i class="fa fa-angle-left pull-right"></i>
+                       </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href="{{route('allBlogCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
+                        <li><a href="{{route('allBlog')}}"><i class="fa fa-circle-o"></i>News</a></li>
+                    </ul>
+                </li>
+
                 @permission('view-user')
                 <li>
                     <a href="{{route('allEvent')}}">
