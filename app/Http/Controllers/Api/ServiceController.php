@@ -25,7 +25,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'data' =>  $services
+                'data' =>   $Category
               ]);
         }catch(Exception $e){
 
