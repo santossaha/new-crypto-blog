@@ -79,3 +79,25 @@
 
 
 
+event table add column - 1 description ,and add with dropdown collect from fronted
+
+Due Apis 
+
+1.blog pages
+a. create slider for blog page
+b
+
+1. Services dropdown pages  catrgory - news , blog, event  example seleect * from category 
+
+
+
+
+
+1.events with search  -- api 
+2.services  -- api
+3.add news section backend
+4. with add field in events section in backend add field pending/aproved -- >status
+5.contact submit in api 
+
+
+

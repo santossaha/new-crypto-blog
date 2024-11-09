@@ -26,6 +26,11 @@ class CategorySeeder extends Seeder
             ['name' => 'Travel', 'slug' => Str::slug('Travel'), 'status' => 'Inactive', 'type' => 'Blog'],
             ['name' => 'Politics', 'slug' => Str::slug('Politics'), 'status' => 'Active', 'type' => 'News'],
             ['name' => 'Science', 'slug' => Str::slug('Science'), 'status' => 'Inactive', 'type' => 'News'],
+            ['name' => 'music', 'slug' => Str::slug('music'), 'status' => 'Active', 'type' => 'Event'],
+            ['name' => 'video', 'slug' => Str::slug('video'), 'status' => 'Active', 'type' => 'Event'],
+            ['name' => 'birthday', 'slug' => Str::slug('birthday'), 'status' => 'Active', 'type' => 'Event'],
+            ['name' => 'workshop', 'slug' => Str::slug('workshop'), 'status' => 'Active', 'type' => 'Event'],
+            ['name' => 'Conferences', 'slug' => Str::slug('conferences'), 'status' => 'Active', 'type' => 'Event'],
         ];
 
         DB::table('blog_categories')->insert($data);
