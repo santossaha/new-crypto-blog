@@ -14,7 +14,7 @@ class ServiceResource extends JsonResource
      */
     public function toArray($request)
     {
-        $Category =  BlogCategory::where(['type'=>$this->type,'status','Active'])->orderBy('id')->get();
+        $Category =  BlogCategory::where(['type'=>$this->type,'status'=>'Active'])->orderBy('id')->get();
 
         return [
                 'id'=>$this->id,
