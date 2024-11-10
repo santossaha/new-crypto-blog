@@ -25,8 +25,7 @@ class EventsModelFactory extends Factory
             'status' => $this->faker->randomElement(['Active', 'Inactive']),
             'meta_keyword' => $this->faker->words(5, true),
             'meta_title' => $this->faker->sentence,
-            'meta_description' => $this->faker->sentence,
-            
+            'meta_description' => $this->faker->sentence, 
             'canonical' => $this->faker->url,
             'approve_status'=>'Aprroved',
             'start_date'=> $startDate,

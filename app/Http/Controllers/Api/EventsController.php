@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
-	public function get_events()
+	public function get_events(Request $request)
 	{
 		try {
-
-			$events = EventsModel::orderBy('id', 'desc')->get();
+			$title = $request->get('title');
+			$event_type = $request->get('event_type');
+			$events = EventsModel::orderBy('id', 'desc')->where('title', 'LIKE', "%{$title}%")
+    ->where('event_type', $event_type)->get();
 			$getEvents = EventsResource::collection($events);
 			return response()->json(['status' => 'sucess', $getEvents]);
 		} catch (Exception $e) {
