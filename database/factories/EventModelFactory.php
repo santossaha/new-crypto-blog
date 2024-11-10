@@ -4,7 +4,7 @@ namespace Database\Factories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EventFactory extends Factory
+class EventModelFactory extends Factory
 {
     /**
      * Define the model's default state.
