@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class BlogCategory extends Model
 {
     protected $table = 'blog_categories';
-    protected $fillable = ['id','name','type'];
-    protected $visible = ['id','name','type'];
+    protected $fillable = ['id','name','type','slug'];
+    protected $visible = ['id','name','type','slug'];
     public $timestamps = true;
     use SoftDeletes;
 
