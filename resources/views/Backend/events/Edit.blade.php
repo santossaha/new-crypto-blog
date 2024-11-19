@@ -1,3 +1,28 @@
+@extends('Backend.main')
+@section('content')
+    <div class="content-wrapper">
+        <section class="content">
+            @if (count($errors) > 0)
+                <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+            <div class="row">
+                <!-- right column -->
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Update Event</h3>
+                        </div>
+
+
+
 <form id="validation2" action="{{route('updateEvent',['id'=>$records->id])}}" class="form-horizontal"  method="post" enctype="multipart/form-data">
     {{csrf_field()}}
     <div class="modal-body clearfix">
@@ -75,6 +100,19 @@
     </div>
 </form>
 
+
+
+</div>
+</div>
+</div>
+
+</section>
+</div>
+
+@endsection
+
+@push('script')
+
 <script type="text/javascript">
     jQuery("#validation2").validationEngine({promptPosition: 'inline'});
     $('.select2').select2();
@@ -85,5 +123,27 @@
         });
 
     });
+
+
+    $("#start_date").datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd"
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#end_date').datepicker('setStartDate', minDate);
+            setdate();
+        });
+
+        $("#end_date").datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd"
+        }).on('changeDate', function (selected) {
+            var maxDate = new Date(selected.date.valueOf());
+            $('#fromDate').datepicker('setEndDate', maxDate);
+        });
+
+    });
 </script>
+
+@endpush
 

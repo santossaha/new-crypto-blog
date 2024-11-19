@@ -33,7 +33,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Type</th>
+                            {{-- <th>Type</th> --}}
                             <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
                         </tr>
                         </thead>
@@ -41,7 +41,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Type</th>
+                            {{-- <th>Type</th> --}}
                             <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
                         </tr>
                         </tfoot>
@@ -66,7 +66,7 @@
             columns: [
                 {data: 'id', name: 'id', visible : false},
                 {data: 'name', name: 'name'},
-                {data:'type', name:'type'},
+                // {data:'type', name:'type'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
             "order": [[0,'desc']],

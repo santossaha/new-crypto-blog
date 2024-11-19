@@ -117,6 +117,30 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
        
     });
 
+    Route::group(['prefix' => 'news'], function () {
+        // Category
+        Route::get('/allNewsCat',['as' => 'allNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allBlogCat']);
+        Route::get('/allNewsCatDatabase',['as' => 'allNewsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allCatDatabase']);
+        Route::get('/addNewsCat',['as' => 'addNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@addCat']);
+        Route::post('/saveNewsCat/',['as' => 'saveNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@saveCat']);
+        Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@editCat']);
+        Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@updateCat']);
+        Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@deleteCat']);
+        //Blog
+        Route::get('/allNews',['as' => 'allBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlog']);
+        Route::get('/allNewsDatabase',['as' => 'allBlogDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlogDatabase']);
+        Route::get('/addNews',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
+        Route::get('/addNewsCat',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
+        Route::post('updateBlog/{id?}',['as' => 'updateBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@updateBlog']);
+        Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
+    
+       
+    });
+
+
+
+
+
      //Events
      Route::get('/allEvent',['as' => 'allEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEvents']);
      Route::get('/allEventDatatable',['as' => 'allEventDatatable', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEventsDatabase']);

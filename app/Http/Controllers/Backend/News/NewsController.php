@@ -1,50 +1,54 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Evenets;
+namespace App\Http\Controllers\Backend\News;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-use App\Models\EventsModel;
+use App\Models\BlogCategory;
+use App\Models\BlogDetail;
 use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use Str;
 use Yajra\DataTables\Facades\DataTables;
 
-class EventController extends Controller
+class NewsController extends Controller
 {
-    public function allEvents(){
-        return view('Backend.events.All');
+    public function allBlog(){
+        return view('Backend.Blog.AllBlog.All');
     }
-    public function addEvents(){
-        return  view('Backend.events.Add');
+    public function addBlog(){
+        $getBlogCats = BlogCategory::where('type','blog')->get();
+        return  view('Backend.Blog.AllBlog.Add',['getBlogCats'=>$getBlogCats]);
     }
-    public function saveEvents(Request $request){
+    public function saveBlog(Request $request){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,NULL,id,deleted_at,NULL',
             'meta_title'=>'required',
             'meta_description'=> 'required',
             'meta_keyword'=>'required',
             'image'=> 'required',
+            'cat_name'=> 'required',
+            'description'=> 'required',
+            'short_description'=> 'required',
             'canonical'=> 'required',
-            'start_date'=>'required',
-            'end_date'=> 'required',
-            'location'=>'required'
         ]);
-        $user_id = Auth::User()->id;
-        $save = new EventsModel();
+        $user_id = FacadesAuth::User()->id;
+        $save = new BlogDetail();
+        $save->category_id = $request->get('cat_name');
         $save->user_id = $user_id;
         $save->title = $request->get('title');
         $save->slug = Str::slug($request->get('title'));
+        $save->content = $request->get('description');
         $save->meta_title = $request->get('meta_title');
         $save->meta_description = $request->get('meta_description');
-        $save->author = $user_id;
+        $save->author = FacadesAuth::User()->id;
+        $save->short_description = $request->get('short_description');
         $save->canonical = $request->get('canonical');
         $save->meta_keyword = $request->get('meta_keyword');
-        $save->location = $request->get('location');
-        $save->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
-        $save->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
-
         if ($request->hasFile('image')) {
             $file            = $request->file('image');
             $destinationPath = '/uploads/generalSetting/';
@@ -53,48 +57,54 @@ class EventController extends Controller
             $save->image=$filename;
         }
         $save->save();
-
-        
-        Session::flash('success', "Event has been create");
+        FacadesSession::flash('success', "blog has been create");
         return redirect()->back();
     }
-    public function allEventsDatabase(){
-        $query = EventsModel::select('id','image','title');
+    public function allBlogDatabase(){
+        $query = BlogDetail::select('id','image','title','category_id');
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.url('/').'/uploads/generalSetting/'.$data->image.'" width="80px" />';
+                    return '<img src="'.$data->image.'" width="100px" />';
                 }else{
                     return 'N/A';
                 }
             })
-          
+            ->addColumn('category', function($data) {
+                return  $data->BlogCategory['name'];
+            })
             ->addColumn('action', function ($data) {
-                $url_update = route('editEvent', ['id' => $data->id]);
-                $url_delete = route('deleteEvent', ['id' => $data->id]);
-                $edit = '<a class="label label-primary"   href="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
+                $url_update = route('editBlog', ['id' => $data->id]);
+                $url_delete = route('deleteBlog', ['id' => $data->id]);
+                // $url_comment = route('allComment', ['id' => $data->id]);
+                $edit = '<a class="label label-primary"  href="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
                 $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete Blog Name: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
+                // $edit .= '&nbsp<a href="' . $url_comment . '" class="label label-success"</span><i class="fa fa-envelope-o"></i> Comments </a>';
                 return $edit;
             })
             ->rawColumns(['id','action','image'])
             ->toJson();
     }
-    public function editEvents($id=null){
-        $records = EventsModel::findOrFail($id);
-        return view('Backend.events.Edit',[
+    public function editBlog($id=null){
+        $getBlogCats = BlogCategory::where('type','blog')->get();
+        $records = BlogDetail::findOrFail($id);
+        return view('Backend.Blog.AllBlog.Edit',[
             'records'=>$records,
+            'getBlogCats'=>$getBlogCats,
         ]);
     }
-    public function updateEvents(Request $request,$id=null){
+    public function updateBlog(Request $request,$id=null){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
         ]);
 
     $user_id = Auth::User()->id;
-    $update = EventsModel::findOrFail($id);
+    $update = BlogDetail::findOrFail($id);
+    $update->category_id = $request->get('cat_name');
     $update->user_id = $user_id;
     $update->title = $request->get('title');
     $update->slug = Str::slug($request->get('title'));
+    $update->content = $request->get('content');
 
     $update->meta_title = $request->get('meta_title');
     $update->meta_description = $request->get('meta_description');
@@ -102,9 +112,7 @@ class EventController extends Controller
     $update->short_description = $request->get('short_description');
     $update->canonical = $request->get('canonical');
     $update->meta_keyword = $request->get('meta_keyword');
-    $update->location = $request->get('location');
-    $update->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
-    $update->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
+
 
     if(!empty($request->file('image'))){
         $file            = $request->file('image');
@@ -120,11 +128,11 @@ class EventController extends Controller
     }
 
     $update->save();
-    Session::flash('success', "Events has been update");
+    Session::flash('success', "Blog has been update");
     return redirect()->back();
     }
-    public function deleteEvents($id=null){
-        $remove = EventsModel::findOrFail($id);
+    public function deleteBlog($id=null){
+        $remove = BlogDetail::findOrFail($id);
         $remove->delete();
         return redirect()->back();
     }

@@ -1,3 +1,27 @@
+@extends('Backend.main')
+@section('content')
+    <div class="content-wrapper">
+        <section class="content">
+            @if (count($errors) > 0)
+                <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+            <div class="row">
+                <!-- right column -->
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Add Blog</h3>
+                        </div>
+
+
 <form id="validation2" action="{{route('saveBlog')}}" class="form-horizontal" enctype="multipart/form-data" method="post">
     {{csrf_field()}}
     <div class="modal-body clearfix"  style="max-height: 600px; overflow-y: auto;">
@@ -29,7 +53,7 @@
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Short Description</label>
             <div class="col-sm-9">
-                <textarea type="text" name="short_description" class="form-control summernote" rows="20" ></textarea>
+                <textarea type="text" name="short_description" class="form-control summernote" rows="5" ></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -75,6 +99,36 @@
     </div>
 </form>
 
+</div>
+</div>
+</div>
+
+</section>
+</div>
+
+@endsection
+
+@push('script')
+    
+
+<script type="text/javascript">
+jQuery("#validation2").validationEngine({promptPosition: 'inline'});
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.summernote').summernote({
@@ -91,3 +145,4 @@
 
 </script>
 
+@endpush

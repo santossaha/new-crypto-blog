@@ -1,3 +1,26 @@
+@extends('Backend.main')
+@section('content')
+    <div class="content-wrapper">
+        <section class="content">
+            @if (count($errors) > 0)
+                <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+            <div class="row">
+                <!-- right column -->
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Add Event</h3>
+                        </div>
+
 <form id="validation2" action="{{route('saveEvent')}}" class="form-horizontal" enctype="multipart/form-data" method="post">
     {{csrf_field()}}
     <div class="modal-body clearfix"  style="max-height: 600px; overflow-y: auto;">
@@ -74,10 +97,18 @@
 </form>
 
 
-    
+</div>
+</div>
+</div>
 
+</section>
+</div>
+
+@endsection
+
+@push('script')
+    
 <script type="text/javascript">
-    jQuery("#validation2").validationEngine({promptPosition: 'inline'});
 
     $(document).ready(function() {
      
@@ -116,6 +147,12 @@
 
    
 </script>
+<script type="text/javascript">
+jQuery("#validation2").validationEngine({promptPosition: 'inline'});
 
+
+
+
+</script>
 
 

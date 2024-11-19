@@ -20,7 +20,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">All Blogs</h3>
                     <div class="box-tools">
-                        <a href="javascript:void(0);" class="btn btn-primary btn-flat" data-act="ajax-modal" data-title="Add Blog Name" data-append-id="AjaxModelContent" data-action-url="{{route("addBlog")}}">
+                        <a href="{{route("addBlog")}}" class="btn btn-primary btn-flat" data-title="Add Blog Name" >
                             <i class="fa fa-plus-circle"></i> Add
                         </a>
                     </div>

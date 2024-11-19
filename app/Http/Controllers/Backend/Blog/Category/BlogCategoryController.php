@@ -26,7 +26,7 @@ class BlogCategoryController extends Controller
         $save = new BlogCategory();
         $save->name = $request->get('name');
         $save->slug =  Str::slug($request->get('name'));
-        $save->type = $request->get('type');
+        $save->type = 'blog';
         $save->save();
         Session::flash('success', "Category has been create");
         return redirect()->back();
@@ -57,7 +57,7 @@ class BlogCategoryController extends Controller
         $update = BlogCategory::findOrFail($id);
         $update->name = $request->get('name');
         $update->slug =  Str::slug($request->get('name'));
-        $update->type = $request->get('type');
+        $update->type = 'blog';
 
         $update->save();
         Session::flash('success', "Category has been update");

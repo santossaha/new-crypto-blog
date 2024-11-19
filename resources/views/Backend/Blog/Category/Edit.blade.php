@@ -3,7 +3,7 @@
     <div class="modal-body clearfix">
 
         
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Category Type<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
                 <select type="text" name="type" class="validate[required] form-control select2" id="type">
@@ -17,7 +17,7 @@
 
                 </select>
             </div>
-        </div>
+        </div> --}}
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Name<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">

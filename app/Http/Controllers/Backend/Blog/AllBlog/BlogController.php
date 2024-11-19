@@ -21,7 +21,7 @@ class BlogController extends Controller
         return view('Backend.Blog.AllBlog.All');
     }
     public function addBlog(){
-        $getBlogCats = BlogCategory::all();
+        $getBlogCats = BlogCategory::where('type','blog')->get();
         return  view('Backend.Blog.AllBlog.Add',['getBlogCats'=>$getBlogCats]);
     }
     public function saveBlog(Request $request){
@@ -77,7 +77,7 @@ class BlogController extends Controller
                 $url_update = route('editBlog', ['id' => $data->id]);
                 $url_delete = route('deleteBlog', ['id' => $data->id]);
                 // $url_comment = route('allComment', ['id' => $data->id]);
-                $edit = '<a class="label label-primary" data-title="Edit Blog" data-act="ajax-modal" data-append-id="AjaxModelContent" data-action-url="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
+                $edit = '<a class="label label-primary"  href="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
                 $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete Blog Name: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
                 // $edit .= '&nbsp<a href="' . $url_comment . '" class="label label-success"</span><i class="fa fa-envelope-o"></i> Comments </a>';
                 return $edit;
@@ -86,7 +86,7 @@ class BlogController extends Controller
             ->toJson();
     }
     public function editBlog($id=null){
-        $getBlogCats = BlogCategory::all();
+        $getBlogCats = BlogCategory::where('type','blog')->get();
         $records = BlogDetail::findOrFail($id);
         return view('Backend.Blog.AllBlog.Edit',[
             'records'=>$records,
