@@ -126,13 +126,15 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@editCat']);
         Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@updateCat']);
         Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@deleteCat']);
-        //Blog
-        Route::get('/allNews',['as' => 'allBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlog']);
-        Route::get('/allNewsDatabase',['as' => 'allBlogDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlogDatabase']);
-        Route::get('/addNews',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
-        Route::get('/addNewsCat',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
-        Route::post('updateBlog/{id?}',['as' => 'updateBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@updateBlog']);
-        Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
+    
+        //News
+        Route::get('/allNews',['as' => 'allNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@all']);
+        Route::get('/allNewsDatabase',['as' => 'allNewsDatabase', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@allNewsDatabase']);
+        Route::get('/addNews',['as' => 'addNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@add']);
+        Route::post('/saveNews',['as' => 'saveNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@saveNews']);
+        Route::get('/editNews/{id?}',['as' => 'editNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@editNews']);
+        Route::post('updateNews/{id?}',['as' => 'updateNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@updateNews']);
+        Route::get('deleteNews/{id?}',['as' => 'deleteNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@deleteNews']);
     
        
     });

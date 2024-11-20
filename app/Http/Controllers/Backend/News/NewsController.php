@@ -17,14 +17,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class NewsController extends Controller
 {
-    public function allBlog(){
-        return view('Backend.Blog.AllBlog.All');
+    public function all(){
+        return view('Backend.News.All');
     }
-    public function addBlog(){
-        $getBlogCats = BlogCategory::where('type','blog')->get();
-        return  view('Backend.Blog.AllBlog.Add',['getBlogCats'=>$getBlogCats]);
+    public function add (){
+        $getBlogCats = BlogCategory::where('type','News')->get();
+        return  view('Backend.News.Add',['getBlogCats'=>$getBlogCats]);
     }
-    public function saveBlog(Request $request){
+    public function saveNews (Request $request){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,NULL,id,deleted_at,NULL',
             'meta_title'=>'required',
@@ -41,6 +41,7 @@ class NewsController extends Controller
         $save->category_id = $request->get('cat_name');
         $save->user_id = $user_id;
         $save->title = $request->get('title');
+        $save->type ='News';
         $save->slug = Str::slug($request->get('title'));
         $save->content = $request->get('description');
         $save->meta_title = $request->get('meta_title');
@@ -57,11 +58,11 @@ class NewsController extends Controller
             $save->image=$filename;
         }
         $save->save();
-        FacadesSession::flash('success', "blog has been create");
+        FacadesSession::flash('success', "News has been create");
         return redirect()->back();
     }
-    public function allBlogDatabase(){
-        $query = BlogDetail::select('id','image','title','category_id');
+    public function allNewsDatabase(){
+        $query = BlogDetail::select('id','image','title','category_id')->where('type','News');
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
@@ -74,26 +75,25 @@ class NewsController extends Controller
                 return  $data->BlogCategory['name'];
             })
             ->addColumn('action', function ($data) {
-                $url_update = route('editBlog', ['id' => $data->id]);
-                $url_delete = route('deleteBlog', ['id' => $data->id]);
-                // $url_comment = route('allComment', ['id' => $data->id]);
+                $url_update = route('editNews', ['id' => $data->id]);
+                $url_delete = route('deleteNews', ['id' => $data->id]);
                 $edit = '<a class="label label-primary"  href="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
-                $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete Blog Name: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
+                $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete News : <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
                 // $edit .= '&nbsp<a href="' . $url_comment . '" class="label label-success"</span><i class="fa fa-envelope-o"></i> Comments </a>';
                 return $edit;
             })
             ->rawColumns(['id','action','image'])
             ->toJson();
     }
-    public function editBlog($id=null){
-        $getBlogCats = BlogCategory::where('type','blog')->get();
+    public function editNews($id=null){
+        $getBlogCats = BlogCategory::where('type','News')->get();
         $records = BlogDetail::findOrFail($id);
-        return view('Backend.Blog.AllBlog.Edit',[
+        return view('Backend.News.Edit',[
             'records'=>$records,
             'getBlogCats'=>$getBlogCats,
         ]);
     }
-    public function updateBlog(Request $request,$id=null){
+    public function updateNews(Request $request,$id=null){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
         ]);
@@ -128,10 +128,10 @@ class NewsController extends Controller
     }
 
     $update->save();
-    Session::flash('success', "Blog has been update");
+    Session::flash('success', "News has been update");
     return redirect()->back();
     }
-    public function deleteBlog($id=null){
+    public function deleteNews($id=null){
         $remove = BlogDetail::findOrFail($id);
         $remove->delete();
         return redirect()->back();

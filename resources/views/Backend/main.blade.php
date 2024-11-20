@@ -314,7 +314,7 @@
                     </a>
                     <ul class="treeview-menu" style="display: none;">
                         <li><a href="{{route('allBlogCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
-                        <li><a href="{{route('allBlog')}}"><i class="fa fa-circle-o"></i>News</a></li>
+                        <li><a href="{{route('allNews')}}"><i class="fa fa-circle-o"></i>News</a></li>
                     </ul>
                 </li>
 
