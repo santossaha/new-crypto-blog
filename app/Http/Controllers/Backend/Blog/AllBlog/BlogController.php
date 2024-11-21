@@ -61,7 +61,7 @@ class BlogController extends Controller
         return redirect()->back();
     }
     public function allBlogDatabase(){
-        $query = BlogDetail::select('id','image','title','category_id');
+        $query = BlogDetail::select('id','image','title','category_id')->where('type','Blog');
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
