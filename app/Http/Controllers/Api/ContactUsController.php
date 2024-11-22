@@ -51,7 +51,12 @@ class ContactUsController extends Controller
           }
 
 
-        }
+        } else {
+          $data = [];
+          $msg =  $validator->errors()->first();
+          return response()->json(['status' => 'error', 'message' => $msg]);  
+
+      }
 
     }
 }
