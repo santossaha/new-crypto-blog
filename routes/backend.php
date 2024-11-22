@@ -202,4 +202,15 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         // Route::get('deleteAddsImage/{id?}',['as' => 'deleteAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@deleteAbout']);
     });
 
+
+
+
+    Route::group(['prefix' => 'contact'], function () {
+        // About US
+        Route::get('/allContact',['as' => 'allContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@allContact']);
+        Route::get('/allContactDatabase',['as' => 'allContactDatabase', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@allContactDatabase']);
+        Route::get('/viewContact/{id?}',['as' => 'viewContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@viewContact']);
+        Route::get('deleteContact/{id?}',['as' => 'deleteContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@deleteContact']);
+    });
+
 });
