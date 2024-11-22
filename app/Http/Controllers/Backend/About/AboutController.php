@@ -13,11 +13,8 @@ class AboutController extends Controller
 {
     public function allAbout(){
 
-
-
-        
-     
-        return view('Backend.About.All');
+        $records = About::first();
+        return view('Backend.About.aboutus',compact('records'));
     }
     public function addAbout(){
         return  view('Backend.About.Add');
