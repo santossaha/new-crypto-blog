@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\ContactUsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::get('get-blogs',action: [BlogController::class,'get_blogs']);
 Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
+
+Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
 // due page in blog
 
