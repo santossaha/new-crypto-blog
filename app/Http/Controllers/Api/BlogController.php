@@ -19,7 +19,7 @@ class BlogController extends Controller
 
       $blogs = BlogDetail::orderBy('id', 'desc')->get();
       $get_blogs = BlogsResource::collection($blogs);
-      return response()->json(['status'=>'success', $get_blogs]);
+      return response()->json(data: ['status'=>'success', $get_blogs]);
     } catch (Exception $e) {
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }

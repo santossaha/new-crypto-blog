@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactUsModel;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class ContactUsController extends Controller
@@ -30,7 +32,23 @@ class ContactUsController extends Controller
 
           $data =   $request->all();
 
-          dd($data );
+          try{
+
+            $save = new ContactUsModel();
+            $save->first_name = $request->get('first_name');
+            $save->last_name =$request->get('last_name');
+            $save->phone_number =$request->get('phone_number');
+            $save->email = $request->get('email');
+            $save->address = $request->get('address');
+            $save->save();
+
+            return response()->json(data: ['status'=>'success', 'message'=>'Contact Send Successfully']);
+
+
+          }catch(Exception $e){
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);  
+
+          }
 
 
         }
