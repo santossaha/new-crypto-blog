@@ -12,15 +12,18 @@ class ContactUsController extends Controller
 
 
   $msg = [
-            'phone.required' => 'Enter your phone no. .',
-            // 'phone.digits' => 'Enter your valid 10 digit phone no. .',
-            // 'latitude.required' => 'Enter Your Latitude.',
-            // 'longitude.required' => 'Enter Your Longitude.',
+            'first_name.required' => 'Enter your First  name.',
+            'last_name.required' => 'Enter your Last Name',
+            'phone_number.required' => 'Enter Your Phone Number.',
+            'email.required' => 'Enter Your Email.',
+            'address.required' => 'Enter Your Address.',
         ];
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|digits:10',
-            // 'latitude' => 'required',
-            // 'longitude' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone_number' => 'required',
+            "email"=>'required',
+            "address"=>'required'
         ], $msg);
 
         if ($validator->passes()) {
