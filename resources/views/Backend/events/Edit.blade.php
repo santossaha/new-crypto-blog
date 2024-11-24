@@ -65,6 +65,12 @@
                 <img src="{{asset('uploads/generalSetting/'.$records->image)}}" alt="" width="50px">
             </div>
         </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-3 control-label"> Description</label>
+            <div class="col-sm-9">
+                <textarea  name="description" class="form-control summernote" rows="5" >{!! $records->description !!}</textarea>
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Meta Title<span class="requiredAsterisk">*</span></label>
@@ -117,12 +123,14 @@
     jQuery("#validation2").validationEngine({promptPosition: 'inline'});
     $('.select2').select2();
     $(document).ready(function() {
+
+      
         $('.summernote').summernote({
             tabsize: 2,
             height: 200
         });
 
-    });
+  
 
 
     $("#start_date").datepicker({
