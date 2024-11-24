@@ -313,16 +313,24 @@
                        </span>
                     </a>
                     <ul class="treeview-menu" style="display: none;">
-                        <li><a href="{{route('allBlogCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
+                        <li><a href="{{route('allNewsCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
                         <li><a href="{{route('allNews')}}"><i class="fa fa-circle-o"></i>News</a></li>
                     </ul>
                 </li>
 
                 @permission('view-user')
-                <li>
-                    <a href="{{route('allEvent')}}">
-                        <i class="fa fa-users"></i> <span>Events</span>
+               
+                <li class="treeview" style="height: auto;">
+                    <a href="">
+                        <i class="fa fa-caret-square-o-right"></i> <span>Events</span>
+                        <span class="pull-right-container">
+                     <i class="fa fa-angle-left pull-right"></i>
+                       </span>
                     </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href="{{route('allEventsCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
+                        <li><a href="{{route('allEvent')}}"><i class="fa fa-circle-o"></i>Events</a></li>
+                    </ul>
                 </li>
                 @endpermission
 

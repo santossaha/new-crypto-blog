@@ -119,13 +119,13 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
 
     Route::group(['prefix' => 'news'], function () {
         // Category
-        Route::get('/allNewsCat',['as' => 'allNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allBlogCat']);
-        Route::get('/allNewsCatDatabase',['as' => 'allNewsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allCatDatabase']);
-        Route::get('/addNewsCat',['as' => 'addNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@addCat']);
-        Route::post('/saveNewsCat/',['as' => 'saveNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@saveCat']);
-        Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@editCat']);
-        Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@updateCat']);
-        Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@deleteCat']);
+        Route::get('/allNewsCat',['as' => 'allNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@allBlogCat']);
+        Route::get('/allNewsCatDatabase',['as' => 'allNewsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@allCatDatabase']);
+        Route::get('/addNewsCat',['as' => 'addNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@addCat']);
+        Route::post('/saveNewsCat/',['as' => 'saveNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@saveCat']);
+        Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@editCat']);
+        Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@updateCat']);
+        Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@deleteCat']);
     
         //News
         Route::get('/allNews',['as' => 'allNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@all']);
@@ -141,6 +141,20 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
 
 
 
+    Route::group(['prefix' => 'events'], function () {
+
+
+        // Category 
+        Route::get('/allEventsCat',['as' => 'allEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allBlogCat']);
+        Route::get('/allEventsCatDatabase',['as' => 'allEventsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allCatDatabase']);
+        Route::get('/addEventsCat',['as' => 'addEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryControllerr@addCat']);
+        Route::post('/saveEventsCat/',['as' => 'saveEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@saveCat']);
+        Route::get('/editEventsCat/{id?}',['as' => 'editEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@editCat']);
+        Route::post('updateEventsCat/{id?}',['as' => 'updateEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@updateCat']);
+        Route::get('deleteEventsCat/{id?}',['as' => 'deleteEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@deleteCat']);
+
+
+
 
 
      //Events
@@ -153,7 +167,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
      Route::get('deleteEvent/{id?}',['as' => 'deleteEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@deleteEvents']);
  
 
-
+    });
 
 
         //Banner
