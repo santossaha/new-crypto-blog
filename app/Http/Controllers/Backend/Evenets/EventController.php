@@ -29,7 +29,8 @@ class EventController extends Controller
             'canonical'=> 'required',
             'start_date'=>'required',
             'end_date'=> 'required',
-            'location'=>'required'
+            'location'=>'required',
+            'description'=>'required'
         ]);
         $user_id = Auth::User()->id;
         $save = new EventsModel();
@@ -38,10 +39,12 @@ class EventController extends Controller
         $save->slug = Str::slug($request->get('title'));
         $save->meta_title = $request->get('meta_title');
         $save->meta_description = $request->get('meta_description');
+        $save->description = $request->get('description');
         $save->author = $user_id;
         $save->canonical = $request->get('canonical');
         $save->meta_keyword = $request->get('meta_keyword');
         $save->location = $request->get('location');
+        $save->approve_status= 'Aprroved';
         $save->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
         $save->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
 
@@ -88,6 +91,7 @@ class EventController extends Controller
     public function updateEvents(Request $request,$id=null){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
+            'description'=>'required'
         ]);
 
     $user_id = Auth::User()->id;
@@ -99,6 +103,7 @@ class EventController extends Controller
     $update->meta_title = $request->get('meta_title');
     $update->meta_description = $request->get('meta_description');
     $update->author = $request->get('author');
+    $update->description = $request->get('description');
     $update->short_description = $request->get('short_description');
     $update->canonical = $request->get('canonical');
     $update->meta_keyword = $request->get('meta_keyword');

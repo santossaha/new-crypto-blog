@@ -62,6 +62,13 @@
         </div>
 
         <div class="form-group">
+            <label for="title" class="col-sm-3 control-label"> Description</label>
+            <div class="col-sm-9">
+                <textarea  name="description" class="form-control summernote" rows="5" ></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="title" class="col-sm-3 control-label">Meta Title<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
                 <input type="text" name="meta_title" class="validate[required] form-control" value="" >
@@ -111,6 +118,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+   
      
         $('.summernote').summernote({
             tabsize: 2,
@@ -154,5 +162,7 @@ jQuery("#validation2").validationEngine({promptPosition: 'inline'});
 
 
 </script>
+
+@endpush
 
 
