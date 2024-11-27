@@ -41,6 +41,7 @@ Route::post('search-events',[EventsController::class,'get_events']);
 
 // Services Menu
 Route::get('get-services','App\Http\Controllers\Api\ServiceController@get_services');
+Route::get('service-details/{type?}','App\Http\Controllers\Api\ServiceController@service_details');
 
 //blogs
 Route::get('get-blogs',action: [BlogController::class,'get_blogs']);
