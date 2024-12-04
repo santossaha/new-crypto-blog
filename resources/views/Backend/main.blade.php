@@ -335,6 +335,14 @@
                 @endpermission
 
 
+
+                <li>
+                    <a href="{{route('allairdrops')}}">
+                        <i class="fa fa-cogs"></i> <span>Airdrops</span>
+                    </a>
+                </li>
+
+
                 <li>
                     <a href="{{route('allContact')}}">
                         <i class="fa fa-cogs"></i> <span>Contact Us</span>

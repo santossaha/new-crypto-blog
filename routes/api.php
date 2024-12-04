@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ContactUsController;
+use App\Http\Controllers\Api\AirDropsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,12 @@ Route::get('recent-view',[BlogController::class,'recent_view']);
 Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
 // due page in blog
+
+//airdrops
+
+Route::post('search-airdrops',[AirDropsController::class,'get_airdrops']);
+
+Route::post('details-airdrops/{name?}',[AirDropsController::class,'details_airdrops']);
 
 
 

@@ -227,4 +227,19 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('deleteContact/{id?}',['as' => 'deleteContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@deleteContact']);
     });
 
+
+
+
+    Route::group(['prefix' => 'airdrops'], function () {
+        // About US
+        Route::get('/all',['as' => 'allairdrops', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@all']);
+        Route::get('/datatable',['as' => 'allairdropsDatabase', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@datatable']);
+        Route::get('/add',action: ['as' => 'addAirdrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@add']);
+        Route::post('/save',action: ['as' => 'saveAirdrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@save']);
+        Route::get('/edit/{id?}',['as' => 'editAirDrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@edit']);
+        Route::post('/update/{id?}',['as' => 'updateAirDrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@update']);
+
+        Route::get('delete/{id?}',['as' => 'deleteairdrops', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@delete']);
+    });
+
 });
