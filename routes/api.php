@@ -59,6 +59,8 @@ Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
 Route::post('search-airdrops',[AirDropsController::class,'get_airdrops']);
 
+Route::get('all-airdrops',[AirDropsController::class,'allArirDrops']);
+
 Route::post('details-airdrops/{name?}',[AirDropsController::class,'details_airdrops']);
 
 

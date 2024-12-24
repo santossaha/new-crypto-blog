@@ -27,6 +27,27 @@ public function get_airdrops(Request $request){
     }
 }
 
+public function allArirDrops(Request $request){
+    try {
+        $query = AirDrops::query();
+        if($request->has('name')) {
+            $query->where('name', 'LIKE', "%{$request->name}%");
+        }
+        if($request->has('airdrop_status')) {
+            $query->where('airdrop_status', $request->airdrop_status);
+        }
+
+        if($request->has('airdrop_type')) {
+            $query->where('airdrop_type', $request->airdrop_type);
+        }
+
+        $airdrop = $query->orderBy('id', 'DESC')->paginate(10);
+        return response()->json(['status' => 'sucess', 'airdrop' => $airdrop]);
+    } catch (Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}
+
 public function details_airdrops($name){
     try {
 
@@ -35,6 +56,6 @@ public function details_airdrops($name){
     } catch (Exception $e) {
         return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
-    
+
 }
 }

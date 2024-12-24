@@ -17,11 +17,11 @@ class BlogSeeder extends Seeder
     {
         $user = User::inRandomOrder()->first() ?? User::find(1);  // Get a random user or fallback to user ID 1
 
-        BlogDetail::factory()->count(25)->create([
+        BlogDetail::factory()->count(10)->create([
             'user_id' => $user->id,
             'type' => 'News',
         ]);
-        BlogDetail::factory()->count(25)->create([
+        BlogDetail::factory()->count(10)->create([
             'user_id' => $user->id,
             'type' => 'Blog',
         ]);
