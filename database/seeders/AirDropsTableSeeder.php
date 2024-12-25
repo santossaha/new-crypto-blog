@@ -15,9 +15,13 @@ class AirDropsTableSeeder extends Seeder
     public function run()
     {
         //return true;
-        $numberOfRecords = 10; // Specify the number of records you want to create
+        $numberOfRecords = 40; // Specify the number of records you want to create
 
-        AirDrops::factory()->count($numberOfRecords)->create();
+        for($i= 0; $i < $numberOfRecords; $i++){
+            AirDrops::factory()->create();
+            sleep(3);
+        }
+
 
     }
 }

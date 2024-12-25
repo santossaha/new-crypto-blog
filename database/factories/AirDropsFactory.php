@@ -8,13 +8,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class AirDropsFactory extends Factory
 {
     protected $model = AirDrops::class;
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
+
+
+
+
+
     public function definition()
     {
+
+        $imageUrl = 'https://picsum.photos/48/48';
+        $imgPath = imageDownload('air_drop_image',$imageUrl);
         return [
             'type' => $this->faker->randomElement(['Token', 'Coin', 'NFTs']),
             'name' => $this->faker->word,
@@ -22,7 +25,7 @@ class AirDropsFactory extends Factory
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'winner_announcement_date' => $this->faker->date(),
-            'coin_token_image' => $this->faker->imageUrl(),
+            'coin_token_image' => $imgPath,  //$this->faker->imageUrl(),
             'coin_token_qty' => $this->faker->numberBetween(100,1000),
             'total_airdrop_qty' => $this->faker->numberBetween(1000, 10000),
             'no_of_winners' => $this->faker->numberBetween(1, 10),

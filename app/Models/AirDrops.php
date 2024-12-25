@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirDrops extends Model
 {
@@ -19,4 +20,25 @@ class AirDrops extends Model
     //  'contract_address', 'contact', 'contact_id', 'aprove_status', 'upvote', 'airdrop_status'
     // ];
     public $timestamps = true;
+
+    public function getCoin_Token_ImageAttribute($value){
+        $url = url('/');
+      //  return Storage::url($value);
+
+         //Check if the URL ends with "public"
+         if (substr($url, -strlen('public')) === 'public') {
+             // Remove "public" from the end of the URL
+             $url = substr($url, 0, -strlen('public'));
+
+             // Ensure no trailing slash
+             $url = rtrim($url, '/');
+         }else{
+
+             return Storage::url($value);
+         }
+
+         return $url.'/storage/app/public/'.$value;
+         // return $url.'/storage/app/public/banner/'.$value;
+
+     }
 }
