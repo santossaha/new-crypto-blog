@@ -35,7 +35,7 @@ class ServiceController extends Controller
 
     public function serviceDetails($slug){
         $blogCat = BlogCategory::where('slug',$slug)->first();
-        $get_blogs = BlogDetail::where('category_id',$blogCat->id)->get();
+        $get_blogs = BlogDetail::where('category_id',$blogCat->id)->orderBy('id', 'DESC')->paginate(10);
         return response()->json(['status'=>'success', 'data'=>$get_blogs]);
     }
 }
