@@ -29,23 +29,13 @@ class ServiceController extends Controller
 
             return response()->json(['status'=>'error',$e->getMessage()]);
         }
-        
+
     }
 
 
-    public function service_details($type){
-
-       if($type == 'Event'){
-
-        $events =  EventsModel::orderBy('id', 'desc')->get();
-        $getEvents =   EventsResource::collection($events);
-        return response()->json(['status' => 'sucess', $getEvents]);
-
-       }else{
-
-        $blogs = BlogDetail::orderBy('id', 'desc')->where('type',$type)->get();
-        $get_blogs = BlogsResource::collection($blogs);
-        return response()->json(data: ['status'=>'success', $get_blogs]);
-    }
+    public function serviceDetails($slug){
+        $blogCat = BlogCategory::where('slug',$slug)->first();
+        $get_blogs = BlogDetail::where('category_id',$blogCat->id)->get();
+        return response()->json(['status'=>'success', 'data'=>$get_blogs]);
     }
 }

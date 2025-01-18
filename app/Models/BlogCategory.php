@@ -17,4 +17,10 @@ class BlogCategory extends Model
     {
         return $this->hasMany(BlogDetail::class,'category_id')->withTrashed();
     }
+
+    //get all categories
+    public function blogs()
+    {
+        return $this->hasMany(BlogDetail::class, 'category_id');
+    }
 }

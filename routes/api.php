@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\AirDropsController;
+use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,8 +42,9 @@ Route::post('search-events',[EventsController::class,'get_events']);
 
 
 // Services Menu
-Route::get('get-services','App\Http\Controllers\Api\ServiceController@get_services');
-Route::get('service-details/{type?}','App\Http\Controllers\Api\ServiceController@service_details');
+Route::get('get-services',[ServiceController::class,'get_services']);
+Route::get('service-details/{type?}',[ServiceController::class,'serviceDetails']);
+
 
 //blogs
 Route::get('get-blogs',action: [BlogController::class,'get_blogs']);
