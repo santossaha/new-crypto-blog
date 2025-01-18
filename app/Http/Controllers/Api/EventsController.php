@@ -10,7 +10,19 @@ use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
-	public function get_events(Request $request)
+
+    //get all active Events
+    public function get_events()
+    {
+        try {
+            $events = EventsModel::where('status', 'Active')->select('id', 'title', 'slug', 'location', 'start_date', 'end_date')->orderBy('id', 'desc')->paginate(10);
+            return response()->json(['status' => 'sucess', 'data' => $events]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+	public function search_events(Request $request)
 	{
 		try {
 			$title = $request->get('title');

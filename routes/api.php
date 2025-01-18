@@ -38,7 +38,9 @@ Route::get('latest-news-category',[HomeController::class,'latest_news_category']
 
 
 // Events Menu
-Route::post('search-events',[EventsController::class,'get_events']);
+//get all active Events
+Route::get('get-events',[EventsController::class,'get_events']);
+Route::post('search-events',[EventsController::class,'search_events']);
 
 
 // Services Menu
