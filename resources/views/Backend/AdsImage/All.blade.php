@@ -1,132 +1,188 @@
 @extends('Backend.main')
 @section('content')
 
-        <style>
-            .switch {
-                display: inline-block;
-                height: 34px;
-                position: relative;
-                width: 60px;
-            }
-            .switch input {
-                display:none;
-            }
-            .slider {
-                background-color: #ccc;
-                bottom: 0;
-                cursor: pointer;
-                left: 0;
-                position: absolute;
-                right: 0;
-                top: 0;
-                transition: .4s;
-            }
-            .slider:before {
-                background-color: #fff;
-                bottom: 4px;
-                content: "";
-                height: 26px;
-                left: 4px;
-                position: absolute;
-                transition: .4s;
-                width: 26px;
-            }
-            input:checked + .slider {
-                background-color: #66bb6a;
-            }
-            input:checked + .slider:before {
-                transform: translateX(26px);
-            }
-            .slider.round {
-                border-radius: 34px;
-            }
-            .slider.round:before {
-                border-radius: 50%;
-            }
-        </style>
+<div class="content-wrapper" style="min-height: 955.875px;">
 
-    <div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+        Adds Images
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Forms</a></li>
+        <li class="active">General Elements</li>
+      </ol>
+    </section>
 
-        <!-- Main content -->
-        <section class="content">
-
-            @if (count($errors) > 0)
-                <div class="alert alert-error alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">All Ads</h3>
-
-                    <div class="box-tools">
-                        <a href="javascript:void(0);" class="btn btn-primary btn-flat" data-act="ajax-modal" data-title="Add Ads" data-append-id="AjaxModelContent" data-action-url="{{route("addAddsImage")}}">
-                            <i class="fa fa-plus-circle"></i> Add
-                        </a>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">View and Update Ads Images</h3>
                     </div>
+                    <form id="imageForm" method="POST" action="" enctype="multipart/form-data">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input type="text" class="form-control datepicker " id="start_date" placeholder="DD-MM-YYYY">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input type="text" class="form-control datepicker " id="end_date" placeholder="DD-MM-YYYY">
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Image Upload Fields -->
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="image">Upload Image (Required)</label>
+                                        <input type="file" id="image" class="form-control-file validate[required]" accept="image/*" >
+                                        <div id="image_preview" class="mt-2"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="ads_image">Upload Ads Image (Optional)</label>
+                                        <input type="file" id="ads_image" class="form-control-file " accept="image/*">
+                                        <div id="ads_image_preview" class="mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive">
-                    <table id="Datatable" class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Image</th>
-                           
-
-                            <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Image</th>
-                        
-                            <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
             </div>
+        </div>
+    </section>
 
-        </section>
-        <!-- /.content -->
-    </div>
+  </div>
+
+
 @endsection
 
 
 @push('script')
-    <script type="text/javascript">
-        function myFunction(){
-            alert('ok');
-        }
-        $('#Datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{route('allAddsImageDatabase')}}',
-            columns: [
-                {data: 'id', name: 'id', visible : false},
-                {data: 'image', name: 'image'},
-              
-                {data: 'action', name: 'action', orderable: false, searchable: true}
-            ],
-           
-            "order": [[0,'desc']],
-            "pageLength": {{AppSetting::getRowsPerPage()}},
-            "drawCallback": function( settings ) {
-                $('.magnific-image').magnificPopup({type: 'image'});
-            }
+
+<!-- jQuery, Bootstrap & Datepicker -->
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> --}}
+
+
+<script>
+
+jQuery("#imageForm").validationEngine({promptPosition: 'inline'});
+
+$(document).ready(function () {
+    // Initialize Start Date Datepicker
+    $("#start_date").datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true
+    }).on("changeDate", function (e) {
+        // Set minimum date for End Date picker
+        $("#end_date").datepicker("setStartDate", e.date);
+    });
+
+    // Initialize End Date Datepicker
+    $("#end_date").datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        todayHighlight: true
+    });
+});
+
+    $(document).ready(function () {
+        // Initialize Datepicker
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true
         });
 
+        // Image Upload Preview Function
+        function previewImage(input, previewDiv) {
+        let file = input.files[0];
+        let reader = new FileReader();
 
+        if (file && file.type.startsWith("image/")) {
+            reader.onload = function (e) {
+                $(previewDiv).html(`
+                    <div class="position-relative d-inline-block">
+                        <img src="${e.target.result}" class="rounded border shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                        <button class="btn btn-sm btn-danger close-btn position-absolute" style="top: -10px; right: -10px;">X</button>
+                    </div>
+                `);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Only images are allowed!");
+            $(input).val(''); // Clear the input if not an image
+        }
+    }
+
+        // Image Upload Preview on Change
+        $("#image").on("change", function () {
+            previewImage(this, "#image_preview");
+        });
+
+        $("#ads_image").on("change", function () {
+            previewImage(this, "#ads_image_preview");
+        });
+
+        // Remove Image from Preview
+        // $(document).on("click", ".close-btn", function () {
+        //     $(this).closest(".position-relative").remove();
+        // });
+
+
+        //Delete image
+
+        $(document).on("click", ".close-btn", function () {
+            const previewDiv = $(this).closest(".position-relative");
+             // Remove the preview
+            // Clear the associated input field
+            if (previewDiv.closest("#image_preview").length ==1) {
+                $("#image").val('');
+                previewDiv.remove();
+            } else if (previewDiv.closest("#ads_image_preview").length) {
+                $("#ads_image").val('');
+                previewDiv.remove();
+            }
+        });
+        // Form Submit
+        // $("#imageForm").submit(function (e) {
+        //     e.preventDefault();
+
+        //     let formData = new FormData(this);
+        //     $.ajax({
+        //         url: "/upload-image",  // Change to your backend route
+        //         type: "POST",
+        //         data: formData,
+        //         contentType: false,
+        //         processData: false,
+        //         success: function (response) {
+        //             alert("Image uploaded successfully!");
+        //         },
+        //         error: function (error) {
+        //             alert("Something went wrong!");
+        //         }
+        //     });
+        // });
+    });
     </script>
 @endpush
 

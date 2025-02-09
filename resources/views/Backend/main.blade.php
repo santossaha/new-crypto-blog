@@ -52,7 +52,7 @@
             logOutURL: '{{route('logout')}}',
             lockedURL: '{{route('locked')}}',
             idleCheckURL: '{{route('checkIdle')}}',
-        
+
             LoaderGif: '{{url('assets/backend/img/loader.gif')}}'
         }
     </script>
@@ -273,18 +273,18 @@
                 </li>
                 @endpermission
 
-                
+
                 <li>
                     <a href="{{route('allBanner')}}">
                         <i class="fa fa-newspaper-o"></i> <span>Sliders</span>
                     </a>
                 </li>
-    
+
                 <li>
                     <a href="{{route('allAddsImage')}}">
                         <i class="fa fa-image"></i> <span>Ads Image</span>
                     </a>
-                </li>   
+                </li>
                 <li>
                     <a href="{{route('allAbout')}}">
                         <i class="fa fa-newspaper-o"></i> <span>About Us</span>
@@ -319,7 +319,7 @@
                 </li>
 
                 @permission('view-user')
-               
+
                 <li class="treeview" style="height: auto;">
                     <a href="">
                         <i class="fa fa-caret-square-o-right"></i> <span>Events</span>
@@ -370,7 +370,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0
         </div>
-        <strong>Copyright &copy; 2020-{{date('Y')}} <a href="https://gowebbi.com" target="_blank">Gowebbi</a>.</strong> All rights
+        <strong>Copyright &copy; 2024-{{date('Y')}} <a href="techranjancrypto.com" target="_blank">Tech Ranjan</a>.</strong> All rights
         reserved.
     </footer>
 </div>
@@ -503,7 +503,7 @@
         autoclose: true,
         // format: "yyyy-mm-dd",
         format: "mm-dd-yyyy"
-      
+
     });
 });
 

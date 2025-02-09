@@ -113,8 +113,8 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('/editBlog/{id?}',['as' => 'editBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@editBlog']);
         Route::post('updateBlog/{id?}',['as' => 'updateBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@updateBlog']);
         Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
-    
-       
+
+
     });
 
     Route::group(['prefix' => 'news'], function () {
@@ -126,7 +126,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@editCat']);
         Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@updateCat']);
         Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@deleteCat']);
-    
+
         //News
         Route::get('/allNews',['as' => 'allNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@all']);
         Route::get('/allNewsDatabase',['as' => 'allNewsDatabase', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@allNewsDatabase']);
@@ -135,8 +135,8 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         Route::get('/editNews/{id?}',['as' => 'editNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@editNews']);
         Route::post('updateNews/{id?}',['as' => 'updateNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@updateNews']);
         Route::get('deleteNews/{id?}',['as' => 'deleteNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@deleteNews']);
-    
-       
+
+
     });
 
 
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
     Route::group(['prefix' => 'events'], function () {
 
 
-        // Category 
+        // Category
         Route::get('/allEventsCat',['as' => 'allEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allBlogCat']);
         Route::get('/allEventsCatDatabase',['as' => 'allEventsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allCatDatabase']);
         Route::get('/addEventsCat',['as' => 'addEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryControllerr@addCat']);
@@ -165,7 +165,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
      Route::get('/editEvent/{id?}',['as' => 'editEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@editEvents']);
      Route::post('updateEvent/{id?}',['as' => 'updateEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@updateEvents']);
      Route::get('deleteEvent/{id?}',['as' => 'deleteEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@deleteEvents']);
- 
+
 
     });
 
@@ -207,12 +207,12 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
 
     Route::group(['prefix' => 'addsImage'], function () {
         // About U
-        Route::get('/allAddsImage',['as' => 'allAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@index']);
-        Route::get('/allAddsImageDatabase',['as' => 'allAddsImageDatabase', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@allAdsDatabase']);
-        Route::get('/addAddsImage',['as' => 'addAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@addImage']);
-        Route::post('/saveAddsImage/{id?}',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@save']);
-        Route::get('/editAddsImage/{id?}',['as' => 'editAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@edit']);
-        Route::post('updateAddsImage/{id?}',['as' => 'updateAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@update']);
+        Route::get('/all-aads-image',['as' => 'allAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@addImage']);
+        //Route::get('/allAddsImageDatabase',['as' => 'allAddsImageDatabase', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@allAdsDatabase']);
+        Route::get('/save-adds-image',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@saveAddsImage']);
+        //Route::post('/saveAddsImage/{id?}',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@save']);
+        //Route::get('/editAddsImage/{id?}',['as' => 'editAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@edit']);
+        //Route::post('updateAddsImage/{id?}',['as' => 'updateAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@update']);
         // Route::get('deleteAddsImage/{id?}',['as' => 'deleteAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@deleteAbout']);
     });
 

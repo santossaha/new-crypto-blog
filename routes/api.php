@@ -55,7 +55,7 @@ Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
 
-Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
+Route::post('save-contact-us',[ContactUsController::class,'save_conwtact_us']);
 
 // due page in blog
 

@@ -9,54 +9,44 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class ContactUsController extends Controller
 {
-    
+
     public function save_contact_us(Request $request){
 
 
-  $msg = [
-            'first_name.required' => 'Enter your First  name.',
-            'last_name.required' => 'Enter your Last Name',
-            'phone_number.required' => 'Enter Your Phone Number.',
-            'email.required' => 'Enter Your Email.',
-            'address.required' => 'Enter Your Address.',
-        ];
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone_number' => 'required',
-            "email"=>'required',
-            "address"=>'required'
-        ], $msg);
+        $rule = [
+                'first_name' => 'required',
+                'phone_number' => 'required|numeric',
+                "email"=>'required|email',
+               // "address"=>'required'
+            ];
+            $validator = Validator::make($request->all(), $rule);
 
-        if ($validator->passes()) {
+            if($validator->fails()){
+                //Return only first validation error message
+                $firstError = $validator->errors()->first();
+                return response()->json(['success' => false, 'message' => $firstError], 422);
+            }
 
-          $data =   $request->all();
+            try{
+                $save = new ContactUsModel();
+                $save->first_name = $request->get('first_name');
+                $save->last_name =$request->get('last_name');
+                $save->phone_number =$request->get('phone_number');
+                $save->email = $request->get('email');
+                $save->address = $request->get('address');
+                $save->subject = $request->get('subject');
+                $save->message = $request->get('message');
+                $save->save();
 
-          try{
+                return response()->json(['success' => true, 'message' => 'Form submitted successfully.'],200);
+            }catch(Exception $e){
 
-            $save = new ContactUsModel();
-            $save->first_name = $request->get('first_name');
-            $save->last_name =$request->get('last_name');
-            $save->phone_number =$request->get('phone_number');
-            $save->email = $request->get('email');
-            $save->address = $request->get('address');
-            $save->save();
+                return response()->json(['success' => false, 'message' => 'Failed to submit the form. Please try again.'], 500);
 
-            return response()->json(data: ['status'=>'success', 'message'=>'Contact Send Successfully']);
-
-
-          }catch(Exception $e){
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);  
-
-          }
+            }
 
 
-        } else {
-          $data = [];
-          $msg =  $validator->errors()->first();
-          return response()->json(['status' => 'error', 'message' => $msg]);  
 
-      }
 
     }
 }
