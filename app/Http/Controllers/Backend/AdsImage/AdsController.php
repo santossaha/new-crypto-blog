@@ -2,92 +2,56 @@
 
 namespace App\Http\Controllers\Backend\AdsImage;
 
-use App\Http\Controllers\Controller;
-use App\Models\AdsImageModel;
 use Illuminate\Http\Request;
+use App\Models\AdsImageModel;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use function App\Http\Controllers\Backend\Banner\public_path;
+
 class AdsController extends Controller
 {
 
-
     public function addImage(){
-        return "sdfsdf";
-       // return view('Backend.AdsImage.Add');
+        $record = AdsImageModel::first();
+        if($record){
+            return view('Backend.ads_image.add',['record'=>$record]);
+        }
     }
 
-    public function save(Request $request){
-        dd($request->all());
+    public function saveAddsImage(Request $request)
+    {
 
+        $save = AdsImageModel::firstOrNew(['id' => $request->id]);
 
-        $save = new AdsImageModel();
-        if ($request->hasFile('image')) {
+        $request->validate([
+            'requird_image' => $save->exists ? 'nullable|image' : 'required|image',
+            'ads_image' => 'nullable|image',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+        ]);
+        $save = AdsImageModel::firstOrNew(['id' => $request->id]);
 
-            $file = $request->file('image');
-
-            $Imagename  = time().'ads_image'.'.'. $file->getClientOriginalExtension();
-
-            $file->storeAs('adds', $Imagename, 'public');
-            $save->image= $Imagename ;
-
+        if ($request->hasFile('requird_image')) {
+            $file = $request->file('requird_image');
+            $requiredImageName = time() . '_required_image.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put('adds/' . $requiredImageName, file_get_contents($file));
+            $save->requird_image = $requiredImageName;
         }
-
-        $save->expire_date= $request->get('expire_date');
+        if ($request->hasFile('ads_image')) {
+            $file = $request->file('ads_image');
+            $adsImageName = time() . '_ads_image.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put('adds/' . $adsImageName, file_get_contents($file));
+            $save->ads_image = $adsImageName;
+        }
+        $save->start_date = $request->start_date;
+        $save->end_date = $request->end_date;
+        dd($save);
         $save->save();
-
         Session::flash('success', "Ads has been created successfully");
         return redirect()->back();
     }
-
-    public function edit($id)
-    {
-        $records = AdsImageModel::findOrFail($id);
-        return view('Backend.AdsImage.Edit',['records'=>$records]);
-
-    }
-
-    public function update(Request $request,$id){
-
-        $this->validate($request, [
-            'image' => 'required|nullable|sometimes',
-        ]);
-
-        $update =  AdsImageModel::findOrFail($id);
-        if(!empty($request->file('image'))){
-
-            // $path=public_path().$update->image;
-
-            $image = $request->file('image');
-            // if(file_exists($path)){
-            //     unlink($path);
-            // }
-
-            $Imagename  = time().'ads_image'.'.'.$image->getClientOriginalExtension();
-            $image->storeAs('adds', $Imagename, 'public');
-
-            $path= $update->image;
-
-
-            if(file_exists($path)){
-                unlink($path);
-            }
-            $pro_photo=$Imagename ;
-
-        }else{
-            $pro_photo=$update->image;
-
-        }
-
-
-        $update->image = $pro_photo;
-        $update->save();
-
-        Session::flash('success', "Adds has been updated");
-        return redirect()->back();
-    }
-
-
 
 }

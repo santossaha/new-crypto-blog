@@ -209,7 +209,7 @@ Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-p
         // About U
         Route::get('/all-aads-image',['as' => 'allAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@addImage']);
         //Route::get('/allAddsImageDatabase',['as' => 'allAddsImageDatabase', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@allAdsDatabase']);
-        Route::get('/save-adds-image',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@saveAddsImage']);
+        Route::post('/save-adds-image',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@saveAddsImage']);
         //Route::post('/saveAddsImage/{id?}',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@save']);
         //Route::get('/editAddsImage/{id?}',['as' => 'editAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@edit']);
         //Route::post('updateAddsImage/{id?}',['as' => 'updateAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@update']);

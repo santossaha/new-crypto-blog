@@ -15,8 +15,10 @@ class CreateImageAdsTable extends Migration
     {
         Schema::create('image_ads', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->date('expire_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('requird_image')->nullable();
+            $table->string('ads_image')->nullable();
             $table->timestamps();
         });
     }
