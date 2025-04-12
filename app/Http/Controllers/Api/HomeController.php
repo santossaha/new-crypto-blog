@@ -28,18 +28,27 @@ class HomeController extends Controller
 
   public function get_adds()
   {
+      try {
+          $currentDate = now();
+          $getAdds = AdsImageModel::first();
 
-    try {
+          if ($getAdds && $getAdds->start_date && $getAdds->end_date && $getAdds->ads_image) {
+              if ($currentDate->between($getAdds->start_date, $getAdds->end_date)) {
+                  $image = $getAdds->ads_image;
+              } else {
+                  $image = $getAdds->requird_image;
+              }
+          } else {
+              $image = $getAdds->requird_image;
+          }
 
-      $getAdds = AdsImageModel::first()->image;
-
-      return response()->json([
-        'status' => 'success',
-        'data' => $getAdds
-      ]);
-    } catch (Exception $e) {
-      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-    }
+          return response()->json([
+              'status' => 'success',
+              'data' => $image
+          ]);
+      } catch (Exception $e) {
+          return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+      }
   }
 
   public function get_aboutus()

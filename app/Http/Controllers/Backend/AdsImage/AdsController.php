@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Backend\AdsImage;
 
-use App\Http\Controllers\Controller;
-use App\Models\AdsImageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
