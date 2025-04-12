@@ -15,7 +15,7 @@ class BannerController extends Controller
 
     public function index(){
 
-       
+
 
 
         return view('Backend.Banner.All', [
@@ -55,32 +55,20 @@ class BannerController extends Controller
 
     public function save(Request $request){
 
-       
+
         $this->validate($request, [
             'image' => 'required',
-
         ]);
 
         if ($request->hasFile('image')) {
-           
+
             foreach($request->image as $image){
-              
-
-                $Imagename  = time().'slider'.'.'.$image->getClientOriginalExtension();
-
-                $image->storeAs('banner', $Imagename, 'public');
-
-        $save = new Banner();
-       
-            $file = $Imagename;
-            $save->status = 'Active';
-            $save->image=$file;
-
-        
-
-        $save->save();
-
-            }}
+                $save = new Banner();
+                $save->image = uploadImage($image, 'banner', null, 'slider');
+                $save->status = 'Active';
+                $save->save();
+            }
+        }
 
         Session::flash('success', "Banner has been created successfully");
         return redirect()->back();
@@ -89,7 +77,7 @@ class BannerController extends Controller
     public function edit($id)
     {
         $records = Banner::findOrFail($id);
-  
+
         return view('Backend.Banner.Edit',['records'=>$records]);
 
     }
@@ -98,40 +86,15 @@ class BannerController extends Controller
 
         $this->validate($request, [
             'image' => 'required|nullable|sometimes',
-          
-
-
         ]);
 
-        $update =  Banner::findOrFail($id);
+        $update = Banner::findOrFail($id);
 
-   
         if(!empty($request->file('image'))){
-
-            $image = $request->file('image');
-
-            $Imagename  = time().'slider'.'.'.$image->getClientOriginalExtension();
-            $image->storeAs('banner', $Imagename, 'public');
-         
-            $path= $update->image;
-
-
-            if(file_exists($path)){
-                unlink($path);
-            }
-            $pro_photo=$Imagename;
-
-        }else{
-
-            $end = explode('/',$update->image);
-            
-            $pro_photo= end($end);
-
+            // Use the helper function to handle image upload
+            $update->image = uploadImage($request->file('image'), 'banner', getImageUrl('banner', $update->image), 'slider');
         }
 
-
-        $update->image = $pro_photo;
-       
         $update->save();
 
         Session::flash('success', "Banner has been updated");
@@ -140,10 +103,12 @@ class BannerController extends Controller
 
     public function delete($id=null){
         $Remove = Banner::findOrFail($id);
-        $path=public_path().$Remove->image;
-        if(file_exists($path)){
-            unlink($path);
+
+        // Delete the image if it exists
+        if ($Remove->image) {
+            deleteImage(getImageUrl('banner', $Remove->image));
         }
+
         $Remove->delete();
         Session::flash('success', "Banner has been deleted");
         return redirect()->back();

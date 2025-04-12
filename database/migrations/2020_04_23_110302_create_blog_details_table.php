@@ -24,9 +24,9 @@ class CreateBlogDetailsTable extends Migration
             $table->text('content')->nullable();
             $table->text('short_description')->nullable();
             $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->string('meta_keyword');
-            $table->string('meta_title');
-            $table->string('meta_description');
+            $table->string('meta_keyword')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
             $table->string('author')->nullable();
             $table->string('canonical')->nullable();
             $table->timestamps();

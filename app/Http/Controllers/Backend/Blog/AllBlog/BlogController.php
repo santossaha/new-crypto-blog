@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Backend\Blog\AllBlog;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\BlogCategory;
 use App\Models\BlogDetail;
-use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
-use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Session;
-use Str;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class BlogController extends Controller
 {
     public function allBlog(){
+        $query = BlogDetail::select('id','image','title','category_id')->where('type','Blog')->first();
+        //dd($query->image);
         return view('Backend.Blog.AllBlog.All');
     }
     public function addBlog(){
@@ -32,32 +31,28 @@ class BlogController extends Controller
             'meta_keyword'=>'required',
             'image'=> 'required',
             'cat_name'=> 'required',
-            'description'=> 'required',
-            'short_description'=> 'required',
+            //'description'=> 'required',
+            //'short_description'=> 'required',
             'canonical'=> 'required',
         ]);
-        $user_id = FacadesAuth::User()->id;
+        $user_id = Auth::User()->id;
         $save = new BlogDetail();
         $save->category_id = $request->get('cat_name');
         $save->user_id = $user_id;
         $save->title = $request->get('title');
         $save->slug = Str::slug($request->get('title'));
-        $save->content = $request->get('description');
+        $save->content = $request->get('description') ?? '';
         $save->meta_title = $request->get('meta_title');
-        $save->meta_description = $request->get('meta_description');
-        $save->author = FacadesAuth::User()->id;
-        $save->short_description = $request->get('short_description');
+        $save->meta_description = $request->get('meta_description') ?? '';
+        $save->author = Auth::User()->id;
+        $save->short_description = $request->get('short_description') ?? '';
         $save->canonical = $request->get('canonical');
         $save->meta_keyword = $request->get('meta_keyword');
         if ($request->hasFile('image')) {
-            $file            = $request->file('image');
-            $destinationPath = '/uploads/generalSetting/';
-            $filename        = rand(10000,999999).'.'. $file->getClientOriginalExtension();
-            $request->file('image')->move(public_path().$destinationPath, $filename);
-            $save->image=$filename;
+            $save->image = uploadImage($request->file('image'), 'blog_images', null, 'blog_images');
         }
         $save->save();
-        FacadesSession::flash('success', "blog has been create");
+        Session::flash('success', "blog has been create");
         return redirect()->back();
     }
     public function allBlogDatabase(){
@@ -98,41 +93,38 @@ class BlogController extends Controller
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
         ]);
 
-    $user_id = Auth::User()->id;
-    $update = BlogDetail::findOrFail($id);
-    $update->category_id = $request->get('cat_name');
-    $update->user_id = $user_id;
-    $update->title = $request->get('title');
-    $update->slug = Str::slug($request->get('title'));
-    $update->content = $request->get('content');
+        $user_id = Auth::User()->id;
+        $update = BlogDetail::findOrFail($id);
+        $update->category_id = $request->get('cat_name');
+        $update->user_id = $user_id;
+        $update->title = $request->get('title');
+        $update->slug = Str::slug($request->get('title'));
+        $update->content = $request->get('content');
 
-    $update->meta_title = $request->get('meta_title');
-    $update->meta_description = $request->get('meta_description');
-    $update->author = $request->get('author');
-    $update->short_description = $request->get('short_description');
-    $update->canonical = $request->get('canonical');
-    $update->meta_keyword = $request->get('meta_keyword');
-
-
-    if(!empty($request->file('image'))){
-        $file            = $request->file('image');
-        $destinationPath = '/uploads/generalSetting/';
-        $filename        = rand(10000,999999).'.'. $file->getClientOriginalExtension();
-        $request->file('image')->move(public_path().$destinationPath, $filename);
+        $update->meta_title = $request->get('meta_title');
+        $update->meta_description = $request->get('meta_description');
+        $update->author = $request->get('author');
+        $update->short_description = $request->get('short_description');
+        $update->canonical = $request->get('canonical');
+        $update->meta_keyword = $request->get('meta_keyword');
 
 
-        if(file_exists(public_path().'/uploads/generalSetting/'.$update->image)){
-            unlink(public_path().'/uploads/generalSetting/'.$update->image);
+        if(!empty($request->file('image'))){
+            $update->image = uploadImage($request->file('image'), 'blog_images', $update->image, 'blog_images');
         }
-        $update->image = $filename;
-    }
 
-    $update->save();
-    Session::flash('success', "Blog has been update");
-    return redirect()->back();
+        $update->save();
+        Session::flash('success', "Blog has been update");
+        return redirect()->back();
     }
     public function deleteBlog($id=null){
         $remove = BlogDetail::findOrFail($id);
+
+        // Delete the image if it exists
+        if ($remove->image) {
+            deleteImage(getImageUrl('blog', $remove->image));
+        }
+
         $remove->delete();
         return redirect()->back();
     }

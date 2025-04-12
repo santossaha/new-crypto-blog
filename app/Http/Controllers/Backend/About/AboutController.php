@@ -3,92 +3,93 @@
 namespace App\Http\Controllers\Backend\About;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\About;
 use Illuminate\Http\Request;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class AboutController extends Controller
 {
     public function allAbout(){
-
+        // Get the first About record or create an empty record if none exists
         $records = About::first();
-        return view('Backend.About.aboutus',compact('records'));
+
+        // Return view with the record (existing or empty)
+        return view('Backend.About.aboutus', compact('records'));
     }
-    public function addAbout(){
-        return  view('Backend.About.Add');
-    }
-    public function saveAbout(Request $request){
-        $save = new About();
-        $save->title = $request->get('title');
-        $save->description = $request->get('content');
-        if ($request->hasFile('image')) {
-            $file            = $request->file('image');
-            $Imagename  = time().'aboutus'.'.'. $file->getClientOriginalExtension();
-            $file->storeAs('aboutus', $Imagename, 'public');
-            $save->image= $Imagename;
-        }
-        $save->save();
-        \Session::flash('success', "About us content has been create");
-        return redirect()->back();
-    }
-    public function allAboutDatabase(){
-        $query = About::select('id','image','title');
-        return DataTables::eloquent($query)
-            ->addColumn('image', function ($data) {
-                if($data->image!=''){
-                    return '<img src="'.$data->image.'" width="80px" />';
-                }else{
-                    return 'N/A';
-                }
-            })
-            ->addColumn('action', function ($data) {
-                $url_update = route('editAbout', ['id' => $data->id]);
-                $url_delete = route('deleteAbout', ['id' => $data->id]);
-                $edit = '<a class="label label-primary" data-title="Edit About us Content" data-act="ajax-modal" data-append-id="AjaxModelContent" data-action-url="'.$url_update.'" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </a>';
-                $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete About us Content: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
-                return $edit;
-            })
-            ->rawColumns(['id','action','image'])
-            ->toJson();
-    }
-    public function editAbout($id=null){
-        $records = About::findOrFail($id);
-        return view('Backend.About.Edit',[
-            'records'=>$records,
+
+    public function saveOrUpdateAbout(Request $request){
+        // Validate the request
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:2048',
         ]);
-    }
-    public function updateAbout(Request $request,$id=null){
-        $update = About::findOrFail($id);
-        $update->title = $request->get('title');
-        $update->description = $request->get('content');
-        if(!empty($request->file('image'))){
 
+        // Check if a record already exists
+        $existingRecord = About::first();
 
-            $file  = $request->file('image');
-           
-            $Imagename  = time().'aboutus'.'.'. $file->getClientOriginalExtension();
-            $file->storeAs('aboutus', $Imagename, 'public');
+        if ($existingRecord) {
+            // Update existing record
+            $existingRecord->title = $request->get('title');
+            $existingRecord->description = $request->get('content');
 
-            if(file_exists($update->image)){
-                unlink($update->image);
+            // Handle image upload or deletion
+            if ($request->hasFile('image')) {
+                // Upload new image
+                $existingRecord->image = uploadImage($request->file('image'), 'aboutus', $existingRecord->image, 'aboutus');
+            } else if ($request->input('delete_image') == 1 && $existingRecord->image) {
+                // Delete image if requested
+                deleteImage(getImageUrl('aboutus', $existingRecord->image));
+                $existingRecord->image = null;
             }
-            $pro_photo  = $Imagename;
-        }else{
 
-            $end = explode('/',$update->image);
-            
-            $pro_photo= end($end);
+            $existingRecord->save();
+            Session::flash('success', "About us content has been updated successfully");
+        } else {
+            // Create new record
+            $save = new About();
+            $save->title = $request->get('title');
+            $save->description = $request->get('content');
+
+            if ($request->hasFile('image')) {
+                $save->image = uploadImage($request->file('image'), 'aboutus', null, 'aboutus');
+            }
+
+            $save->save();
+            Session::flash('success', "About us content has been created successfully");
         }
-        $update->image = $pro_photo;
-        $update->save();
-        Session::flash('success', "About us content has been update");
-        return redirect()->back();
+
+        return redirect()->route('allAbout');
     }
+
+    // Keep these methods for backward compatibility, but they will redirect to our single page approach
+    public function addAbout(){
+        return redirect()->route('allAbout');
+    }
+
+    public function saveAbout(Request $request){
+        return $this->saveOrUpdateAbout($request);
+    }
+
+    public function editAbout($id=null){
+        return redirect()->route('allAbout');
+    }
+
+    public function updateAbout(Request $request, $id=null){
+        return $this->saveOrUpdateAbout($request);
+    }
+
     public function deleteAbout($id=null){
         $remove = About::findOrFail($id);
+
+        // Delete the image if it exists
+        if ($remove->image) {
+            deleteImage(getImageUrl('aboutus', $remove->image));
+        }
+
         $remove->delete();
-        return redirect()->back();
+        Session::flash('success', "About us content has been deleted");
+        return redirect()->route('allAbout');
     }
 }

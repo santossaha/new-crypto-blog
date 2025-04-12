@@ -34,23 +34,14 @@ class BlogDetail extends Model
 
 
     public function getImageAttribute($value){
-       $url = url('/');
-     //  return Storage::url($value);
-
-        //Check if the URL ends with "public"
-        if (substr($url, -strlen('public')) === 'public') {
-            // Remove "public" from the end of the URL
-            $url = substr($url, 0, -strlen('public'));
-
-            // Ensure no trailing slash
-            $url = rtrim($url, '/');
-        }else{
-
-            return Storage::url($value);
+        if (!$value) {
+            return null;
         }
+        // Return storage URL directly since $value already includes the blog_images path
+        return Storage::url('public/blog_images/' . $value);
+    }
 
-        return $url.'/storage/app/public/'.$value;
-        // return $url.'/storage/app/public/banner/'.$value;
-
+    public function getImageUrlAttribute(){
+        return $this->attributes['image'] ? Storage::url('public/blog_images/' . $this->attributes['image']) : null;
     }
 }

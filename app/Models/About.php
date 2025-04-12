@@ -11,22 +11,14 @@ class About extends Model
     public $timestamps = true;
     //use SoftDeletes;
 
-
-
     public function getImageAttribute($value){
-        $url = url('/');
-
-        // Check if the URL ends with "public"
-        if (substr($url, -strlen('public')) === 'public') {
-            // Remove "public" from the end of the URL
-            $url = substr($url, 0, -strlen('public'));
-            
-            // Ensure no trailing slash
-            $url = rtrim($url, '/');
+        if (!$value) {
+            return null;
         }
-        
-        return $url.'/storage/app/public/aboutus/'.$value;
-        
-    
+        return getImageUrl('aboutus', $value);
+    }
+
+    public function getImageUrlAttribute(){
+        return $this->image ? getImageUrl('aboutus', $this->image) : null;
     }
 }

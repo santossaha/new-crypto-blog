@@ -11,23 +11,19 @@ class AdsImageModel extends Model
 
     protected $table = "image_ads";
 
+    protected $fillable = ['image', 'ads_image', 'start_date', 'end_date'];
 
+    protected $dates = ['start_date', 'end_date'];
 
-    
-    public function getImageAttribute($value){
-        $url = url('/');
+    // Get full URL for main image
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? getImageUrl('adds', $this->image) : null;
+    }
 
-        // Check if the URL ends with "public"
-        if (substr($url, -strlen('public')) === 'public') {
-            // Remove "public" from the end of the URL
-            $url = substr($url, 0, -strlen('public'));
-            
-            // Ensure no trailing slash
-            $url = rtrim($url, '/');
-        }
-        
-        return $url.'/storage/app/public/adds/'.$value;
-        
-    
+    // Get full URL for ads image
+    public function getAdsImageUrlAttribute()
+    {
+        return $this->ads_image ? getImageUrl('adds', $this->ads_image) : null;
     }
 }

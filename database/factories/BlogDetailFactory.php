@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 
 
 
@@ -30,10 +31,22 @@ class BlogDetailFactory extends Factory
          // Generate a random image from Lorem Picsum
          $imageUrl = 'https://picsum.photos/600/400';
 
-         // Download the image and save it to the storage (public folder)
+         // Download the image and create a temporary file
          $imageContents = file_get_contents($imageUrl);
-         $imageName = 'blog_images/' . $this->faker->unique()->word . '.jpg'; // Save the image with a unique name
-         Storage::disk('public')->put($imageName, $imageContents); // Store the image in the public storage disk
+         $tempPath = tempnam(sys_get_temp_dir(), 'blog_image_');
+         file_put_contents($tempPath, $imageContents);
+
+         // Create an UploadedFile instance
+         $uploadedFile = new UploadedFile(
+             $tempPath,
+             'blog_image.jpg',
+             'image/jpeg',
+             null,
+             true
+         );
+
+         // Use the uploadImage helper function
+         $imagePath = uploadImage($uploadedFile, 'blog_images', null, 'blog');
 
 
         return [
@@ -41,7 +54,7 @@ class BlogDetailFactory extends Factory
             'category_id'=>$categoryId,
             'user_id'=>$user_id,
             'slug' => $this->faker->slug,
-            'image' => $imageName ,
+            'image' => $imagePath,
             'content' => $this->faker->paragraphs(5, true),
             'short_description' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(['Active', 'Inactive']),

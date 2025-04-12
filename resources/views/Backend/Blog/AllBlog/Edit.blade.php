@@ -68,7 +68,7 @@
             <div class="col-sm-9">
                 <small>Mix File size 2MB</small>, <small >File accept Only (jpeg,jpg png,gif,svg)</small>
                 <input type="file" name="image" id="image"  class="form-control" >
-                <img src="{{asset('uploads/generalSetting/'.$records->image)}}" alt="" width="50px">
+                <img src="{{$records->image}}" alt="" width="50px">
             </div>
         </div>
 
@@ -122,7 +122,7 @@
 @endsection
 
 @push('script')
-    
+
 
 <script type="text/javascript">
 jQuery("#validation2").validationEngine({promptPosition: 'inline'});

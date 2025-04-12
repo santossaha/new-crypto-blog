@@ -1,245 +1,276 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/auth',['as' => 'login', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@login']);
-Route::post('/auth',['as' => 'login_validate', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@login_validate']);
+// Controller Namespaces
+use App\Http\Controllers\Backend\Auth\AuthController;
+use App\Http\Controllers\Backend\Dashboard\DashboardController;
+use App\Http\Controllers\Backend\Settings\{
+    GeneralSettingsController,
+    CompanySettingsController,
+    EmailSettingsController,
+    PermissionController,
+    RoleController
+};
+use App\Http\Controllers\Backend\Profile\{
+    GeneralController as ProfileGeneralController,
+    SettingController as ProfileSettingController,
+    SocialController as ProfileSocialController
+};
+use App\Http\Controllers\Backend\Users\UsersController;
+use App\Http\Controllers\Backend\Blog\{
+    Category\BlogCategoryController,
+    AllBlog\BlogController
+};
+use App\Http\Controllers\Backend\News\{
+    NewsCategoryController,
+    NewsController
+};
+use App\Http\Controllers\Backend\Evenets\{
+    EventCategoryController,
+    EventController
+};
+use App\Http\Controllers\Backend\Banner\BannerController;
+use App\Http\Controllers\Backend\Galleries\GalleryController;
+use App\Http\Controllers\Backend\About\AboutController;
+use App\Http\Controllers\Backend\AdsImage\AdsController;
+use App\Http\Controllers\Backend\Contact\ContactController;
+use App\Http\Controllers\Backend\Airdrops\AirDropsController;
 
-Route::get('/locked',['as' => 'locked', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@locked']);
-Route::post('/lockedOut',['as' => 'lockedOut', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@lockedOut']);
+// Auth Routes
+Route::prefix('auth')->group(function () {
+    Route::get('/', ['as' => 'login', 'uses' => AuthController::class.'@login']);
+    Route::post('/', ['as' => 'login_validate', 'uses' => AuthController::class.'@login_validate']);
+    Route::get('/locked', ['as' => 'locked', 'uses' => AuthController::class.'@locked']);
+    Route::post('/lockedOut', ['as' => 'lockedOut', 'uses' => AuthController::class.'@lockedOut']);
+    Route::get('/lockedLogout', ['as' => 'lockedLogout', 'uses' => AuthController::class.'@lockedLogout']);
+    Route::get('/logout', ['as' => 'logout', 'uses' => AuthController::class.'@logout']);
+    Route::get('/forgot', ['as' => 'forgot', 'uses' => AuthController::class.'@forgot']);
+    Route::post('/forgot_post', ['as' => 'forgot_post', 'uses' => AuthController::class.'@forgot_post']);
+    Route::get('/resetPassword/{id}', ['as' => 'resetPassword', 'uses' => AuthController::class.'@resetPassword']);
+    Route::post('/saveResetPassword/{id}', ['as' => 'saveResetPassword', 'uses' => AuthController::class.'@saveResetPassword']);
+});
 
-Route::get('/lockedLogout',['as' => 'lockedLogout', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@lockedLogout']);
-Route::get('/logout',['as' => 'logout', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@logout']);
+// Control Panel Routes
+Route::group(['prefix' => 'control', 'middleware' => ['web', 'permission:access-panel']], function () {
+    Route::get('checkIdle', ['as' => 'checkIdle', function() { return 1; }]);
+    Route::get('', ['as' => 'baseURL', function() { return 1; }]);
+    Route::get('/dashboard', ['as' => 'dashboard', 'uses' => DashboardController::class.'@dashboard']);
 
-Route::get('/forgot',['as' => 'forgot', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@forgot']);
-Route::post('/forgot_post',['as' => 'forgot_post', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@forgot_post']);
+    // Settings Routes
+    Route::prefix('settings')->group(function () {
+        // General Settings
+        Route::get('/general', ['as' => 'generalSetting', 'middleware' =>
+        ['web', 'permission:view-general-setting'], 'uses' => GeneralSettingsController::class.'@index']);
+        Route::post('/general/{id}', ['as' => 'saveGeneralSetting', 'middleware' =>
+        ['web', 'permission:update-general-setting'], 'uses' => GeneralSettingsController::class.'@saveGeneralSetting']);
 
-Route::get('/resetPassword/{id}',['as' => 'resetPassword', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@resetPassword']);
-Route::post('/saveResetPassword/{id}',['as' => 'saveResetPassword', 'uses' => 'App\Http\Controllers\Backend\Auth\AuthController@saveResetPassword']);
+        // Company Settings
+        Route::get('/company', ['as' => 'companySetting', 'middleware' =>
+        ['web', 'permission:view-company-setting'], 'uses' => CompanySettingsController::class.'@index']);
+        Route::post('/company/{id}', ['as' => 'saveCompanySetting', 'middleware' =>
+        ['web', 'permission:update-company-setting'], 'uses' => CompanySettingsController::class.'@saveCompanySetting']);
 
-Route::group(['prefix' => 'control','middleware' => ['web', 'permission:access-panel']], function () {
+        // Email Settings
+        Route::get('/email', ['as' => 'emailSetting', 'middleware' =>
+        ['web', 'permission:view-email-setting'], 'uses' => EmailSettingsController::class.'@index']);
+        Route::post('/email/{id}', ['as' => 'saveEmailSetting', 'middleware' =>
+        ['web', 'permission:update-email-setting'], 'uses' => EmailSettingsController::class.'@saveEmailSetting']);
 
-    Route::get('checkIdle', array('as' => 'checkIdle', function(){return 1;}));
-    Route::get('', array('as' => 'baseURL', function(){return 1;}));
+        // Permission Management
+        Route::get('/permission', ['as' => 'permission', 'middleware' =>
+        ['web', 'permission:view-permission'], 'uses' => PermissionController::class.'@index']);
 
-    Route::get('/dashboard',['as' => 'dashboard', 'uses' => 'App\Http\Controllers\Backend\Dashboard\DashboardController@dashboard']);
+        Route::post('/savePermission', ['as' => 'savePermission', 'middleware' =>
+        ['web', 'permission:add-permission'], 'uses' => PermissionController::class.'@savePermission']);
 
+        Route::get('/editPermission/{id}', ['as' => 'editPermission', 'middleware' =>
+        ['web', 'permission:view-permission'], 'uses' => PermissionController::class.'@editPermission']);
 
-    //Setting
-    Route::group(['prefix' => 'settings'], function () {
-        //General Setting
-        Route::get('/generalSetting', ['as' => 'generalSetting', 'middleware' => ['web', 'permission:view-general-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\GeneralSettingsController@index']);
-        Route::post('/saveGeneralSetting/{id}', ['as' => 'saveGeneralSetting', 'middleware' => ['web', 'permission:update-general-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\GeneralSettingsController@saveGeneralSetting']);
+        Route::post('/updatePermission/{id}', ['as' => 'updatePermission', 'middleware' =>
+        ['web', 'permission:update-permission'], 'uses' => PermissionController::class.'@updatePermission']);
 
-        //Company Setting
-        Route::get('/companySetting', ['as' => 'companySetting', 'middleware' => ['web', 'permission:view-company-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\CompanySettingsController@index']);
-        Route::post('/saveCompanySetting/{id}', ['as' => 'saveCompanySetting', 'middleware' => ['web', 'permission:update-company-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\CompanySettingsController@saveCompanySetting']);
+        Route::get('/deletePermission/{id}', ['as' => 'deletePermission', 'middleware' =>
+        ['web', 'permission:delete-permission'], 'uses' => PermissionController::class.'@deletePermission']);
 
-        //Email Setting
-        Route::get('/emailSetting', ['as' => 'emailSetting', 'middleware' => ['web', 'permission:view-email-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\EmailSettingsController@index']);
-        Route::post('/saveEmailSetting/{id}', ['as' => 'saveEmailSetting', 'middleware' => ['web', 'permission:update-email-setting'], 'uses' => 'App\Http\Controllers\Backend\Settings\EmailSettingsController@saveEmailSetting']);
+        // Roles Setting
+        Route::get('/role', ['as' => 'role', 'middleware' =>
+        ['web', 'permission:view-role'], 'uses' => RoleController::class.'@index']);
 
+        Route::post('/saveRole', ['as' => 'saveRole', 'middleware' =>
+        ['web', 'permission:add-role'], 'uses' => RoleController::class.'@saveRole']);
 
+        Route::get('/editRole/{id}', ['as' => 'editRole', 'middleware' =>
+        ['web', 'permission:view-role'], 'uses' => RoleController::class.'@editRole']);
 
-        //Permission Setting
-        Route::get('/permission', ['as' => 'permission', 'middleware' => ['web', 'permission:view-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@index']);
-        Route::post('/savePermission', ['as' => 'savePermission', 'middleware' => ['web', 'permission:add-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@savePermission']);
-        Route::get('/editPermission/{id}', ['as' => 'editPermission', 'middleware' => ['web', 'permission:view-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@editPermission']);
-        Route::post('/updatePermission/{id}', ['as' => 'updatePermission', 'middleware' => ['web', 'permission:update-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@updatePermission']);
-        Route::get('/deletePermission/{id}', ['as' => 'deletePermission', 'middleware' => ['web', 'permission:delete-permission'], 'uses' => 'App\Http\Controllers\Backend\Settings\PermissionController@deletePermission']);
+        Route::post('/updateRole/{id}', ['as' => 'updateRole', 'middleware' =>
+        ['web', 'permission:update-role'], 'uses' => RoleController::class.'@updateRole']);
 
-        //Roles Setting
-        Route::get('/role', ['as' => 'role', 'middleware' => ['web', 'permission:view-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@index']);
-        Route::post('/saveRole', ['as' => 'saveRole', 'middleware' => ['web', 'permission:add-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@saveRole']);
-        Route::get('/editRole/{id}', ['as' => 'editRole', 'middleware' => ['web', 'permission:view-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@editRole']);
-        Route::post('/updateRole/{id}', ['as' => 'updateRole', 'middleware' => ['web', 'permission:update-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@updateRole']);
-        Route::get('/deleteRole/{id}', ['as' => 'deleteRole', 'middleware' => ['web', 'permission:delete-role'], 'uses' => 'App\Http\Controllers\Backend\Settings\RoleController@deleteRole']);
-
+        Route::get('/deleteRole/{id}', ['as' => 'deleteRole', 'middleware' =>
+        ['web', 'permission:delete-role'], 'uses' => RoleController::class.'@deleteRole']);
 
     });
 
-    //Profile
-    Route::group(['prefix' => 'profile'], function () {
-        //General
-        Route::post('/changeProfileImage',['as' => 'changeProfileImage', 'uses' => 'App\Http\Controllers\Backend\Profile\GeneralController@changeProfileImage']);
-        Route::get('/general',['as' => 'generalProfile', 'uses' => 'App\Http\Controllers\Backend\Profile\GeneralController@index']);
-        Route::post('/saveGeneral',['as' => 'saveGeneralProfile', 'uses' => 'App\Http\Controllers\Backend\Profile\GeneralController@save']);
-        //Account Setting
-        Route::get('/accountSettingProfile',['as' => 'accountSettingProfile', 'uses' => 'App\Http\Controllers\Backend\Profile\SettingController@index']);
-        Route::post('/saveAccountSettingProfile',['as' => 'saveAccountSettingProfile', 'uses' => 'App\Http\Controllers\Backend\Profile\SettingController@save']);
-        //Social Links
-        Route::get('/socialLink',['as' => 'socialLink', 'middleware' => ['web', 'permission:view-social-link'], 'uses' => 'App\Http\Controllers\Backend\Profile\SocialController@index']);
-        Route::post('/saveSocialLink',['as' => 'saveSocialLink', 'middleware' => ['web', 'permission:update-social-link'], 'uses' => 'App\Http\Controllers\Backend\Profile\SocialController@save']);
+    // Profile Routes
+    Route::prefix('profile')->group(function () {
+        Route::post('/changeProfileImage', ['as' => 'changeProfileImage', 'uses' =>
+        ProfileGeneralController::class.'@changeProfileImage']);
+        Route::get('/general', ['as' => 'generalProfile', 'uses' => ProfileGeneralController::class.'@index']);
+        Route::post('/general', ['as' => 'saveGeneralProfile', 'uses' => ProfileGeneralController::class.'@save']);
+        Route::get('/account', ['as' => 'accountSettingProfile', 'uses' => ProfileSettingController::class.'@index']);
+        Route::post('/account', ['as' => 'saveAccountSettingProfile', 'uses' => ProfileSettingController::class.'@save']);
+        Route::get('/social', ['as' => 'socialLink', 'middleware' => ['web', 'permission:view-social-link'], 'uses' =>
+        ProfileSocialController::class.'@index']);
+        Route::post('/social', ['as' => 'saveSocialLink', 'middleware' => ['web', 'permission:update-social-link'], 'uses' =>
+        ProfileSocialController::class.'@save']);
     });
 
-    //Users
-    Route::group(['prefix' => 'users'], function () {
-        Route::get('/all',['as' => 'allUsers', 'middleware' => ['web', 'permission:view-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@index']);
-        Route::get('/allUsersDatatable',['as' => 'allUsersDatatable', 'middleware' => ['web', 'permission:view-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@datatable']);
-        Route::get('/add',['as' => 'addUser', 'middleware' => ['web', 'permission:add-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@add']);
-        Route::post('/save',['as' => 'saveUser', 'middleware' => ['web', 'permission:add-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@save']);
-        Route::get('/edit/{id}',['as' => 'editUser', 'middleware' => ['web', 'permission:view-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@edit']);
-        Route::post('save/{id}',['as' => 'updateUser', 'middleware' => ['web', 'permission:update-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@update']);
-        Route::get('delete/{id}',['as' => 'deleteUser', 'middleware' => ['web', 'permission:delete-user'], 'uses' => 'App\Http\Controllers\Backend\Users\UsersController@delete']);
+    // User Management
+    Route::prefix('users')->group(function () {
+        Route::get('/all', ['as' => 'allUsers', 'middleware' =>
+        ['web', 'permission:view-user'], 'uses' => UsersController::class.'@index']);
+
+        Route::get('/allUsersDatatable', ['as' => 'allUsersDatatable', 'middleware' =>
+        ['web', 'permission:view-user'], 'uses' => UsersController::class.'@datatable']);
+
+        Route::get('/add', ['as' => 'addUser', 'middleware' =>
+        ['web', 'permission:add-user'], 'uses' => UsersController::class.'@add']);
+
+        Route::post('/save', ['as' => 'saveUser', 'middleware' =>
+        ['web', 'permission:add-user'], 'uses' => UsersController::class.'@save']);
+
+        Route::get('/edit/{id}', ['as' => 'editUser', 'middleware' =>
+        ['web', 'permission:view-user'], 'uses' => UsersController::class.'@edit']);
+
+        Route::post('save/{id}', ['as' => 'updateUser', 'middleware' =>
+        ['web', 'permission:update-user'], 'uses' => UsersController::class.'@update']);
+
+        Route::get('delete/{id}', ['as' => 'deleteUser', 'middleware' =>
+        ['web', 'permission:delete-user'], 'uses' => UsersController::class.'@delete']);
+
     });
 
-    //Category
-    // Route::group(['prefix' => 'category'], function () {
-    //     Route::get('/all',['as' => 'allCategory', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@index']);
-    //     Route::get('/allCategoryDatatable',['as' => 'allCategoryDatatable', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@datatable']);
-    //     Route::get('/add',['as' => 'addCategory', 'middleware' => ['web', 'permission:add-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@add']);
-    //     Route::post('/save',['as' => 'saveCategory', 'middleware' => ['web', 'permission:add-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@save']);
-    //     Route::get('/edit/{id}',['as' => 'editCategory', 'middleware' => ['web', 'permission:view-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@edit']);
-    //     Route::post('save/{id}',['as' => 'updateCategory', 'middleware' => ['web', 'permission:update-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@update']);
-    //     Route::get('delete/{id}',['as' => 'deleteCategory', 'middleware' => ['web', 'permission:delete-category'], 'uses' => 'App\Http\Controllers\Backend\Category\CategoryController@delete']);
-    // });
-
-
-
-
-    Route::group(['prefix' => 'blog'], function () {
+    // Blog Management
+    Route::prefix('blog')->group(function () {
         // Category
-        Route::get('/allCat',['as' => 'allBlogCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allBlogCat']);
-        Route::get('/allCatDatabase',['as' => 'allCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@allCatDatabase']);
-        Route::get('/addCat',['as' => 'addCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@addCat']);
-        Route::post('/saveCat/',['as' => 'saveCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@saveCat']);
-        Route::get('/editCat/{id?}',['as' => 'editCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@editCat']);
-        Route::post('updateCat/{id?}',['as' => 'updateCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@updateCat']);
-        Route::get('deleteCat/{id?}',['as' => 'deleteCat', 'uses' => 'App\Http\Controllers\Backend\Blog\Category\BlogCategoryController@deleteCat']);
-        //Blog
-        Route::get('/allBlog',['as' => 'allBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlog']);
-        Route::get('/allBlogDatabase',['as' => 'allBlogDatabase', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@allBlogDatabase']);
-        Route::get('/addBlog',['as' => 'addBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@addBlog']);
-        Route::post('/saveBlog/',['as' => 'saveBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@saveBlog']);
-        Route::get('/editBlog/{id?}',['as' => 'editBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@editBlog']);
-        Route::post('updateBlog/{id?}',['as' => 'updateBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@updateBlog']);
-        Route::get('deleteBlog/{id?}',['as' => 'deleteBlog', 'uses' => 'App\Http\Controllers\Backend\Blog\AllBlog\BlogController@deleteBlog']);
+        Route::get('/allCat', ['as' => 'allBlogCat', 'uses' => BlogCategoryController::class.'@allBlogCat']);
+        Route::get('/allCatDatabase', ['as' => 'allCatDatabase', 'uses' => BlogCategoryController::class.'@allCatDatabase']);
+        Route::get('/addCat', ['as' => 'addCat', 'uses' => BlogCategoryController::class.'@addCat']);
+        Route::post('/saveCat/', ['as' => 'saveCat', 'uses' => BlogCategoryController::class.'@saveCat']);
+        Route::get('/editCat/{id?}', ['as' => 'editCat', 'uses' => BlogCategoryController::class.'@editCat']);
+        Route::post('updateCat/{id?}', ['as' => 'updateCat', 'uses' => BlogCategoryController::class.'@updateCat']);
+        Route::get('deleteCat/{id?}', ['as' => 'deleteCat', 'uses' => BlogCategoryController::class.'@deleteCat']);
 
-
+        // Blog
+        Route::get('/allBlog', ['as' => 'allBlog', 'uses' => BlogController::class.'@allBlog']);
+        Route::get('/allBlogDatabase', ['as' => 'allBlogDatabase', 'uses' => BlogController::class.'@allBlogDatabase']);
+        Route::get('/addBlog', ['as' => 'addBlog', 'uses' => BlogController::class.'@addBlog']);
+        Route::post('/saveBlog/', ['as' => 'saveBlog', 'uses' => BlogController::class.'@saveBlog']);
+        Route::get('/editBlog/{id?}', ['as' => 'editBlog', 'uses' => BlogController::class.'@editBlog']);
+        Route::post('updateBlog/{id?}', ['as' => 'updateBlog', 'uses' => BlogController::class.'@updateBlog']);
+        Route::get('deleteBlog/{id?}', ['as' => 'deleteBlog', 'uses' => BlogController::class.'@deleteBlog']);
     });
 
-    Route::group(['prefix' => 'news'], function () {
+    // News Management
+    Route::prefix('news')->group(function () {
         // Category
-        Route::get('/allNewsCat',['as' => 'allNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@allBlogCat']);
-        Route::get('/allNewsCatDatabase',['as' => 'allNewsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@allCatDatabase']);
-        Route::get('/addNewsCat',['as' => 'addNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@addCat']);
-        Route::post('/saveNewsCat/',['as' => 'saveNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@saveCat']);
-        Route::get('/editNewsCat/{id?}',['as' => 'editNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@editCat']);
-        Route::post('updateNewsCat/{id?}',['as' => 'updateNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@updateCat']);
-        Route::get('deleteNewsCat/{id?}',['as' => 'deleteNewsCat', 'uses' => 'App\Http\Controllers\Backend\News\NewsCategoryController@deleteCat']);
+        Route::get('/allNewsCat', ['as' => 'allNewsCat', 'uses' => NewsCategoryController::class.'@allBlogCat']);
+        Route::get('/allNewsCatDatabase', ['as' => 'allNewsCatDatabase', 'uses' => NewsCategoryController::class.'@allCatDatabase']);
+        Route::get('/addNewsCat', ['as' => 'addNewsCat', 'uses' => NewsCategoryController::class.'@addCat']);
+        Route::post('/saveNewsCat/', ['as' => 'saveNewsCat', 'uses' => NewsCategoryController::class.'@saveCat']);
+        Route::get('/editNewsCat/{id?}', ['as' => 'editNewsCat', 'uses' => NewsCategoryController::class.'@editCat']);
+        Route::post('updateNewsCat/{id?}', ['as' => 'updateNewsCat', 'uses' => NewsCategoryController::class.'@updateCat']);
+        Route::get('deleteNewsCat/{id?}', ['as' => 'deleteNewsCat', 'uses' => NewsCategoryController::class.'@deleteCat']);
 
-        //News
-        Route::get('/allNews',['as' => 'allNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@all']);
-        Route::get('/allNewsDatabase',['as' => 'allNewsDatabase', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@allNewsDatabase']);
-        Route::get('/addNews',['as' => 'addNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@add']);
-        Route::post('/saveNews',['as' => 'saveNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@saveNews']);
-        Route::get('/editNews/{id?}',['as' => 'editNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@editNews']);
-        Route::post('updateNews/{id?}',['as' => 'updateNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@updateNews']);
-        Route::get('deleteNews/{id?}',['as' => 'deleteNews', 'uses' => 'App\Http\Controllers\Backend\News\NewsController@deleteNews']);
-
-
+        // News
+        Route::get('/allNews', ['as' => 'allNews', 'uses' => NewsController::class.'@all']);
+        Route::get('/allNewsDatabase', ['as' => 'allNewsDatabase', 'uses' => NewsController::class.'@allNewsDatabase']);
+        Route::get('/addNews', ['as' => 'addNews', 'uses' => NewsController::class.'@add']);
+        Route::post('/saveNews', ['as' => 'saveNews', 'uses' => NewsController::class.'@saveNews']);
+        Route::get('/editNews/{id?}', ['as' => 'editNews', 'uses' => NewsController::class.'@editNews']);
+        Route::post('updateNews/{id?}', ['as' => 'updateNews', 'uses' => NewsController::class.'@updateNews']);
+        Route::get('deleteNews/{id?}', ['as' => 'deleteNews', 'uses' => NewsController::class.'@deleteNews']);
     });
 
-
-
-    Route::group(['prefix' => 'events'], function () {
-
-
+    // Events Management
+    Route::prefix('events')->group(function () {
         // Category
-        Route::get('/allEventsCat',['as' => 'allEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allBlogCat']);
-        Route::get('/allEventsCatDatabase',['as' => 'allEventsCatDatabase', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@allCatDatabase']);
-        Route::get('/addEventsCat',['as' => 'addEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryControllerr@addCat']);
-        Route::post('/saveEventsCat/',['as' => 'saveEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@saveCat']);
-        Route::get('/editEventsCat/{id?}',['as' => 'editEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@editCat']);
-        Route::post('updateEventsCat/{id?}',['as' => 'updateEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@updateCat']);
-        Route::get('deleteEventsCat/{id?}',['as' => 'deleteEventsCat', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventCategoryController@deleteCat']);
+        Route::get('/allEventsCat', ['as' => 'allEventsCat', 'uses' => EventCategoryController::class.'@allBlogCat']);
+        Route::get('/allEventsCatDatabase', ['as' => 'allEventsCatDatabase', 'uses' => EventCategoryController::class.'@allCatDatabase']);
+        Route::get('/addEventsCat', ['as' => 'addEventsCat', 'uses' => EventCategoryController::class.'@addCat']);
+        Route::post('/saveEventsCat/', ['as' => 'saveEventsCat', 'uses' => EventCategoryController::class.'@saveCat']);
+        Route::get('/editEventsCat/{id?}', ['as' => 'editEventsCat', 'uses' => EventCategoryController::class.'@editCat']);
+        Route::post('updateEventsCat/{id?}', ['as' => 'updateEventsCat', 'uses' => EventCategoryController::class.'@updateCat']);
+        Route::get('deleteEventsCat/{id?}', ['as' => 'deleteEventsCat', 'uses' => EventCategoryController::class.'@deleteCat']);
 
-
-
-
-
-     //Events
-     Route::get('/allEvent',['as' => 'allEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEvents']);
-     Route::get('/allEventDatatable',['as' => 'allEventDatatable', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@allEventsDatabase']);
-     Route::get('/addEvent',['as' => 'addEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@addEvents']);
-     Route::post('/saveEvent/',['as' => 'saveEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@saveEvents']);
-     Route::get('/editEvent/{id?}',['as' => 'editEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@editEvents']);
-     Route::post('updateEvent/{id?}',['as' => 'updateEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@updateEvents']);
-     Route::get('deleteEvent/{id?}',['as' => 'deleteEvent', 'uses' => 'App\Http\Controllers\Backend\Evenets\EventController@deleteEvents']);
-
-
+        // Events
+        Route::get('/allEvent', ['as' => 'allEvent', 'uses' => EventController::class.'@allEvents']);
+        Route::get('/allEventDatatable', ['as' => 'allEventDatatable', 'uses' => EventController::class.'@allEventsDatabase']);
+        Route::get('/addEvent', ['as' => 'addEvent', 'uses' => EventController::class.'@addEvents']);
+        Route::post('/saveEvent/', ['as' => 'saveEvent', 'uses' => EventController::class.'@saveEvents']);
+        Route::get('/editEvent/{id?}', ['as' => 'editEvent', 'uses' => EventController::class.'@editEvents']);
+        Route::post('updateEvent/{id?}', ['as' => 'updateEvent', 'uses' => EventController::class.'@updateEvents']);
+        Route::get('deleteEvent/{id?}', ['as' => 'deleteEvent', 'uses' => EventController::class.'@deleteEvents']);
     });
 
-
-        //Banner
-    Route::group(['prefix' => 'Banner','middleware' => ['role:admin']], function () {
-        Route::get('/all',['as' => 'allBanner',  'uses' =>'App\Http\Controllers\Backend\Banner\BannerController@index']);
-        Route::get('/allBannerDatatable',['as' => 'allBannerDatatable', 'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@datatable']);
-        Route::get('/add',['as' => 'addBanner', 'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@add']);
-        Route::post('/save',['as' => 'saveBanner',  'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@save']);
-        Route::get('/edit/{id}',['as' => 'editBanner', 'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@edit']);
-        Route::post('/update/{id}',['as' => 'updateBanner',  'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@update']);
-        Route::get('/status/{id?}',['as' => 'statusBanner', 'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@status_banner']);
-        Route::get('/delete/{id}',['as' => 'deleteBanner',  'uses' => 'App\Http\Controllers\Backend\Banner\BannerController@delete']);
-    });
-    Route::group(['prefix' => 'Gallery','middleware' => ['role:admin']], function () {
-        Route::get('/all',['as' => 'allGallery',  'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@index']);
-        Route::get('/allGalleryDatatable',['as' => 'allGalleryDatatable', 'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@datatable']);
-        Route::get('/add',['as' => 'addGallery', 'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@add']);
-        Route::post('/save',['as' => 'saveGallery',  'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@save']);
-        Route::get('/edit/{id}',['as' => 'editGallery', 'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@edit']);
-        Route::post('/update/{id}',['as' => 'updateGallery',  'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@update']);
-        Route::get('/status/{id?}',['as' => 'statusGallery', 'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@status_banner']);
-        Route::get('/delete/{id}',['as' => 'deleteGallery',  'uses' => 'App\Http\Controllers\Backend\Galleries\GalleryController@delete']);
+    // Banner Management
+    Route::prefix('banners')->middleware(['role:admin'])->group(function () {
+        Route::get('/', ['as' => 'allBanner', 'uses' => BannerController::class.'@index']);
+        Route::get('/datatable', ['as' => 'allBannerDatatable', 'uses' => BannerController::class.'@datatable']);
+        Route::get('/create', ['as' => 'addBanner', 'uses' => BannerController::class.'@add']);
+        Route::post('/', ['as' => 'saveBanner', 'uses' => BannerController::class.'@save']);
+        Route::get('/{id}/edit', ['as' => 'editBanner', 'uses' => BannerController::class.'@edit']);
+        Route::post('/{id}', ['as' => 'updateBanner', 'uses' => BannerController::class.'@update']);
+        Route::get('/{id}/status', ['as' => 'statusBanner', 'uses' => BannerController::class.'@status_banner']);
+        Route::get('/{id}', ['as' => 'deleteBanner', 'uses' => BannerController::class.'@delete']);
     });
 
-    Route::group(['prefix' => 'about'], function () {
-        // About US
-        Route::get('/allAbout',['as' => 'allAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@allAbout']);
-        Route::get('/allAboutDatabase',['as' => 'allAboutDatabase', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@allAboutDatabase']);
-        Route::get('/addAbout',['as' => 'addAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@addAbout']);
-        Route::post('/saveAbout/{id?}',['as' => 'saveAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@saveAbout']);
-        Route::get('/editAbout/{id?}',['as' => 'editAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@editAbout']);
-        Route::post('updateAbout/{id?}',['as' => 'updateAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@updateAbout']);
-        Route::get('deleteAbout/{id?}',['as' => 'deleteAbout', 'uses' => 'App\Http\Controllers\Backend\About\AboutController@deleteAbout']);
+    // Gallery Management
+    Route::prefix('galleries')->middleware(['role:admin'])->group(function () {
+        Route::get('/', ['as' => 'allGallery', 'uses' => GalleryController::class.'@index']);
+        Route::get('/datatable', ['as' => 'allGalleryDatatable', 'uses' => GalleryController::class.'@datatable']);
+        Route::get('/create', ['as' => 'addGallery', 'uses' => GalleryController::class.'@add']);
+        Route::post('/', ['as' => 'saveGallery', 'uses' => GalleryController::class.'@save']);
+        Route::get('/{id}/edit', ['as' => 'editGallery', 'uses' => GalleryController::class.'@edit']);
+        Route::post('/{id}', ['as' => 'updateGallery', 'uses' => GalleryController::class.'@update']);
+        Route::get('/{id}/status', ['as' => 'statusGallery', 'uses' => GalleryController::class.'@status_banner']);
+        Route::get('/{id}', ['as' => 'deleteGallery', 'uses' => GalleryController::class.'@delete']);
     });
 
+    // About Management
+    Route::prefix('about')->group(function () {
+        Route::get('/allAbout', ['as' => 'allAbout', 'uses' => AboutController::class.'@allAbout']);
+        Route::post('/saveAbout', ['as' => 'saveAbout', 'uses' => AboutController::class.'@saveOrUpdateAbout']);
+        Route::post('/updateAbout/{id?}', ['as' => 'updateAbout', 'uses' => AboutController::class.'@saveOrUpdateAbout']);
 
-
-    Route::group(['prefix' => 'addsImage'], function () {
-        // About U
-        Route::get('/all-aads-image',['as' => 'allAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@addImage']);
-        //Route::get('/allAddsImageDatabase',['as' => 'allAddsImageDatabase', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@allAdsDatabase']);
-        Route::get('/save-adds-image',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@saveAddsImage']);
-        //Route::post('/saveAddsImage/{id?}',['as' => 'saveAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@save']);
-        //Route::get('/editAddsImage/{id?}',['as' => 'editAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@edit']);
-        //Route::post('updateAddsImage/{id?}',['as' => 'updateAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@update']);
-        // Route::get('deleteAddsImage/{id?}',['as' => 'deleteAddsImage', 'uses' => 'App\Http\Controllers\Backend\AdsImage\AdsController@deleteAbout']);
+        // Keep these for backward compatibility
+        Route::get('/addAbout', ['as' => 'addAbout', 'uses' => AboutController::class.'@addAbout']);
+        Route::get('/editAbout/{id?}', ['as' => 'editAbout', 'uses' => AboutController::class.'@editAbout']);
+        Route::get('/deleteAbout/{id?}', ['as' => 'deleteAbout', 'uses' => AboutController::class.'@deleteAbout']);
     });
 
-
-
-
-    Route::group(['prefix' => 'contact'], function () {
-        // About US
-        Route::get('/allContact',['as' => 'allContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@allContact']);
-        Route::get('/allContactDatabase',['as' => 'allContactDatabase', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@allContactDatabase']);
-        Route::get('/viewContact/{id?}',['as' => 'viewContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@viewContact']);
-        Route::get('deleteContact/{id?}',['as' => 'deleteContact', 'uses' => 'App\Http\Controllers\Backend\Contact\ContactController@deleteContact']);
+    // Ads Image Management
+    Route::prefix('addsImage')->group(function () {
+        Route::get('/all-ads-image', ['as' => 'allAddsImage', 'uses' => AdsController::class.'@addImage']);
+        Route::post('/save-ads-image', ['as' => 'saveAddsImage', 'uses' => AdsController::class.'@save']);
+        Route::post('/update-ads-image/{id}', ['as' => 'updateAddsImage', 'uses' => AdsController::class.'@update']);
     });
 
-
-
-
-    Route::group(['prefix' => 'airdrops'], function () {
-        // About US
-        Route::get('/all',['as' => 'allairdrops', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@all']);
-        Route::get('/datatable',['as' => 'allairdropsDatabase', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@datatable']);
-        Route::get('/add',action: ['as' => 'addAirdrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@add']);
-        Route::post('/save',action: ['as' => 'saveAirdrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@save']);
-        Route::get('/edit/{id?}',['as' => 'editAirDrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@edit']);
-        Route::post('/update/{id?}',['as' => 'updateAirDrop', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@update']);
-
-        Route::get('delete/{id?}',['as' => 'deleteairdrops', 'uses' => 'App\Http\Controllers\Backend\Airdrops\AirDropsController@delete']);
+    // Contact Management
+    Route::prefix('contact')->group(function () {
+        Route::get('/allContact', ['as' => 'allContact', 'uses' => ContactController::class.'@allContact']);
+        Route::get('/allContactDatabase', ['as' => 'allContactDatabase', 'uses' => ContactController::class.'@allContactDatabase']);
+        Route::get('/viewContact/{id?}', ['as' => 'viewContact', 'uses' => ContactController::class.'@viewContact']);
+        Route::get('deleteContact/{id?}', ['as' => 'deleteContact', 'uses' => ContactController::class.'@deleteContact']);
     });
 
+    // Airdrops Management
+    Route::prefix('airdrops')->group(function () {
+        Route::get('/all', ['as' => 'allairdrops', 'uses' => AirDropsController::class.'@all']);
+        Route::get('/datatable', ['as' => 'allairdropsDatabase', 'uses' => AirDropsController::class.'@datatable']);
+        Route::get('/add', ['as' => 'addAirdrop', 'uses' => AirDropsController::class.'@add']);
+        Route::post('/save', ['as' => 'saveAirdrop', 'uses' => AirDropsController::class.'@save']);
+        Route::get('/edit/{id?}', ['as' => 'editAirDrop', 'uses' => AirDropsController::class.'@edit']);
+        Route::post('/update/{id?}', ['as' => 'updateAirDrop', 'uses' => AirDropsController::class.'@update']);
+        Route::get('delete/{id?}', ['as' => 'deleteairdrops', 'uses' => AirDropsController::class.'@delete']);
+    });
 });

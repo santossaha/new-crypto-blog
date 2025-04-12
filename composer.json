@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.0 || ^8.1",
         "codebot/entrust": "^8.0",
+        "doctrine/dbal": "^4.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
