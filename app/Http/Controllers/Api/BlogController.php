@@ -19,7 +19,7 @@ class BlogController extends Controller
 
       $blogs = BlogDetail::orderBy('id', 'desc')->get();
       $get_blogs = BlogsResource::collection($blogs);
-      return response()->json(data: ['status'=>'success', $get_blogs]);
+      return response()->json(['status'=>'success', $get_blogs]);
     } catch (Exception $e) {
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
@@ -30,9 +30,9 @@ class BlogController extends Controller
 
       $blog_details =  BlogDetail::where('slug',  $slug)->first();
 
-      // recent view 
+      // recent view
 
-      // check exsits or not 
+      // check exsits or not
 
       $exsits = RecentViewBlogs::where('blog_id',$blog_details->id)->count();
 
@@ -42,15 +42,15 @@ class BlogController extends Controller
         $RecentView->blog_id = $blog_details->id;
         $RecentView->save();
       }else{
-      
+
         $RecentView =   RecentViewBlogs::where('blog_id',$blog_details->id)->first();
         $RecentView->blog_id = $blog_details->id;
-        $RecentView->save();  
+        $RecentView->save();
       }
       return response()->json(['status'=>'success', $blog_details]);
 
     } catch(Exception $e){
-      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);  
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
 
@@ -60,12 +60,12 @@ class BlogController extends Controller
     try{
 
       $recentViews = RecentViewBlogs::orderBy('blog_id','desc')->get();
-     
+
       $details = RecentViews::collection(  $recentViews );
       return response()->json(['status'=>'success', $details]);
 
     }catch(Exception $e){
-      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);  
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
 }
