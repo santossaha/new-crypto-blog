@@ -5,3 +5,4 @@
 CHANGELOG.md export-ignore
 *.largefileextension filter=lfs diff=lfs merge=lfs -text
 new-crypto-blog.zip filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
