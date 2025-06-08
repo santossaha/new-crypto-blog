@@ -150,17 +150,14 @@
 
         function change_status_action(item_id){
             $.ajax({
-                url: "{{ route('statusBanner') }}",
+                url: "{{--{{ route('statusBanner', ['id' => '']) }}--}}" + item_id,
                 data: {
-                    'item_id': item_id,
                     '_token': "{{ csrf_token() }}"
                 },
                 type: "get",
                 success: function (response) {
                     if(response.success){
                         toastr.success('status updated successfully');
-
-
                     }else{
                         toastr.error('status not updated');
                     }

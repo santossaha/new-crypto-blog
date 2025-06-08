@@ -59,6 +59,63 @@
     <style>
         .datepicker{ z-index:99999 !important; }
 
+        /* Premium Theme Colors */
+        .skin-blue .main-header .navbar {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+
+        .skin-blue .main-header .logo {
+            background: #2c3e50;
+        }
+
+        .skin-blue .main-header .logo:hover {
+            background: #34495e;
+        }
+
+        .skin-blue .main-sidebar {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .skin-blue .sidebar-menu > li:hover > a,
+        .skin-blue .sidebar-menu > li.active > a {
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        .skin-blue .sidebar-menu > li > a {
+            border-left: 3px solid transparent;
+        }
+
+        .skin-blue .sidebar-menu > li:hover > a,
+        .skin-blue .sidebar-menu > li.active > a {
+            border-left-color: #3498db;
+        }
+
+        .skin-blue .sidebar-menu > li > .treeview-menu {
+            background: #34495e;
+        }
+
+        .skin-blue .sidebar-menu > li > .treeview-menu > li > a {
+            color: #ecf0f1;
+        }
+
+        .skin-blue .sidebar-menu > li > .treeview-menu > li:hover > a {
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        .skin-blue .user-panel > .info {
+            color: #ecf0f1;
+        }
+
+        .skin-blue .user-panel > .info > a {
+            color: #ecf0f1;
+        }
+
+        .skin-blue .sidebar-menu > li.header {
+            color: #ecf0f1;
+            background: #2c3e50;
+        }
     </style>
 </head>
 <body class="hold-transition fixed skin-blue sidebar-mini  @if(AppSetting::SidebarMenuCollapse()) sidebar-collapse @endif">
