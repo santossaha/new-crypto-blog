@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class GalleryController extends Controller
 {
-    use ImageUpload;
+
     public function index(){
         return view('Backend.Gallery.All', [
             'statuses' => [
