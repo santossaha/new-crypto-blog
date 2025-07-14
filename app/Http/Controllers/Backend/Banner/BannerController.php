@@ -31,7 +31,7 @@ class BannerController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="' .  $data->image . '" width="80px"/>';
+                    return '<img src="' .  getImageUrl('banner',$data->image) . '" width="80px"/>';
                 }else{
                     return 'N/A';
                 }

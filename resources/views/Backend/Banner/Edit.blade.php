@@ -5,7 +5,7 @@
             <label for="title" class="col-sm-3 control-label">Image<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
                 <input type="file" name="image" id="image"  class="form-control" >
-                <img src="{{url($records->image ?? '')}}" width="80px" height="80px" id="blah">
+                <img src="{{getImageUrl('banner',$records->image ?? '')}}" width="80px" height="80px" id="blah">
 
             </div>
         </div>

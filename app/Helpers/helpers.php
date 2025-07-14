@@ -85,6 +85,22 @@ function getImageUrl(string $directory, string $filename): string
     return Storage::url('public/' . $directory . '/' . $filename);
 }
 
+
+/**
+ * Get the full public URL for an image (helper for full path)
+ *
+ * @param string $directory The directory inside storage/app/public
+ * @param string $filename The filename of the image
+ * @return string The full public URL to the image
+ */
+function getFullPath(string $directory, string $filename): string
+{
+    if (!$filename) {
+        return '';
+    }
+    return asset('storage/' . trim($directory, '/') . '/' . ltrim($filename, '/'));
+}
+
 /**
  * Extract storage path from a full URL
  *

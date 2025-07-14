@@ -17,8 +17,14 @@ class HomeController extends Controller
   {
     try {
 
-      $getSliders = Banner::where('status', 'Active')->get()->toArray();
-      $mySliders = array_chunk($getSliders, 3);
+      $getSliders = Banner::where('status', 'Active')->get(['id', 'image']);
+      $mySliders = $getSliders->map(function($data) {
+        return [
+          'id' => $data->id,
+          'image' => $data->image ? getFullPath('banner', $data->image) : ''
+        ];
+      });
+
       return response()->json(['status' => 'success', 'data' => $mySliders]);
     } catch (Exception $e) {
 
@@ -31,20 +37,23 @@ class HomeController extends Controller
       try {
           $currentDate = now();
           $getAdds = AdsImageModel::first();
+          $image = '';
 
           if ($getAdds && $getAdds->start_date && $getAdds->end_date && $getAdds->ads_image) {
               if ($currentDate->between($getAdds->start_date, $getAdds->end_date)) {
                   $image = $getAdds->ads_image;
+                
               } else {
-                  $image = $getAdds->requird_image;
+                dd('sdfdsf');
+                  $image = getFullPath('adds',$getAdds->requird_image);
               }
           } else {
-              $image = $getAdds->requird_image;
+              $image = getFullPath('adds',$getAdds->requird_image);
           }
 
           return response()->json([
               'status' => 'success',
-              'data' => $image
+              'data' => getFullPath('adds',$image),
           ]);
       } catch (Exception $e) {
           return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

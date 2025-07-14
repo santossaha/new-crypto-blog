@@ -80,7 +80,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Start Date <span class="text-danger">*</span></label>
-                                        <input type="text" name="start_date" autocomplete="off" class="form-control datepicker" id="start_date" placeholder="DD-MM-YYYY" value="{{ isset($ad) && $ad->start_date ? \Carbon\Carbon::parse($ad->start_date)->format('d-m-Y') : old('start_date') }}" required>
+                                        <input type="text" name="start_date" autocomplete="off" class="form-control datepicker" id="start_date" placeholder="DD-MM-YYYY" value="{{ isset($ad) && $ad->start_date ? \Carbon\Carbon::parse($ad->start_date)->format('d-m-Y') : old('start_date') }}" required readonly>
                                         @error('start_date')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -89,7 +89,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>End Date <span class="text-danger">*</span></label>
-                                        <input type="text" name="end_date" autocomplete="off" class="form-control datepicker" id="end_date" placeholder="DD-MM-YYYY" value="{{ isset($ad) && $ad->end_date ? \Carbon\Carbon::parse($ad->end_date)->format('d-m-Y') : old('end_date') }}" required>
+                                        <input type="text" name="end_date" autocomplete="off" class="form-control datepicker" id="end_date" placeholder="DD-MM-YYYY" value="{{ isset($ad) && $ad->end_date ? \Carbon\Carbon::parse($ad->end_date)->format('d-m-Y') : old('end_date') }}" required readonly>
                                         @error('end_date')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -155,40 +155,55 @@
 jQuery("#imageForm").validationEngine({promptPosition: 'inline'});
 
 $(document).ready(function () {
+    // Make date fields readonly to prevent manual input
+    $("#start_date, #end_date").attr("readonly", true);
+
+    // Get today's date
+    var today = new Date();
+    var minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // Helper to parse dd-mm-yyyy to Date object
+    function parseDate(str) {
+        if (!str) return null;
+        var parts = str.split('-');
+        if (parts.length !== 3) return null;
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
     // Initialize Start Date Datepicker
     $("#start_date").datepicker({
         format: 'dd-mm-yyyy',
         autoclose: true,
-        todayHighlight: true
-    }).on("changeDate", function (e) {
-        // When start date changes, clear end date and set minimum date
-        var selectedDate = new Date(e.date);
-        $("#end_date").datepicker('setStartDate', selectedDate);
-
-        // If end date is already selected and is less than start date, clear it
-        var endDate = $("#end_date").datepicker('getDate');
-        if (endDate && endDate < selectedDate) {
-            $("#end_date").val('');
-            $("#end_date").datepicker('update');
-        }
+        todayHighlight: true,
+        startView: 2,
+        startDate: minDate,
     });
 
     // Initialize End Date Datepicker
     $("#end_date").datepicker({
         format: 'dd-mm-yyyy',
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        startView: 2,
+        startDate: minDate,
     });
 
-    // If start date already has a value, set the minimum date for end date
-    if ($("#start_date").val()) {
-        try {
-            var startDate = $("#start_date").datepicker('getDate');
-            if (startDate) {
-                $("#end_date").datepicker('setStartDate', startDate);
-            }
-        } catch (e) {
-            console.error("Error setting start date:", e);
+    // If start_date has value, set it in datepicker
+    var startVal = $("#start_date").val();
+    if (startVal) {
+        var startDateObj = parseDate(startVal);
+        if (startDateObj) {
+            $("#start_date").datepicker('setDate', startDateObj);
+            $("#end_date").datepicker('setStartDate', startDateObj);
+        }
+    }
+
+    // If end_date has value, set it in datepicker
+    var endVal = $("#end_date").val();
+    if (endVal) {
+        var endDateObj = parseDate(endVal);
+        if (endDateObj) {
+            $("#end_date").datepicker('setDate', endDateObj);
         }
     }
 
