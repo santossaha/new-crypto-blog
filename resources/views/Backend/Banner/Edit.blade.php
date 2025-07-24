@@ -9,6 +9,12 @@
 
             </div>
         </div>
+        <div class="form-group">
+            <label for="url" class="col-sm-3 control-label">Banner URL</label>
+            <div class="col-sm-9">
+                <input type="text" name="url" id="url" class="form-control" placeholder="Enter banner link (optional)" value="{{ old('url', $records->url ?? '') }}">
+            </div>
+        </div>
 
     </div>
 

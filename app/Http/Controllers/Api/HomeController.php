@@ -17,11 +17,12 @@ class HomeController extends Controller
   {
     try {
 
-      $getSliders = Banner::where('status', 'Active')->get(['id', 'image']);
+      $getSliders = Banner::where('status', 'Active')->get(['id', 'image', 'url']);
       $mySliders = $getSliders->map(function($data) {
         return [
           'id' => $data->id,
-          'image' => $data->image ? getFullPath('banner', $data->image) : ''
+          'image' => $data->image ? getFullPath('banner', $data->image) : '',
+          'url' => $data->url ?? '#'
         ];
       });
 
@@ -42,7 +43,7 @@ class HomeController extends Controller
           if ($getAdds && $getAdds->start_date && $getAdds->end_date && $getAdds->ads_image) {
               if ($currentDate->between($getAdds->start_date, $getAdds->end_date)) {
                   $image = $getAdds->ads_image;
-                
+
               } else {
                 dd('sdfdsf');
                   $image = getFullPath('adds',$getAdds->requird_image);

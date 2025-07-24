@@ -61,11 +61,11 @@ class BannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-
             foreach($request->image as $image){
                 $save = new Banner();
                 $save->image = uploadImage($image, 'banner', null, 'slider');
                 $save->status = 'Active';
+                $save->url = $request->input('url');
                 $save->save();
             }
         }
@@ -95,6 +95,7 @@ class BannerController extends Controller
             $update->image = uploadImage($request->file('image'), 'banner', getImageUrl('banner', $update->image), 'slider');
         }
 
+        $update->url = $request->input('url');
         $update->save();
 
         Session::flash('success', "Banner has been updated");

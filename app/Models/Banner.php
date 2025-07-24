@@ -10,6 +10,7 @@ class Banner extends Model
     protected $appends = ['file_path'];
     protected $table='sliders';
     public $timestamps=true;
+    protected $fillable = ['image', 'url', 'status'];
     const Inactive = 'Inactive';
     const ACTIVE = 'Active';
 
