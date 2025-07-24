@@ -33,13 +33,13 @@ class BlogDetail extends Model
     }
 
 
-    public function getImageAttribute($value){
-        if (!$value) {
-            return null;
-        }
-        // Return storage URL directly since $value already includes the blog_images path
-        return Storage::url('public/blog_images/' . $value);
-    }
+    // public function getImageAttribute($value){
+    //     if (!$value) {
+    //         return null;
+    //     }
+    //     // Return storage URL directly since $value already includes the blog_images path
+    //     return Storage::url('public/blog_images/' . $value);
+    // }
 
     public function getImageUrlAttribute(){
         return $this->attributes['image'] ? Storage::url('public/blog_images/' . $this->attributes['image']) : null;

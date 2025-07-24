@@ -195,7 +195,7 @@ $(document).ready(function () {
         if (startDateObj) {
             $("#start_date").datepicker('setDate', startDateObj);
             $("#end_date").datepicker('setStartDate', startDateObj);
-        }
+            }
     }
 
     // If end_date has value, set it in datepicker

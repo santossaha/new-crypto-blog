@@ -19,7 +19,7 @@ class BlogsResource extends JsonResource
             'user_id'=>$this->user_id,
             'title'=>ucwords($this->title),
             'slug'=>$this->slug,
-            'image'=>asset($this->image),
+            'image'=>getFullPath('blog_images',$this->image),
             'content'=>$this->content,
             'short_description'=>$this->short_description,
             'start_date'=>$this->start_date,

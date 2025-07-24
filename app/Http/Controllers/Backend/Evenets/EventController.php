@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\EventsModel;
-use Auth;
-use Session;
-use Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use App\Helpers\uploadImage;
 
 class EventController extends Controller
 {
@@ -25,10 +26,10 @@ class EventController extends Controller
             'meta_title'=>'required',
             'meta_description'=> 'required',
             'meta_keyword'=>'required',
-            'image'=> 'required',
+            'image'=> 'required|image|mimes:jpeg,jpg,png,gif,svg|max:2048',
             'canonical'=> 'required',
-            'start_date'=>'required',
-            'end_date'=> 'required',
+            'start_date'=>'required|date',
+            'end_date'=> 'required|date',
             'location'=>'required',
             'description'=>'required'
         ]);
@@ -45,33 +46,29 @@ class EventController extends Controller
         $save->meta_keyword = $request->get('meta_keyword');
         $save->location = $request->get('location');
         $save->approve_status= 'Aprroved';
-        $save->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
-        $save->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
+        $save->start_date =  date('Y-m-d', strtotime($request->get('start_date')));
+        $save->end_date =  date('Y-m-d', strtotime($request->get('end_date')));
 
         if ($request->hasFile('image')) {
-            $file            = $request->file('image');
-            $destinationPath = '/uploads/generalSetting/';
-            $filename        = rand(10000,999999).'.'. $file->getClientOriginalExtension();
-            $request->file('image')->move(public_path().$destinationPath, $filename);
-            $save->image=$filename;
+            $file = $request->file('image');
+            $save->image = uploadImage($file, 'event');
         }
         $save->save();
 
-        
         Session::flash('success', "Event has been create");
         return redirect()->back();
     }
     public function allEventsDatabase(){
         $query = EventsModel::select('id','image','title');
         return DataTables::eloquent($query)
-            ->addColumn('image', function ($data) {
-                if($data->image!=''){
-                    return '<img src="'.url('/').'/uploads/generalSetting/'.$data->image.'" width="80px" />';
-                }else{
-                    return 'N/A';
-                }
-            })
-          
+        ->addColumn('image', function ($data) {
+            if($data->image!=''){
+                return '<img src="'.$data->image.'" width="100px" />';
+            }else{
+                return 'N/A';
+            }
+        })
+
             ->addColumn('action', function ($data) {
                 $url_update = route('editEvent', ['id' => $data->id]);
                 $url_delete = route('deleteEvent', ['id' => $data->id]);
@@ -91,42 +88,34 @@ class EventController extends Controller
     public function updateEvents(Request $request,$id=null){
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
-            'description'=>'required'
+            'description'=>'required',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:2048',
         ]);
 
-    $user_id = Auth::User()->id;
-    $update = EventsModel::findOrFail($id);
-    $update->user_id = $user_id;
-    $update->title = $request->get('title');
-    $update->slug = Str::slug($request->get('title'));
+        $user_id = Auth::User()->id;
+        $update = EventsModel::findOrFail($id);
+        $update->user_id = $user_id;
+        $update->title = $request->get('title');
+        $update->slug = Str::slug($request->get('title'));
+        $update->meta_title = $request->get('meta_title');
+        $update->meta_description = $request->get('meta_description');
+        $update->author = $request->get('author');
+        $update->description = $request->get('description');
+        //$update->short_description = $request->get('short_description');
+        $update->canonical = $request->get('canonical');
+        $update->meta_keyword = $request->get('meta_keyword');
+        $update->location = $request->get('location');
+        $update->start_date =  date('Y-m-d', strtotime($request->get('start_date')));
+        $update->end_date =  date('Y-m-d', strtotime($request->get('end_date')));
 
-    $update->meta_title = $request->get('meta_title');
-    $update->meta_description = $request->get('meta_description');
-    $update->author = $request->get('author');
-    $update->description = $request->get('description');
-    $update->short_description = $request->get('short_description');
-    $update->canonical = $request->get('canonical');
-    $update->meta_keyword = $request->get('meta_keyword');
-    $update->location = $request->get('location');
-    $update->start_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('start_date'))));
-    $update->end_date =  date('Y-m-d', strtotime(str_replace('-','/',$request->get('end_date'))));
-
-    if(!empty($request->file('image'))){
-        $file            = $request->file('image');
-        $destinationPath = '/uploads/generalSetting/';
-        $filename        = rand(10000,999999).'.'. $file->getClientOriginalExtension();
-        $request->file('image')->move(public_path().$destinationPath, $filename);
-
-
-        if(file_exists(public_path().'/uploads/generalSetting/'.$update->image)){
-            unlink(public_path().'/uploads/generalSetting/'.$update->image);
+        if(!empty($request->file('image'))){
+            $file = $request->file('image');
+            $update->image = uploadImage($file, 'event', $update->image);
         }
-        $update->image = $filename;
-    }
 
-    $update->save();
-    Session::flash('success', "Events has been update");
-    return redirect()->back();
+        $update->save();
+        Session::flash('success', "Events has been update");
+        return redirect()->back();
     }
     public function deleteEvents($id=null){
         $remove = EventsModel::findOrFail($id);

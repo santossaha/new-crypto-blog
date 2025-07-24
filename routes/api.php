@@ -34,6 +34,8 @@ Route::get('get-aboutus',[HomeController::class,'get_aboutus']);
 Route::get('latest-news',[HomeController::class,'latest_news']);
 Route::get('latest-news-category',[HomeController::class,'latest_news_category']);
 
+Route::get('get-latest-date', [HomeController::class, 'get_latest_data']);
+
 /// End Home Page
 
 

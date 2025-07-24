@@ -19,16 +19,17 @@ class CreateEventsTable extends Migration
 
             $table->string('title');
             $table->string('slug');
-            $table->string('location');
-            $table->string('image');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string('location')->nullable();
+            $table->string('image')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->string('meta_keyword');
-            $table->string('meta_title');
-            $table->string('meta_description');
-            $table->string('author')->nullable();
-            $table->string('canonical')->nullable();
+            $table->string('meta_keyword')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('author')->nullable()->nullable();
+            $table->string('canonical')->nullable()->nullable();
+            $table->text('short_description')->nullable();
             $table->timestamps();
 
 
