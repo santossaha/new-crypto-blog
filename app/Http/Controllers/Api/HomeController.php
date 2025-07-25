@@ -40,12 +40,12 @@ class HomeController extends Controller
             $currentDate = now();
             $getAdds = AdsImageModel::first();
             $image = '';
-           
+
+
 
             if ($getAdds && $getAdds->start_date && $getAdds->end_date && $getAdds->ads_image) {
                 if ($currentDate->between($getAdds->start_date, $getAdds->end_date)) {
                     $image = getFullPath('adds', $getAdds->ads_image);
-                    dd($image);
                 } else {
                     $image = getFullPath('adds', $getAdds->image);
                 }
@@ -54,7 +54,7 @@ class HomeController extends Controller
             }
             return response()->json([
                 'status' => 'success',
-                'data' => getFullPath('adds', $image),
+                'data' => $image,
             ]);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

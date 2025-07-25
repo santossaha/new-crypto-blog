@@ -82,6 +82,7 @@ function getImageUrl(string $directory, string $filename): string
         return '';
     }
 
+
     return Storage::url('public/' . $directory . '/' . $filename);
 }
 
