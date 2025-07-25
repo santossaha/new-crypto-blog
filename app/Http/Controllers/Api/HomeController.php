@@ -40,18 +40,18 @@ class HomeController extends Controller
             $currentDate = now();
             $getAdds = AdsImageModel::first();
             $image = '';
+           
 
             if ($getAdds && $getAdds->start_date && $getAdds->end_date && $getAdds->ads_image) {
                 if ($currentDate->between($getAdds->start_date, $getAdds->end_date)) {
-                    $image = $getAdds->ads_image;
+                    $image = getFullPath('adds', $getAdds->ads_image);
+                    dd($image);
                 } else {
-                    dd('sdfdsf');
-                    $image = getFullPath('adds', $getAdds->requird_image);
+                    $image = getFullPath('adds', $getAdds->image);
                 }
-            } else {
-                $image = getFullPath('adds', $getAdds->requird_image);
+            }else{
+                return response()->json(['status' => 'error', 'message' => 'No Ads Found']);
             }
-
             return response()->json([
                 'status' => 'success',
                 'data' => getFullPath('adds', $image),
