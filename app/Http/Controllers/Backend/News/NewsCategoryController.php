@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Backend\News;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+use Illuminate\Support\Str;
 use App\Models\BlogCategory;
 
-use Session;
-use Str;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+
 class NewsCategoryController extends Controller
 {
     public function allBlogCat(){
-      
+
         return view('Backend.News.Category.All');
     }
     public function addCat(){
@@ -21,7 +24,7 @@ class NewsCategoryController extends Controller
     public function saveCat(Request $request){
         $request->validate([
             'name' => 'bail|required|unique:blog_categories|max:255',
-            
+
         ]);
         $save = new BlogCategory();
         $save->name = $request->get('name');

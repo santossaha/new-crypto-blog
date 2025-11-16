@@ -14,6 +14,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BlogController extends Controller
 {
+    // Image upload directory constant
+    const IMAGE_DIRECTORY = 'blog_images';
+    const IMAGE_PREFIX = 'blog';
+
     public function allBlog(){
         $query = BlogDetail::select('id','image','title','category_id')->where('type','Blog')->first();
         //dd($query->image);
@@ -49,7 +53,7 @@ class BlogController extends Controller
         $save->canonical = $request->get('canonical');
         $save->meta_keyword = $request->get('meta_keyword');
         if ($request->hasFile('image')) {
-            $save->image = uploadImage($request->file('image'), 'blog_images', null, 'blog_images');
+            $save->image = uploadImage($request->file('image'), self::IMAGE_DIRECTORY, null, self::IMAGE_PREFIX);
         }
         $save->save();
         Session::flash('success', "blog has been create");
@@ -60,7 +64,7 @@ class BlogController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.getFullPath('blog_images',$data->image).'" width="100px" />';
+                    return '<img src="'.getFullPath(self::IMAGE_DIRECTORY, $data->image).'" width="100px" />';
                 }else{
                     return 'N/A';
                 }
@@ -111,8 +115,7 @@ class BlogController extends Controller
 
 
         if(!empty($request->file('image'))){
-
-            $update->image = uploadImage($request->file('image'), 'blog_images', $update->image, 'blog_images');
+            $update->image = uploadImage($request->file('image'), self::IMAGE_DIRECTORY, $update->image, self::IMAGE_PREFIX);
         }
 
         $update->save();
@@ -124,7 +127,7 @@ class BlogController extends Controller
 
         // Delete the image if it exists
         if ($remove->image) {
-            deleteImage(getImageUrl('blog', $remove->image));
+            deleteImage(getImageUrl(self::IMAGE_DIRECTORY, $remove->image));
         }
 
         $remove->delete();
