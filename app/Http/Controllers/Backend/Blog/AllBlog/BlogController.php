@@ -60,7 +60,7 @@ class BlogController extends Controller
         return DataTables::eloquent($query)
             ->addColumn('image', function ($data) {
                 if($data->image!=''){
-                    return '<img src="'.$data->image.'" width="100px" />';
+                    return '<img src="'.getFullPath('blog_images',$data->image).'" width="100px" />';
                 }else{
                     return 'N/A';
                 }
@@ -89,6 +89,7 @@ class BlogController extends Controller
         ]);
     }
     public function updateBlog(Request $request,$id=null){
+        //dd($request->file('image'));
         $this->validate($request,[
             'title' => 'required|unique:blog_details,title,'.$id.',id,deleted_at,NULL',
         ]);
@@ -110,6 +111,7 @@ class BlogController extends Controller
 
 
         if(!empty($request->file('image'))){
+
             $update->image = uploadImage($request->file('image'), 'blog_images', $update->image, 'blog_images');
         }
 
