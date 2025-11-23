@@ -55,6 +55,7 @@ class BlogController extends Controller
         if ($request->hasFile('image')) {
             $save->image = uploadImage($request->file('image'), self::IMAGE_DIRECTORY, null, self::IMAGE_PREFIX);
         }
+        dd($save);
         $save->save();
         Session::flash('success', "blog has been create");
         return redirect()->back();
