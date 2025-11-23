@@ -124,7 +124,7 @@ class HomeController extends Controller
 
         try {
             // Latest Blogs
-            $latestBlog = BlogDetail::where('type', 'Blog')->orderBy('id', 'desc')->take(8)->get()->map(function($item) {
+            $latestBlog = BlogDetail::where('type', 'Blog')->orderBy('id', 'desc')->take(6)->get()->map(function($item) {
                 $item->image = getFullPath('blog_images',$item->image);
                 return $item;
             });
