@@ -134,10 +134,10 @@ class HomeController extends Controller
                 return $item;
             });
             // Latest Events
-            $latestEvent = EventsModel::orderBy('id', 'desc')->take(8)->get()->map(function($item) {
-                $item->image = getFullPath('event',$item->image);
-                return $item;
-            });
+            // $latestEvent = EventsModel::orderBy('id', 'desc')->take(8)->get()->map(function($item) {
+            //     $item->image = getFullPath('event',$item->image);
+            //     return $item;
+            // });
 
             // Category Lists
             $blogCategories = BlogCategory::where('type', 'Blog')->orderBy('id', 'desc')->get(['id', 'name', 'type', 'slug']);
@@ -148,7 +148,7 @@ class HomeController extends Controller
                 'status' => 'success',
                 'latest_blog' => $latestBlog,
                 'latest_news' => $latestNews,
-                'latest_event' => $latestEvent,
+                //'latest_event' => $latestEvent,
                 'blog_categories' => $blogCategories,
                 'news_categories' => $newsCategories,
                 'event_categories' => $eventCategories,
