@@ -129,7 +129,7 @@ class HomeController extends Controller
                 return $item;
             });
             // Latest News
-            $latestNews = BlogDetail::where('type', 'News')->orderBy('id', 'desc')->take(8)->get()->map(function($item) {
+            $latestNews = BlogDetail::where('type', 'News')->orderBy('id', 'desc')->take(6)->get()->map(function($item) {
                 $item->image = getFullPath('blog_images',$item->image);
                 return $item;
             });
