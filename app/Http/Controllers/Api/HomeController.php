@@ -124,20 +124,28 @@ class HomeController extends Controller
 
         try {
             // Latest Blogs
-            $latestBlog = BlogDetail::where('type', 'Blog')->orderBy('id', 'desc')->take(6)->get()->map(function($item) {
+            $latestBlog = BlogDetail::join('blog_categories','blog_details.category_id','=','blog_categories.id')
+            ->where('blog_details.type', 'Blog')
+            ->orderBy('blog_details.id', 'desc')
+            ->select('blog_details.*', 'blog_categories.name as category_name', 'blog_categories.slug as category_slug')
+            ->take(6)
+            ->get()
+            ->map(function($item) {
                 $item->image = getFullPath('blog_images',$item->image);
                 return $item;
             });
             // Latest News
-            $latestNews = BlogDetail::where('type', 'News')->orderBy('id', 'desc')->take(6)->get()->map(function($item) {
+            $latestNews = BlogDetail::join('blog_categories','blog_details.category_id','=','blog_categories.id')
+            ->where('blog_details.type', 'News')
+            ->orderBy('blog_details.id', 'desc')
+            ->select('blog_details.*', 'blog_categories.name as category_name', 'blog_categories.slug as category_slug')
+            ->take(6)
+            ->get()
+            ->map(function($item) {
                 $item->image = getFullPath('blog_images',$item->image);
                 return $item;
             });
-            // Latest Events
-            // $latestEvent = EventsModel::orderBy('id', 'desc')->take(8)->get()->map(function($item) {
-            //     $item->image = getFullPath('event',$item->image);
-            //     return $item;
-            // });
+           
 
             // Category Lists
             $blogCategories = BlogCategory::where('type', 'Blog')->orderBy('id', 'desc')->get(['id', 'name', 'type', 'slug']);
