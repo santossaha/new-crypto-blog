@@ -28,9 +28,10 @@ class BlogController extends Controller
   public function blog_details(Request $request, $slug ){
     try{
 
-      $blog_details =  BlogDetail::where('slug',  $slug)->first();
-
-      // recent view
+      $blog_details = BlogDetail::where('slug', $slug)->first();
+      if ($blog_details) {
+        $blog_details->image = getFullPath('blog_images', $blog_details->image);
+      }
 
       // check exsits or not
 
