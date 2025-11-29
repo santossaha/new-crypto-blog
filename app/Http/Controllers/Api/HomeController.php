@@ -154,10 +154,10 @@ class HomeController extends Controller
                 'status' => 'success',
                 'latest_blog' => $latestBlog,
                 'latest_news' => $latestNews,
-                //'latest_event' => $latestEvent,
+                'latest_event' => (object)[],
                 'blog_categories' => $blogCategories,
                 'news_categories' => $newsCategories,
-              
+
             ]);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
