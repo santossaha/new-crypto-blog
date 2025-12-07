@@ -377,7 +377,7 @@
 
                 @permission('view-user')
 
-                <li class="treeview" style="height: auto;">
+                {{-- <li class="treeview" style="height: auto;">
                     <a href="">
                         <i class="fa fa-caret-square-o-right"></i> <span>Events</span>
                         <span class="pull-right-container">
@@ -388,6 +388,12 @@
                         <li><a href="{{route('allEventsCat')}}"><i class="fa fa-circle-o"></i>Category</a></li>
                         <li><a href="{{route('allEvent')}}"><i class="fa fa-circle-o"></i>Events</a></li>
                     </ul>
+                </li> --}}
+
+                <li>
+                    <a href="{{route('allEvent')}}">
+                        <i class="fa fa-newspaper-o"></i> <span>Events</span>
+                    </a>
                 </li>
                 @endpermission
 
@@ -556,12 +562,11 @@
     $('.modal-body').on('shown.bs.modal', function() {
         alert('sdf');
 
-    $('.datepicker').datepicker({
-        autoclose: true,
-        // format: "yyyy-mm-dd",
-        format: "mm-dd-yyyy"
+    // $('.datepicker').datepicker({
+    //     autoclose: true,
+    //     format: "mm-dd-yyyy"
 
-    });
+    // });
 });
 
 </script>

@@ -210,6 +210,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['web', 'permission:access-
         Route::get('/editEvent/{id?}', ['as' => 'editEvent', 'uses' => EventController::class.'@editEvents']);
         Route::post('updateEvent/{id?}', ['as' => 'updateEvent', 'uses' => EventController::class.'@updateEvents']);
         Route::get('deleteEvent/{id?}', ['as' => 'deleteEvent', 'uses' => EventController::class.'@deleteEvents']);
+        Route::get('deleteGalleryImage/{id?}', ['as' => 'deleteGalleryImage', 'uses' => EventController::class.'@deleteGalleryImage']);
     });
 
     // Banner Management

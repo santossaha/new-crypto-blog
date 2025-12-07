@@ -25,7 +25,7 @@
 
 <form id="validation2" action="{{route('updateEvent',['id'=>$records->id])}}" class="form-horizontal"  method="post" enctype="multipart/form-data">
     {{csrf_field()}}
-    <div class="modal-body clearfix">
+    <div class="modal-body clearfix" style="max-height: 800px; overflow-y: auto;">
 
 
         <div class="form-group">
@@ -34,41 +34,130 @@
                 <input type="text" name="title" class="validate[required] form-control" value="{{$records->title}}" >
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="content" class="col-sm-3 control-label">Content</label>
+            <div class="col-sm-9">
+                <textarea name="content" class="form-control summernote" rows="5">{{$records->content ?? ''}}</textarea>
+            </div>
+        </div>
       
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Start Date<span class="requiredAsterisk">*</span></label>
+            <label for="from_date" class="col-sm-3 control-label">From Date<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="start_date" class="validate[required] form-control datepicker" id="start_date" value="{{$records->start_date}}">
+                <input type="text" name="from_date" class="validate[required] form-control datepicker" id="from_date" placeholder="DD-MM-YYYY" value="{{$records->from_date ? date('d-m-Y', strtotime($records->from_date)) : ($records->start_date ? date('d-m-Y', strtotime($records->start_date)) : '')}}" readonly>
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">End Date<span class="requiredAsterisk">*</span></label>
+            <label for="to_date" class="col-sm-3 control-label">To Date<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <input type="text" name="end_date" class="validate[required] form-control datepicker" id="end_date" value="{{$records->end_date}}">
+                <input type="text" name="to_date" class="validate[required] form-control datepicker" id="to_date" placeholder="DD-MM-YYYY" value="{{$records->to_date ? date('d-m-Y', strtotime($records->to_date)) : ($records->end_date ? date('d-m-Y', strtotime($records->end_date)) : '')}}" readonly>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label"> Location<span class="requiredAsterisk">*</span></label>
+            <label for="start_time" class="col-sm-3 control-label">Start Time</label>
+            <div class="col-sm-9">
+                <input type="time" name="start_time" class="form-control" id="start_time" value="{{$records->start_time ? date('H:i', strtotime($records->start_time)) : ''}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="to_time" class="col-sm-3 control-label">To Time</label>
+            <div class="col-sm-9">
+                <input type="time" name="to_time" class="form-control" id="to_time" value="{{$records->to_time ? date('H:i', strtotime($records->to_time)) : ''}}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="location" class="col-sm-3 control-label">Location<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
                 <input type="text" name="location" class="validate[required] form-control" value="{{$records->location}}">
             </div>
         </div>
 
-
+        <div class="form-group">
+            <label for="contact_detail" class="col-sm-3 control-label">Contact Detail</label>
+            <div class="col-sm-9">
+                <input type="text" name="contact_detail" class="form-control" value="{{$records->contact_detail ?? ''}}">
+            </div>
+        </div>
 
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Image</label>
+            <label for="email" class="col-sm-3 control-label">Email</label>
             <div class="col-sm-9">
-                <small>Mix File size 2MB</small>, <small >File accept Only (jpeg,jpg png,gif,svg)</small>
-                <input type="file" name="image" id="image"  class="form-control" >
-                <img src="{{asset('uploads/generalSetting/'.$records->image)}}" alt="" width="50px">
+                <input type="email" name="email" class="form-control" value="{{$records->email ?? ''}}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="website_url" class="col-sm-3 control-label">Website URL</label>
+            <div class="col-sm-9">
+                <input type="url" name="website_url" class="form-control" placeholder="https://example.com" value="{{$records->website_url ?? ''}}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Social Media</label>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Facebook</label>
+                        <input type="url" name="facebook" class="form-control" placeholder="https://facebook.com/..." value="{{$records->facebook ?? ''}}">
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Instagram</label>
+                        <input type="url" name="instagram" class="form-control" placeholder="https://instagram.com/..." value="{{$records->instagram ?? ''}}">
+                    </div>
+                    <div class="col-sm-4">
+                        <label>LinkedIn</label>
+                        <input type="url" name="linkedin" class="form-control" placeholder="https://linkedin.com/..." value="{{$records->linkedin ?? ''}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="image" class="col-sm-3 control-label">Event Image</label>
+            <div class="col-sm-9">
+                <small>Max File size 2MB</small>, <small>File accept Only (jpeg,jpg png,gif,svg)</small>
+                <input type="file" name="image" id="image" class="form-control" >
+                @if($records->image)
+                    <img src="{{asset('storage/event/'.$records->image)}}" alt="" id="imagePreview" style="max-width: 200px; margin-top: 10px;">
+                @else
+                    <img src="" alt="" id="imagePreview" style="max-width: 200px; margin-top: 10px; display: none;">
+                @endif
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label"> Description</label>
+            <label for="description" class="col-sm-3 control-label">Description<span class="requiredAsterisk">*</span></label>
             <div class="col-sm-9">
-                <textarea  name="description" class="form-control summernote" rows="5" >{!! $records->description !!}</textarea>
+                <textarea name="description" class="form-control summernote" rows="5">{!! $records->description !!}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="gallery_images" class="col-sm-3 control-label">Image Gallery</label>
+            <div class="col-sm-9">
+                <div id="existingGallery" style="margin-bottom: 15px;">
+                    @if(isset($records->galleries) && count($records->galleries) > 0)
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            @foreach($records->galleries as $gallery)
+                                <div style="position: relative; width: 150px;">
+                                    <img src="{{asset('storage/event/gallery/'.$gallery->image)}}" alt="" style="width: 100%; height: 150px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
+                                    <button type="button" class="btn btn-danger btn-xs delete-gallery-image" data-id="{{$gallery->id}}" style="position: absolute; top: 5px; right: 5px;">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+                <div id="galleryDropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; background: #f9f9f9; min-height: 150px; cursor: pointer;">
+                    <p>Drag & Drop new images here or click to select</p>
+                    <p><small>Multiple images can be uploaded</small></p>
+                    <input type="file" name="gallery_images[]" id="gallery_images" multiple accept="image/*" style="display: none;">
+                </div>
+                <div id="galleryPreview" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
         </div>
 
@@ -130,28 +219,171 @@
             height: 200
         });
 
-  
-
-
-    $("#start_date").datepicker({
+        // Initialize datepickers with Indian format (dd-mm-yyyy)
+        $("#from_date").datepicker({
             autoclose: true,
-            format: "yyyy-mm-dd"
-        }).on('changeDate', function (selected) {
-            var minDate = new Date(selected.date.valueOf());
-            $('#end_date').datepicker('setStartDate', minDate);
-            setdate();
+            format: "dd-mm-yyyy",
+            todayHighlight: true,
+            orientation: "bottom auto",
+            forceParse: true,
+            clearBtn: false
+        }).on('changeDate', function (e) {
+            // Format date as dd-mm-yyyy
+            var day = ("0" + e.date.getDate()).slice(-2);
+            var month = ("0" + (e.date.getMonth() + 1)).slice(-2);
+            var year = e.date.getFullYear();
+            var formattedDate = day + "-" + month + "-" + year;
+            $(this).val(formattedDate);
+            var minDate = new Date(e.date.valueOf());
+            $('#to_date').datepicker('setStartDate', minDate);
         });
 
-        $("#end_date").datepicker({
+        $("#to_date").datepicker({
             autoclose: true,
-            format: "yyyy-mm-dd"
-        }).on('changeDate', function (selected) {
-            var maxDate = new Date(selected.date.valueOf());
-            $('#fromDate').datepicker('setEndDate', maxDate);
+            format: "dd-mm-yyyy",
+            todayHighlight: true,
+            orientation: "bottom auto",
+            forceParse: true,
+            clearBtn: false
+        }).on('changeDate', function (e) {
+            // Format date as dd-mm-yyyy
+            var day = ("0" + e.date.getDate()).slice(-2);
+            var month = ("0" + (e.date.getMonth() + 1)).slice(-2);
+            var year = e.date.getFullYear();
+            var formattedDate = day + "-" + month + "-" + year;
+            $(this).val(formattedDate);
+            var maxDate = new Date(e.date.valueOf());
+            $('#from_date').datepicker('setEndDate', maxDate);
         });
+
+        // Image preview
+        $('#image').change(function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Delete existing gallery image
+        $('.delete-gallery-image').click(function() {
+            var galleryId = $(this).data('id');
+            var $item = $(this).closest('div');
+            
+            if (confirm('Are you sure you want to delete this image?')) {
+                $.ajax({
+                    url: '{{route("deleteGalleryImage", "")}}/' + galleryId,
+                    type: 'GET',
+                    success: function(response) {
+                        $item.remove();
+                    },
+                    error: function() {
+                        alert('Error deleting image');
+                    }
+                });
+            }
+        });
+
+        // Gallery drag and drop
+        var galleryDropZone = document.getElementById('galleryDropZone');
+        var galleryInput = document.getElementById('gallery_images');
+        var galleryPreview = document.getElementById('galleryPreview');
+        var galleryFiles = [];
+
+        // Click to select files
+        galleryDropZone.addEventListener('click', function() {
+            galleryInput.click();
+        });
+
+        // Drag and drop events
+        galleryDropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            galleryDropZone.style.borderColor = '#007bff';
+            galleryDropZone.style.background = '#e7f3ff';
+        });
+
+        galleryDropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            galleryDropZone.style.borderColor = '#ccc';
+            galleryDropZone.style.background = '#f9f9f9';
+        });
+
+        galleryDropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            galleryDropZone.style.borderColor = '#ccc';
+            galleryDropZone.style.background = '#f9f9f9';
+            
+            var files = e.dataTransfer.files;
+            handleGalleryFiles(files);
+        });
+
+        galleryInput.addEventListener('change', function(e) {
+            var files = e.target.files;
+            handleGalleryFiles(files);
+        });
+
+        function handleGalleryFiles(files) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (file.type.startsWith('image/')) {
+                    galleryFiles.push(file);
+                    previewGalleryImage(file);
+                }
+            }
+            updateGalleryInput();
+        }
+
+        function previewGalleryImage(file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var div = document.createElement('div');
+                div.style.position = 'relative';
+                div.style.width = '150px';
+                div.style.margin = '5px';
+                
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '100%';
+                img.style.height = '150px';
+                img.style.objectFit = 'cover';
+                img.style.border = '1px solid #ddd';
+                img.style.borderRadius = '4px';
+                
+                var removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'btn btn-danger btn-xs';
+                removeBtn.style.position = 'absolute';
+                removeBtn.style.top = '5px';
+                removeBtn.style.right = '5px';
+                removeBtn.innerHTML = '<i class="fa fa-times"></i>';
+                removeBtn.onclick = function() {
+                    var index = Array.from(galleryPreview.children).indexOf(div);
+                    galleryFiles.splice(index, 1);
+                    div.remove();
+                    updateGalleryInput();
+                };
+                
+                div.appendChild(img);
+                div.appendChild(removeBtn);
+                galleryPreview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateGalleryInput() {
+            var dt = new DataTransfer();
+            galleryFiles.forEach(function(file) {
+                dt.items.add(file);
+            });
+            galleryInput.files = dt.files;
+        }
 
     });
 </script>
 
 @endpush
+
 
