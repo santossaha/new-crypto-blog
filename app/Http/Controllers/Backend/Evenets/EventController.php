@@ -101,13 +101,41 @@ class EventController extends Controller
         return redirect()->back();
     }
     public function allEventsDatabase(){
-        $query = EventsModel::select('id','image','title');
+        $query = EventsModel::select('id','image','title','from_date','to_date','status');
         return DataTables::eloquent($query)
         ->addColumn('image', function ($data) {
             if($data->image!=''){
                 return '<img src="'.getFullPath(self::IMAGE_DIRECTORY_EVENT, $data->image).'" width="100px" />';
             }else{
                 return 'N/A';
+            }
+        })
+        ->addColumn('from_date', function ($data) {
+            if($data->from_date){
+                return date('d-m-Y', strtotime($data->from_date));
+            }else{
+                return 'N/A';
+            }
+        })
+        ->addColumn('to_date', function ($data) {
+            if($data->to_date){
+                return date('d-m-Y', strtotime($data->to_date));
+            }else{
+                return 'N/A';
+            }
+        })
+        ->addColumn('status', function ($data) {
+            $status = $data->status ?? 'Active';
+            if($status == 'Active' || $status == 'Inactive'){
+                $checked = ($status == 'Active') ? 'checked' : '';
+                return '<div style="display: block">
+                    <label class="switch">
+                        <input onchange="change_status_action('.$data->id.')" id="checkbox_'.$data->id.'" data-id="'.$data->id.'" type="checkbox" '.$checked.' />
+                        <div class="slider round"></div>
+                    </label>
+                </div>';
+            } else {
+                return '<div style="display: block"><span>'.$status.'</span></div>';
             }
         })
 
@@ -118,7 +146,7 @@ class EventController extends Controller
                 $edit .= '&nbsp<a href="' . $url_delete . '" class="label label-danger" data-confirm="Are you sure to delete Event Name: <span class=&#034;label label-primary&#034;>' . $data->title . '</span>"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete </a>';
                 return $edit;
             })
-            ->rawColumns(['id','action','image'])
+            ->rawColumns(['id','action','image','status'])
             ->toJson();
     }
     public function editEvents($id=null){
@@ -176,7 +204,7 @@ class EventController extends Controller
 
         if(!empty($request->file('image'))){
             $file = $request->file('image');
-            $update->image = uploadImage($file, self::IMAGE_DIRECTORY, $update->image, self::IMAGE_PREFIX);
+            $update->image = uploadImage($file, self::IMAGE_DIRECTORY_EVENT, $update->image, self::IMAGE_PREFIX);
         }
 
         $update->save();
@@ -224,6 +252,33 @@ class EventController extends Controller
         }
         $gallery->delete();
         return response()->json(['success' => true, 'message' => 'Gallery image deleted successfully']);
+    }
+
+    public function statusEvent($id)
+    {
+        $item = EventsModel::find($id);
+
+        if(empty($item)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Event not found!',
+            ]);
+        } else {
+            if($item->status == 'Active' || $item->status == 'Inactive'){
+                $item->status = ($item->status == 'Active' ? 'Inactive' : 'Active');
+                $item->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Event status successfully changed.',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid status!',
+                ]);
+            }
+        }
     }
 
     /**

@@ -1,5 +1,48 @@
 @extends('Backend.main')
 @section('content')
+    <style>
+        .switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+        .switch input {
+            display:none;
+        }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+        }
+        input:checked + .slider {
+            background-color: #66bb6a;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
     <div class="content-wrapper">
 
         <!-- Main content -->
@@ -33,6 +76,9 @@
                         <tr>
                             <th>Image</th>
                             <th>Title</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Status</th>
                             <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
                         </tr>
                         </thead>
@@ -40,6 +86,9 @@
                         <tr>
                             <th>Image</th>
                             <th>Title</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Status</th>
                             <th style="width: 80px; text-align: center;"><i class="fa fa-bars"></i> </th>
                         </tr>
                         </tfoot>
@@ -64,11 +113,36 @@
             columns: [
                 {data: 'image', name: 'image'},
                 {data: 'title', name: 'title'},
+                {data: 'from_date', name: 'from_date'},
+                {data: 'to_date', name: 'to_date'},
+                {data: 'status', name: 'status', orderable: false, searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
             "order": [[0,'desc']],
             "pageLength": {{AppSetting::getRowsPerPage()}},
 
         });
+
+        function change_status_action(item_id){
+            var statusUrl = "{{ route('statusEvent', ['id' => 0]) }}".replace('0', item_id);
+            $.ajax({
+                url: statusUrl,
+                data: {
+                    '_token': "{{ csrf_token() }}"
+                },
+                type: "get",
+                success: function (response) {
+                    if(response.success){
+                        toastr.success(response.message || 'Status updated successfully');
+                        $('#Datatable').DataTable().ajax.reload();
+                    }else{
+                        toastr.error(response.message || 'Status not updated');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('An error occurred while updating status');
+                }
+            });
+        }
     </script>
 @endpush
