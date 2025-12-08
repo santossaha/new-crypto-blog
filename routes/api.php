@@ -44,6 +44,11 @@ Route::get('get-latest-date', [HomeController::class, 'get_latest_data']);
 Route::get('get-events',[EventsController::class,'get_events']);
 Route::post('search-events',[EventsController::class,'search_events']);
 
+// New Event APIs
+Route::get('event-list',[EventsController::class,'event_list']);
+Route::get('event-detail/{id}',[EventsController::class,'event_detail']);
+Route::post('create-event',[EventsController::class,'create_event']);
+
 
 // Services Menu
 Route::get('get-services',[ServiceController::class,'get_services']);
