@@ -16,7 +16,7 @@ class EventsController extends Controller
     public function get_events()
     {
         try {
-            $events = EventsModel::where('status', 'Active')->select('id', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_date', 'end_date')->orderBy('id', 'desc')->paginate(10);
+            $events = EventsModel::where('status', 'Active')->select('id', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_time', 'to_time')->orderBy('id', 'desc')->paginate(10);
             // Format dates to DD-MM-YYYY
             $events->getCollection()->transform(function ($event) {
                 if ($event->from_date) {
