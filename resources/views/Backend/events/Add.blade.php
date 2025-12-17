@@ -30,7 +30,7 @@
                                     <label for="title" class="col-sm-3 control-label">Title<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="title" class="validate[required] form-control">
+                                        <input type="text" name="title" value="{{ old('title') }}" class="validate[required] form-control">
                                     </div>
                                 </div>
 
@@ -38,7 +38,7 @@
                                     <label for="content" class="col-sm-3 control-label">Content <span
                                         class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <textarea name="content" class="form-control" rows="5"></textarea>
+                                        <textarea name="content" class="form-control" rows="5">{{old('content')}}</textarea>
                                     </div>
                                 </div>
 
@@ -46,7 +46,7 @@
                                     <label for="from_date" class="col-sm-3 control-label">From Date<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="from_date"
+                                        <input type="text" name="from_date" value="{{ old('from_date') }}"
                                             class="validate[required] form-control datepic" id="from_date" data-date-format="mm-dd-yyyy">
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                     <label for="to_date" class="col-sm-3 control-label">To Date<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="to_date"
+                                        <input type="text" name="to_date" value="{{ old('to_date') }}"
                                             class="validate[required] form-control datepic" id="to_date" data-date-format="mm-dd-yyyy">
                                     </div>
                                 </div>
@@ -62,13 +62,13 @@
                                 <div class="form-group">
                                     <label for="start_time" class="col-sm-3 control-label">Start Time</label>
                                     <div class="col-sm-9">
-                                        <input type="time" name="start_time" class="form-control" id="start_time">
+                                        <input type="time" name="start_time" value="{{ old('start_time') }}" class="form-control" id="start_time">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="to_time" class="col-sm-3 control-label">To Time</label>
                                     <div class="col-sm-9">
-                                        <input type="time" name="to_time" class="form-control" id="to_time">
+                                        <input type="time" name="to_time" value="{{ old('to_time') }}" class="form-control" id="to_time">
                                     </div>
                                 </div>
 
@@ -76,28 +76,28 @@
                                     <label for="location" class="col-sm-3 control-label">Location<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="location" class="validate[required] form-control">
+                                        <input type="text" name="location" value="{{ old('location') }}" class="validate[required] form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="contact_detail" class="col-sm-3 control-label">Contact Detail</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="contact_detail" class="form-control">
+                                        <input type="text" name="contact_detail" value="{{ old('contact_detail') }}" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email" class="col-sm-3 control-label">Email</label>
                                     <div class="col-sm-9">
-                                        <input type="email" name="email" class="form-control">
+                                        <input type="email" name="email" value="{{ old('email') }}" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="website_url" class="col-sm-3 control-label">Website URL</label>
                                     <div class="col-sm-9">
-                                        <input type="url" name="website_url" class="form-control"
+                                        <input type="url" name="website_url" value="{{ old('website_url') }}" class="form-control"
                                             placeholder="https://example.com">
                                     </div>
                                 </div>
@@ -108,17 +108,17 @@
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <label>Facebook</label>
-                                                <input type="url" name="facebook" class="form-control"
+                                                <input type="url" name="facebook" value="{{ old('facebook') }}" class="form-control"
                                                     placeholder="https://facebook.com/...">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label>Instagram</label>
-                                                <input type="url" name="instagram" class="form-control"
+                                                <input type="url" name="instagram" value="{{ old('instagram') }}" class="form-control"
                                                     placeholder="https://instagram.com/...">
                                             </div>
                                             <div class="col-sm-4">
                                                 <label>LinkedIn</label>
-                                                <input type="url" name="linkedin" class="form-control"
+                                                <input type="url" name="linkedin" value="{{ old('linkedin') }}" class="form-control"
                                                     placeholder="https://linkedin.com/...">
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
                                     <label for="description" class="col-sm-3 control-label">Description<span
                                             class="requiredAsterisk"></span></label>
                                     <div class="col-sm-9">
-                                        <textarea name="description" class="form-control summernote" rows="5"></textarea>
+                                        <textarea name="description" class="form-control summernote" rows="5">{{ old('description') }}</textarea>
                                     </div>
                                 </div>
 
@@ -165,7 +165,7 @@
                                     <label for="title" class="col-sm-3 control-label">Meta Title<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="meta_title" class="validate[required] form-control"
+                                        <input type="text" name="meta_title" value="{{ old('meta_title') }}" class="validate[required] form-control"
                                             value="">
                                     </div>
                                 </div>
@@ -174,14 +174,14 @@
                                     <label for="title" class="col-sm-3 control-label">Meta Keyword<span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="meta_keyword"
+                                        <input type="text" name="meta_keyword" value="{{ old('meta_keyword') }}"
                                             class="validate[required] form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="title" class="col-sm-3 control-label">Meta Description</label>
                                     <div class="col-sm-9">
-                                        <textarea name="meta_description" class="form-control" rows="5"></textarea>
+                                        <textarea name="meta_description" class="form-control" rows="5">{{ old('meta_description') }}</textarea>
                                     </div>
                                 </div>
 
@@ -189,7 +189,7 @@
                                     <label for="title" class="col-sm-3 control-label">Canonical <span
                                             class="requiredAsterisk">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="canonical" class="validate[required] form-control">
+                                        <input type="text" name="canonical" value="{{ old('canonical') }}" class="validate[required] form-control">
                                     </div>
                                 </div>
 

@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 function genderRandemName($length = 8){
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -127,4 +128,13 @@ function getPathFromUrl(?string $url): ?string
     }
 
     return null;
+}
+
+function defaultDate($date){
+    if($date){
+       return Carbon::parse($date)->format('d-m-Y');
+    }else{
+        return "";
+    }
+
 }

@@ -151,6 +151,8 @@ class EventController extends Controller
     }
     public function editEvents($id=null){
         $records = EventsModel::with('galleries')->findOrFail($id);
+        $records->from_date = defaultDate($records->from_date);
+        $records->to_date = defaultDate($records->to_date);
         return view('Backend.events.Edit',[
             'records'=>$records,
         ]);
