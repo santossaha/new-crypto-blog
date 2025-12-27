@@ -159,6 +159,69 @@ class EventsController extends Controller
 		}
 	}
 
+    public function event_detail_by_slug($slug)
+    {
+    
+        try {
+            $event = EventsModel::with('galleries')->where('slug', $slug)->first();
+
+			if (!$event) {
+				return response()->json([
+					'status' => 'error',
+					'message' => 'Event not found'
+				], 404);
+			}
+
+            $galleryImages = $event->galleries->map(function ($gallery) {
+				return [
+					'id' => $gallery->id,
+					'image' => $gallery->image ? getFullPath('event/gallery', $gallery->image) : null,
+					'sort_order' => $gallery->sort_order,
+				];
+			});
+
+            $eventData = [
+                'id' => $event->id,
+                'user_id' => $event->user_id,
+                'title' => $event->title,
+                'slug' => $event->slug,
+                'content' => $event->content,
+                'image' => $event->image ? getFullPath('event', $event->image) : null,
+                'from_date' => defaultDate($event->from_date),
+                'to_date' => defaultDate($event->to_date),
+                'start_time' => $event->start_time,
+                'to_time' => $event->to_time,
+                'location' => $event->location,
+                'contact_detail' => $event->contact_detail,
+                'email' => $event->email,
+                'website_url' => $event->website_url,
+                'facebook' => $event->facebook,
+                'instagram' => $event->instagram,
+                'linkedin' => $event->linkedin,
+                'description' => $event->description,
+                'short_description' => $event->short_description,
+                'meta_title' => $event->meta_title,
+                'meta_description' => $event->meta_description,
+                'meta_keyword' => $event->meta_keyword,
+                'canonical' => $event->canonical,
+                'author' => $event->author,
+                'status' => $event->status,
+                'gallery_images' => $galleryImages,
+                'created_at' => $event->created_at ? $event->created_at->format('d-m-Y H:i:s') : null,
+                'updated_at' => $event->updated_at ? $event->updated_at->format('d-m-Y H:i:s') : null,
+            ];
+
+            return response()->json([
+				'status' => 'success',
+				'data' => $eventData,
+				'message' => 'Event fetched successfully'
+			]);
+
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
 	/**
 	 * Create Event API
 	 * Default status: Inactive

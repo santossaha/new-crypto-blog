@@ -46,7 +46,8 @@ Route::post('search-events',[EventsController::class,'search_events']);
 
 // New Event APIs
 Route::get('event-list',[EventsController::class,'event_list']);
-Route::get('event-detail/{id}',[EventsController::class,'event_detail']);
+Route::get('event-detail/{slug}',[EventsController::class,'event_detail_by_slug']);
+Route::get('event-detail/{id}',[EventsController::class,'event_detail']); //old api
 Route::post('create-event',[EventsController::class,'create_event']);
 
 
