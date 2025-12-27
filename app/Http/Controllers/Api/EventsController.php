@@ -16,26 +16,20 @@ class EventsController extends Controller
     public function get_events()
     {
         try {
-            $events = EventsModel::where('status', 'Active')->select('id', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_time', 'to_time')->orderBy('id', 'desc')->paginate(10);
-            // Format dates to DD-MM-YYYY
+            $events = EventsModel::where('status', 'Active')
+            ->where('from_date', '<=', date('Y-m-d'))
+            ->where('to_date', '>=', date('Y-m-d'))
+            ->select('id','image', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_time', 'to_time')->orderBy('id', 'desc')->paginate(10);
             $events->getCollection()->transform(function ($event) {
-                // if ($event->from_date) {
-                //     $event->from_date = date('d-m-Y', strtotime($event->from_date));
-                // } elseif ($event->start_date) {
-                //     $event->from_date = date('d-m-Y', strtotime($event->start_date));
-                // }
-                // if ($event->to_date) {
-                //     $event->to_date = date('d-m-Y', strtotime($event->to_date));
-                // } elseif ($event->end_date) {
-                //     $event->to_date = date('d-m-Y', strtotime($event->end_date));
-                // }
-                // // Keep backward compatibility
-                // if ($event->start_date) {
-                //     $event->start_date = date('d-m-Y', strtotime($event->start_date));
-                // }
-                // if ($event->end_date) {
-                //     $event->end_date = date('d-m-Y', strtotime($event->end_date));
-                // }
+                if($event->from_date){
+                    $event->from_date = defaultDate($event->from_date);
+                }
+                if($event->to_date){
+                    $event->to_date = defaultDate($event->to_date);
+                }
+                if($event->image){
+                    $event->image = getFullPath('event', $event->image);
+                }
                 return $event;
             });
             return response()->json(['status' => 'sucess', 'data' => $events]);
