@@ -19,7 +19,7 @@ class EventsController extends Controller
             $events = EventsModel::where('status', 'Active')
             ->where('from_date', '<=', date('Y-m-d'))
             ->where('to_date', '>=', date('Y-m-d'))
-            ->select('id','image', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_time', 'to_time')->orderBy('id', 'desc')->paginate(10);
+            ->select('id','image', 'title', 'slug', 'location', 'from_date', 'to_date', 'start_time', 'to_time')->orderBy('id', 'desc')->paginate(9);
             $events->getCollection()->transform(function ($event) {
                 if($event->from_date){
                     $event->from_date = defaultDate($event->from_date);
@@ -161,7 +161,7 @@ class EventsController extends Controller
 
     public function event_detail_by_slug($slug)
     {
-    
+
         try {
             $event = EventsModel::with('galleries')->where('slug', $slug)->first();
 

@@ -101,7 +101,7 @@ class EventController extends Controller
         return redirect()->back();
     }
     public function allEventsDatabase(){
-        $query = EventsModel::select('id','image','title','from_date','to_date','status');
+        $query = EventsModel::orderBy('id','desc')->select('id','image','title','from_date','to_date','status');
         return DataTables::eloquent($query)
         ->addColumn('image', function ($data) {
             if($data->image!=''){
