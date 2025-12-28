@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventsResource;
 use App\Models\EventsModel;
 use App\Helpers\ImageHelper;
+use App\Models\EventGallery;
 use Exception;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
 
+    const IMAGE_DIRECTORY_EVENT = 'event';
+    const IMAGE_DIRECTORY_GALLERY = 'event/gallery';
+    const IMAGE_PREFIX = 'event';
     //get all active Events
     public function get_events()
     {
@@ -138,7 +142,6 @@ class EventsController extends Controller
 				'instagram' => $event->instagram,
 				'linkedin' => $event->linkedin,
 				'description' => $event->description,
-				'short_description' => $event->short_description,
 				'meta_title' => $event->meta_title,
 				'meta_description' => $event->meta_description,
 				'meta_keyword' => $event->meta_keyword,
@@ -199,7 +202,6 @@ class EventsController extends Controller
                 'instagram' => $event->instagram,
                 'linkedin' => $event->linkedin,
                 'description' => $event->description,
-                'short_description' => $event->short_description,
                 'meta_title' => $event->meta_title,
                 'meta_description' => $event->meta_description,
                 'meta_keyword' => $event->meta_keyword,
@@ -235,28 +237,26 @@ class EventsController extends Controller
 				'from_date' => 'required|date_format:d-m-Y',
 				'to_date' => 'required|date_format:d-m-Y|after_or_equal:from_date',
 				'location' => 'required|string|max:255',
-				'author' => 'nullable|string|max:255',
 				'start_time' => 'nullable|date_format:H:i',
 				'to_time' => 'nullable|date_format:H:i',
-				'contact_detail' => 'nullable|string|max:255',
+				'contact_detail' => 'nullable|string',
 				'email' => 'nullable|email|max:255',
 				'website_url' => 'nullable|url|max:255',
 				'facebook' => 'nullable|url|max:255',
 				'instagram' => 'nullable|url|max:255',
 				'linkedin' => 'nullable|url|max:255',
 				'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:4096',
-				'short_description' => 'nullable|string',
 				'description' => 'nullable|string',
-				'meta_title' => 'nullable|string|max:255',
-				'meta_description' => 'nullable|string',
-				'meta_keyword' => 'nullable|string|max:255',
-				'canonical' => 'nullable|url|max:255',
+				//'meta_title' => 'nullable|string|max:255',
+				//'meta_description' => 'nullable|string',
+				//'meta_keyword' => 'nullable|string|max:255',
+				//'canonical' => 'nullable|url|max:255',
 			]);
+           // dd($request->all());
 
 			// Convert date format from DD-MM-YYYY to YYYY-MM-DD
 			$fromDate = \DateTime::createFromFormat('d-m-Y', $request->from_date);
 			$toDate = \DateTime::createFromFormat('d-m-Y', $request->to_date);
-
 			$event = new EventsModel();
 			$event->user_id = $request->user_id ?? 1; // Default user_id if not provided
 			$event->title = $request->title;
@@ -264,7 +264,7 @@ class EventsController extends Controller
 			$event->content = $request->content;
 			$event->from_date = $fromDate ? $fromDate->format('Y-m-d') : null;
 			$event->to_date = $toDate ? $toDate->format('Y-m-d') : null;
-			$event->start_time = $request->start_time ? date('H:i:s', strtotime($request->start_time)) : null;
+		    $event->start_time = $request->start_time ? date('H:i:s', strtotime($request->start_time)) : null;
 			$event->to_time = $request->to_time ? date('H:i:s', strtotime($request->to_time)) : null;
 			$event->location = $request->location;
 			$event->contact_detail = $request->contact_detail;
@@ -273,7 +273,6 @@ class EventsController extends Controller
 			$event->facebook = $request->facebook;
 			$event->instagram = $request->instagram;
 			$event->linkedin = $request->linkedin;
-			$event->short_description = $request->short_description;
 			$event->description = $request->description;
 			$event->meta_title = $request->meta_title;
 			$event->meta_description = $request->meta_description;
@@ -285,10 +284,21 @@ class EventsController extends Controller
 			// Handle image upload
 			if ($request->hasFile('image')) {
 				$file = $request->file('image');
-				$event->image = ImageHelper::uploadImage($file, 'event', null, 'event');
+				$event->image = ImageHelper::uploadImage($file, self::IMAGE_DIRECTORY_EVENT, self::IMAGE_PREFIX);
 			}
 
 			$event->save();
+
+            if($request->hasFile('gallery_images')){
+                $galleryImages = $request->file('gallery_images');
+                foreach($galleryImages as $key => $galleryImage){
+                    $gallery = new EventGallery();
+                    $gallery->event_id = $event->id;
+                    $gallery->sort_order = $key;
+                    $gallery->image = ImageHelper::uploadImage($galleryImage, self::IMAGE_DIRECTORY_GALLERY, self::IMAGE_PREFIX);
+                    $gallery->save();
+                }
+            }
 
 			return response()->json([
 				'status' => 'success',
@@ -299,7 +309,7 @@ class EventsController extends Controller
 					'slug' => $event->slug,
 					'status' => $event->status,
 				]
-			], 201);
+			], 200);
 		} catch (\Illuminate\Validation\ValidationException $e) {
 			return response()->json([
 				'status' => 'error',
