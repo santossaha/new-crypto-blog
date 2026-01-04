@@ -64,6 +64,9 @@ Route::get('category-wise-details/{slug}',[BlogController::class,'category_wise_
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
 
+//update view count
+Route::post('blog/{blog}/view', [BlogController::class, 'increaseView']);
+
 Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
 //Social Media

@@ -126,7 +126,7 @@ class HomeController extends Controller
             // Latest Blogs
             $latestBlog = BlogDetail::where('type', 'Blog')
             ->orderBy('id', 'desc')
-            ->select('id', 'image', 'title', 'slug', 'short_description', 'created_at')
+            ->select('id', 'image', 'title', 'slug', 'view_count','short_description', 'created_at')
             ->take(6)
             ->get()
             ->map(function($item) {
@@ -136,7 +136,7 @@ class HomeController extends Controller
             // Latest News
             $latestNews = BlogDetail::where('type', 'News')
             ->orderBy('id', 'desc')
-            ->select('id', 'image', 'title', 'slug', 'short_description', 'created_at')
+            ->select('id', 'image', 'title', 'slug', 'view_count','short_description', 'created_at')
             ->take(6)
             ->get()
             ->map(function($item) {

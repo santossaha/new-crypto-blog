@@ -82,4 +82,15 @@ class BlogController extends Controller
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
+
+  public function increaseView($blog){
+    try{
+      $blog = BlogDetail::find($blog);
+      $blog->view_count++;
+      $blog->save();
+      return response()->json(['status'=>'success', 'message'=>'View count increased']);
+    }catch(Exception $e){
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+  }
 }

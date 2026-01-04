@@ -16,6 +16,7 @@ class BlogDetail extends Model
     protected $table = 'blog_details';
     // protected $fillable = ['id','category_id','user_id','title','image','content'];
     // protected $visible = ['category_id','user_id','title','image','content'];
+    protected $fillable = ['view_count'];
     public $timestamps = true;
     use SoftDeletes;
 
