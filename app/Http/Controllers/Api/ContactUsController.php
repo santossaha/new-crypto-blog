@@ -34,7 +34,7 @@ class ContactUsController extends Controller
                 $save->phone_number =$request->get('phone_number');
                 $save->email = $request->get('email');
                 $save->address = $request->get('address');
-                $save->subject = $request->get('subject');
+                $save->subject = $request->get('subject') ?? '';
                 $save->message = $request->get('message');
                 $save->save();
 

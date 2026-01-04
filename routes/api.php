@@ -4,8 +4,8 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
-use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\AirDropsController;
+use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -64,7 +64,7 @@ Route::get('category-wise-details/{slug}',[BlogController::class,'category_wise_
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
 
-Route::post('save-contact-us',[ContactUsController::class,'save_conwtact_us']);
+Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
 // due page in blog
 
