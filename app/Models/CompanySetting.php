@@ -16,7 +16,12 @@ class CompanySetting extends Model
         'phone',
         'email',
         'website',
-        'gst_vat_number'
+        'gst_vat_number',
+        'facebook',
+        'instagram',
+        'youtube',
+        'linkedin',
+        'x'
     ];
     protected $visible = [
         'company_name',
@@ -27,7 +32,12 @@ class CompanySetting extends Model
         'phone',
         'email',
         'website',
-        'gst_vat_number'
+        'gst_vat_number',
+        'facebook',
+        'instagram',
+        'youtube',
+        'linkedin',
+        'x'
     ];
     public $timestamps = true;
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactUsModel;
+use App\Models\CompanySetting;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,8 +12,6 @@ class ContactUsController extends Controller
 {
 
     public function save_contact_us(Request $request){
-
-
         $rule = [
                 'first_name' => 'required',
                 'phone_number' => 'required|numeric',
@@ -45,8 +44,14 @@ class ContactUsController extends Controller
 
             }
 
+    }
 
-
-
+    public function appDetail(){
+        try{
+            $companySetting = CompanySetting::first();
+            return response()->json(['status'=>'success', 'data'=>$companySetting]);
+          }catch(Exception $e){
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+          }
     }
 }

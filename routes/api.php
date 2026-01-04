@@ -66,7 +66,10 @@ Route::get('recent-view',[BlogController::class,'recent_view']);
 
 Route::post('save-contact-us',[ContactUsController::class,'save_contact_us']);
 
-// due page in blog
+//Social Media
+Route::get('app-detail', [ContactUsController::class, 'appDetail']);
+
+// due page in blog;
 
 //airdrops
 

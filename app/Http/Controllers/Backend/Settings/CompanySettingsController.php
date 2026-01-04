@@ -35,6 +35,11 @@ class CompanySettingsController extends Controller
         $email = $request->get('email');
         $website = $request->get('website');
         $gst_vat_number = $request->get('gst_vat_number');
+        $facebook = $request->get('facebook');
+        $instagram = $request->get('instagram');
+        $youtube = $request->get('youtube');
+        $linkedin = $request->get('linkedin');
+        $x = $request->get('x');
 
         $update= CompanySetting::findOrFail($id);
         $update->company_name = $company_name;
@@ -46,6 +51,11 @@ class CompanySettingsController extends Controller
         $update->email = $email;
         $update->website = $website;
         $update->gst_vat_number = $gst_vat_number;
+        $update->facebook = $facebook;
+        $update->instagram = $instagram;
+        $update->youtube = $youtube;
+        $update->linkedin = $linkedin;
+        $update->x = $x;
         $update->save();
 
         Session::flash('success', "Company setting has been updated");

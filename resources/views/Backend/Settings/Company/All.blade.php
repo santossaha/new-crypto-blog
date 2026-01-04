@@ -101,6 +101,34 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Social Media Links</label>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                                            <label>Facebook</label>
+                                            <input type="text" name="facebook" class="form-control" placeholder="https://facebook.com/..." value="{{$data->facebook ?? ''}}">
+                                        </div>
+                                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                                            <label>Instagram</label>
+                                            <input type="text" name="instagram" class="form-control" placeholder="https://instagram.com/..." value="{{$data->instagram ?? ''}}">
+                                        </div>
+                                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                                            <label>YouTube</label>
+                                            <input type="text" name="youtube" class="form-control" placeholder="https://youtube.com/..." value="{{$data->youtube ?? ''}}">
+                                        </div>
+                                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                                            <label>LinkedIn</label>
+                                            <input type="text" name="linkedin" class="form-control" placeholder="https://linkedin.com/..." value="{{$data->linkedin ?? ''}}">
+                                        </div>
+                                        <div class="col-sm-6" style="margin-bottom: 10px;">
+                                            <label>X (Twitter)</label>
+                                            <input type="text" name="x" class="form-control" placeholder="https://x.com/..." value="{{$data->x ?? ''}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         @permission('update-company-setting')
                         <div class="box-footer">
