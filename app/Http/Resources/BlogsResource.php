@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogsResource extends JsonResource
@@ -22,13 +23,14 @@ class BlogsResource extends JsonResource
             'image'=>getFullPath('blog_images',$this->image),
             'content'=>$this->content,
             'short_description'=>$this->short_description,
-            'start_date'=>$this->start_date,
-            'end_date'=>$this->end_date,
+            //'start_date'=>$this->start_date,
+            //'end_date'=>$this->end_date,
             'meta_keyword'=>$this->meta_keyword,
             'meta_title'=>$this->meta_title,
             'meta_description'=>$this->meta_description,
             'author'=>$this->user_id,
-            'canonical'=>$this->canonical
+            'canonical'=>$this->canonical,
+            'created_at'=> Carbon::parse($this->created_at)->format('M d, Y'),
 
         ];
     }

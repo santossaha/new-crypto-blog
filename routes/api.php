@@ -57,9 +57,10 @@ Route::get('service-details/{type?}',[ServiceController::class,'serviceDetails']
 
 
 //blogs
-Route::get('get-blogs',action: [BlogController::class,'get_blogs']);
+Route::get('get-blogs', [BlogController::class,'get_blogs']);
 // Route::get(uri: 'get-categories','App\Http\Controllers\Api\CategoryController@categories');
-Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
+//Route::get('get-blog-by-category/{slug}',['blogs_by_category']);
+Route::get('category-wise-details/{slug}',[BlogController::class,'category_wise_details']);
 Route::get('blog-details/{slug}',[BlogController::class,'blog_details']);
 Route::get('recent-view',[BlogController::class,'recent_view']);
 

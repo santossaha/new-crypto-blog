@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
+use App\Models\BlogDetail;
+use App\Models\BlogCategory;
+use Illuminate\Http\Request;
+use App\Models\RecentViewBlogs;
+use App\Http\Resources\RecentViews;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BlogsResource;
-use App\Http\Resources\RecentViews;
-use App\Models\BlogDetail;
-use App\Models\RecentViewBlogs;
-use Exception;
-use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
@@ -65,6 +66,18 @@ class BlogController extends Controller
       $details = RecentViews::collection(  $recentViews );
       return response()->json(['status'=>'success', $details]);
 
+    }catch(Exception $e){
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+  }
+
+  //get category wise details
+  public function category_wise_details($slug){
+    try{
+      $category = BlogCategory::where('slug',$slug)->first();
+      $blogs = BlogDetail::where('category_id',$category->id)->orderBy('id','desc')->get();
+      $get_blogs = BlogsResource::collection($blogs);
+      return response()->json(['status'=>'success', $get_blogs]);
     }catch(Exception $e){
       return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }

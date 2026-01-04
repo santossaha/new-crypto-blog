@@ -247,6 +247,7 @@ class EventsController extends Controller
 				'linkedin' => 'nullable|url|max:255',
 				'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:4096',
 				'description' => 'nullable|string',
+                //'gallery_images' => 'nullable|',
 				//'meta_title' => 'nullable|string|max:255',
 				//'meta_description' => 'nullable|string',
 				//'meta_keyword' => 'nullable|string|max:255',
