@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\AirDropsController;
+use App\Http\Controllers\Api\ICOController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Http\Request;
@@ -83,4 +84,7 @@ Route::get('all-airdrops',[AirDropsController::class,'allArirDrops']);
 Route::post('details-airdrops/{name?}',[AirDropsController::class,'details_airdrops']);
 
 
-
+// ICO APIs
+Route::get('ico-list', [ICOController::class, 'ico_list']);
+Route::get('ico-detail/{slug}', [ICOController::class, 'ico_detail']);
+Route::post('create-ico', [ICOController::class, 'create_ico']);

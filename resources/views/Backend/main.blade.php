@@ -400,6 +400,13 @@
 
 
                 <li>
+                    <a href="{{route('allICO')}}">
+                        <i class="fa fa-gg-circle"></i> <span>ICO</span>
+                    </a>
+                </li>
+
+
+                <li>
                     <a href="{{route('allairdrops')}}">
                         <i class="fa fa-cogs"></i> <span>Airdrops</span>
                     </a>
