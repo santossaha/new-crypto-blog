@@ -35,6 +35,7 @@ use App\Http\Controllers\Backend\About\AboutController;
 use App\Http\Controllers\Backend\AdsImage\AdsController;
 use App\Http\Controllers\Backend\Contact\ContactController;
 use App\Http\Controllers\Backend\Airdrops\AirDropsController;
+use App\Http\Controllers\Backend\ICO\ICOController;
 
 // Auth Routes
 Route::prefix('auth')->group(function () {
@@ -274,5 +275,17 @@ Route::group(['prefix' => 'control', 'middleware' => ['web', 'permission:access-
         Route::get('/edit/{id?}', ['as' => 'editAirDrop', 'uses' => AirDropsController::class.'@edit']);
         Route::post('/update/{id?}', ['as' => 'updateAirDrop', 'uses' => AirDropsController::class.'@update']);
         Route::get('delete/{id?}', ['as' => 'deleteairdrops', 'uses' => AirDropsController::class.'@delete']);
+    });
+
+    // ICO Management
+    Route::prefix('ico')->group(function () {
+        Route::get('/all', ['as' => 'allICO', 'uses' => ICOController::class.'@all']);
+        Route::get('/datatable', ['as' => 'allICODatatable', 'uses' => ICOController::class.'@datatable']);
+        Route::get('/add', ['as' => 'addICO', 'uses' => ICOController::class.'@add']);
+        Route::post('/save', ['as' => 'saveICO', 'uses' => ICOController::class.'@save']);
+        Route::get('/edit/{id?}', ['as' => 'editICO', 'uses' => ICOController::class.'@edit']);
+        Route::post('/update/{id?}', ['as' => 'updateICO', 'uses' => ICOController::class.'@update']);
+        Route::get('/delete/{id?}', ['as' => 'deleteICO', 'uses' => ICOController::class.'@delete']);
+        Route::get('/{id}/status', ['as' => 'statusICO', 'uses' => ICOController::class.'@statusICO']);
     });
 });
