@@ -20,18 +20,18 @@ class BlogDetail extends Model
     public $timestamps = true;
     use SoftDeletes;
 
-    public function Comment()
-    {
-        return $this->hasMany(Comment::class,'blog_details_id')->withTrashed();
-    }
+    // public function Comment()
+    // {
+    //     return $this->hasMany(Comment::class,'blog_details_id')->withTrashed();
+    // }
     public function BlogCategory()
     {
         return $this->belongsTo(BlogCategory::class,'category_id')->withTrashed();
     }
-    public function getUser()
-    {
-        return $this->belongsTo(User::class,'user_id')->withTrashed();
-    }
+    // public function getUser()
+    // {
+    //     return $this->belongsTo(User::class,'user_id')->withTrashed();
+    // }
 
 
     // public function getImageAttribute($value){

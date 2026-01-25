@@ -25,6 +25,7 @@ class BlogsResource extends JsonResource
             'short_description'=>$this->short_description,
             //'start_date'=>$this->start_date,
             //'end_date'=>$this->end_date,
+            'view_count'=>$this->view_count,
             'meta_keyword'=>$this->meta_keyword,
             'meta_title'=>$this->meta_title,
             'meta_description'=>$this->meta_description,
