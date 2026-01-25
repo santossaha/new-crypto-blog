@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\ICO;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\ICOOptionHelper;
 use App\Models\ICO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -81,7 +82,14 @@ class ICOController extends Controller
         $save->name = $request->get('name');
         $save->slug = Str::slug($request->get('name'));
         $save->launchpad = $request->get('launchpad');
-        $save->stage = $request->get('stage');
+
+        // Handle stage - auto-add if new
+        $stage = $request->get('stage');
+        if ($stage && !ICOOptionHelper::stageExists($stage)) {
+            ICOOptionHelper::addStage($stage);
+        }
+        $save->stage = $stage;
+
         $save->total_supply_qty = $request->get('total_supply_qty');
         $save->tokens_for_sale = $request->get('tokens_for_sale');
         $save->supply_percentage = $request->get('supply_percentage');
@@ -89,9 +97,22 @@ class ICOController extends Controller
         $save->ico_price_currency = $request->get('ico_price_currency') ?? 'USDT';
         $save->one_usdt_value = $request->get('one_usdt_value');
         $save->fundraising_goal = $request->get('fundraising_goal');
-        $save->project_category = $request->get('project_category');
+
+        // Handle project_category - auto-add if new
+        $projectCategory = $request->get('project_category');
+        if ($projectCategory && !ICOOptionHelper::projectCategoryExists($projectCategory)) {
+            ICOOptionHelper::addProjectCategory($projectCategory);
+        }
+        $save->project_category = $projectCategory;
+
         $save->contract_address = $request->get('contract_address');
-        $save->blockchain_network = $request->get('blockchain_network');
+
+        // Handle blockchain_network - auto-add if new
+        $blockchainNetwork = $request->get('blockchain_network');
+        if ($blockchainNetwork && !ICOOptionHelper::blockchainNetworkExists($blockchainNetwork)) {
+            ICOOptionHelper::addBlockchainNetwork($blockchainNetwork);
+        }
+        $save->blockchain_network = $blockchainNetwork;
         $save->buy_link = $request->get('buy_link');
         $save->soft_cap = $request->get('soft_cap');
         $save->hard_cap = $request->get('hard_cap');
@@ -225,6 +246,7 @@ class ICOController extends Controller
             'icoStatuses' => ICO::getIcoStatuses(),
         ];
 
+
         return view('Backend.ICO.Edit', $data);
     }
 
@@ -272,7 +294,14 @@ class ICOController extends Controller
         $update->name = $request->get('name');
         $update->slug = Str::slug($request->get('name'));
         $update->launchpad = $request->get('launchpad');
-        $update->stage = $request->get('stage');
+
+        // Handle stage - auto-add if new
+        $stage = $request->get('stage');
+        if ($stage && !ICOOptionHelper::stageExists($stage)) {
+            ICOOptionHelper::addStage($stage);
+        }
+        $update->stage = $stage;
+
         $update->total_supply_qty = $request->get('total_supply_qty');
         $update->tokens_for_sale = $request->get('tokens_for_sale');
         $update->supply_percentage = $request->get('supply_percentage');
@@ -280,9 +309,22 @@ class ICOController extends Controller
         $update->ico_price_currency = $request->get('ico_price_currency') ?? 'USDT';
         $update->one_usdt_value = $request->get('one_usdt_value');
         $update->fundraising_goal = $request->get('fundraising_goal');
-        $update->project_category = $request->get('project_category');
+
+        // Handle project_category - auto-add if new
+        $projectCategory = $request->get('project_category');
+        if ($projectCategory && !ICOOptionHelper::projectCategoryExists($projectCategory)) {
+            ICOOptionHelper::addProjectCategory($projectCategory);
+        }
+        $update->project_category = $projectCategory;
+
         $update->contract_address = $request->get('contract_address');
-        $update->blockchain_network = $request->get('blockchain_network');
+
+        // Handle blockchain_network - auto-add if new
+        $blockchainNetwork = $request->get('blockchain_network');
+        if ($blockchainNetwork && !ICOOptionHelper::blockchainNetworkExists($blockchainNetwork)) {
+            ICOOptionHelper::addBlockchainNetwork($blockchainNetwork);
+        }
+        $update->blockchain_network = $blockchainNetwork;
         $update->buy_link = $request->get('buy_link');
         $update->soft_cap = $request->get('soft_cap');
         $update->hard_cap = $request->get('hard_cap');

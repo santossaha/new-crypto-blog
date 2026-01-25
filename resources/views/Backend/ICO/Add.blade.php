@@ -46,24 +46,26 @@
                                         <div class="form-group">
                                             <label for="stage" class="col-sm-3 control-label">Stage</label>
                                             <div class="col-sm-9">
-                                                <select name="stage" class="form-control select2" data-placeholder="Select Stage">
+                                                <select name="stage" id="stage_select" class="form-control select2-tags" data-placeholder="Select Stage or Type New">
                                                     <option value="">Select Stage</option>
                                                     @foreach($stages as $key => $value)
                                                         <option value="{{ $key }}" {{ old('stage') == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new stage name</small>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="project_category" class="col-sm-3 control-label">Project Category</label>
                                             <div class="col-sm-9">
-                                                <select name="project_category" class="form-control select2" data-placeholder="Select Category">
+                                                <select name="project_category" id="project_category_select" class="form-control select2-tags" data-placeholder="Select Category or Type New">
                                                     <option value="">Select Category</option>
                                                     @foreach($categories as $key => $value)
                                                         <option value="{{ $key }}" {{ old('project_category') == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new category name</small>
                                             </div>
                                         </div>
 
@@ -182,12 +184,13 @@
                                         <div class="form-group">
                                             <label for="blockchain_network" class="col-sm-3 control-label">Blockchain Network</label>
                                             <div class="col-sm-9">
-                                                <select name="blockchain_network" class="form-control select2" data-placeholder="Select Network">
+                                                <select name="blockchain_network" id="blockchain_network_select" class="form-control select2-tags" data-placeholder="Select Network or Type New">
                                                     <option value="">Select Network</option>
                                                     @foreach($networks as $key => $value)
                                                         <option value="{{ $key }}" {{ old('blockchain_network') == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new network name</small>
                                             </div>
                                         </div>
 
@@ -334,9 +337,44 @@
 @push('script')
 <script type="text/javascript">
     jQuery("#validation2").validationEngine({promptPosition: 'inline'});
-    $('.select2').select2();
 
     $(document).ready(function() {
+        // Initialize regular select2
+        $('.select2').select2();
+        
+        // Initialize select2 with tags mode for dynamic options
+        $('.select2-tags').each(function() {
+            var $select = $(this);
+            $select.select2({
+                tags: true,
+                allowClear: true,
+                placeholder: $select.data('placeholder') || 'Select or type new',
+                minimumResultsForSearch: 0,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                    if (term === '') {
+                        return null;
+                    }
+                    // Check if option already exists
+                    var exists = false;
+                    $select.find('option').each(function() {
+                        if ($(this).text().toLowerCase() === term.toLowerCase() || 
+                            $(this).val().toLowerCase() === term.toLowerCase()) {
+                            exists = true;
+                            return false;
+                        }
+                    });
+                    if (exists) {
+                        return null;
+                    }
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            });
+        });
         $('.summernote').summernote({
             tabsize: 2,
             height: 200

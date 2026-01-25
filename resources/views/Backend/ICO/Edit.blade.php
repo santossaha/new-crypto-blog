@@ -24,7 +24,7 @@
                         <form id="validation2" action="{{ route('updateICO', ['id' => $records->id]) }}" class="form-horizontal" enctype="multipart/form-data" method="post">
                             {{csrf_field()}}
                             <div class="modal-body clearfix" style="max-height: 700px; overflow-y: auto;">
-                                
+
                                 <!-- Basic Information Section -->
                                 <div class="panel panel-default">
                                     <div class="panel-heading"><strong><i class="fa fa-info-circle"></i> Basic Information</strong></div>
@@ -46,24 +46,32 @@
                                         <div class="form-group">
                                             <label for="stage" class="col-sm-3 control-label">Stage</label>
                                             <div class="col-sm-9">
-                                                <select name="stage" class="form-control select2" data-placeholder="Select Stage">
+                                                <select name="stage" id="stage_select" class="form-control select2-tags" data-placeholder="Select Stage or Type New">
                                                     <option value="">Select Stage</option>
                                                     @foreach($stages as $key => $value)
                                                         <option value="{{ $key }}" {{ old('stage', $records->stage) == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
+                                                    @if($records->stage && !isset($stages[$records->stage]))
+                                                        <option value="{{ $records->stage }}" selected>{{ $records->stage }}</option>
+                                                    @endif
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new stage name</small>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="project_category" class="col-sm-3 control-label">Project Category</label>
                                             <div class="col-sm-9">
-                                                <select name="project_category" class="form-control select2" data-placeholder="Select Category">
+                                                <select name="project_category" id="project_category_select" class="form-control select2-tags" data-placeholder="Select Category or Type New">
                                                     <option value="">Select Category</option>
                                                     @foreach($categories as $key => $value)
                                                         <option value="{{ $key }}" {{ old('project_category', $records->project_category) == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
+                                                    @if($records->project_category && !isset($categories[$records->project_category]))
+                                                        <option value="{{ $records->project_category }}" selected>{{ $records->project_category }}</option>
+                                                    @endif
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new category name</small>
                                             </div>
                                         </div>
 
@@ -186,12 +194,16 @@
                                         <div class="form-group">
                                             <label for="blockchain_network" class="col-sm-3 control-label">Blockchain Network</label>
                                             <div class="col-sm-9">
-                                                <select name="blockchain_network" class="form-control select2" data-placeholder="Select Network">
+                                                <select name="blockchain_network" id="blockchain_network_select" class="form-control select2-tags" data-placeholder="Select Network or Type New">
                                                     <option value="">Select Network</option>
                                                     @foreach($networks as $key => $value)
                                                         <option value="{{ $key }}" {{ old('blockchain_network', $records->blockchain_network) == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
+                                                    @if($records->blockchain_network && !isset($networks[$records->blockchain_network]))
+                                                        <option value="{{ $records->blockchain_network }}" selected>{{ $records->blockchain_network }}</option>
+                                                    @endif
                                                 </select>
+                                                <small class="text-muted">You can select from list or type a new network name</small>
                                             </div>
                                         </div>
 
@@ -209,16 +221,16 @@
                                     <div class="panel-heading"><strong><i class="fa fa-calendar"></i> ICO Dates</strong></div>
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label for="start_date" class="col-sm-3 control-label">Start Date</label>
+                                            <label for="start_date" class="col-sm-3 control-label">Start Date </label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="start_date" class="form-control datepic" id="start_date" placeholder="DD-MM-YYYY" value="{{ old('start_date', $records->start_date) }}">
+                                                <input type="text" name="start_date" class="form-control datepic" id="start_date" placeholder="DD-MM-YYYY" value="{{ old('start_date', $records->start_date->format('d-m-Y')) }}">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="end_date" class="col-sm-3 control-label">End Date</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="end_date" class="form-control datepic" id="end_date" placeholder="DD-MM-YYYY" value="{{ old('end_date', $records->end_date) }}">
+                                                <input type="text" name="end_date" class="form-control datepic" id="end_date" placeholder="DD-MM-YYYY" value="{{ old('end_date', $records->end_date->format('d-m-Y')) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -338,9 +350,44 @@
 @push('script')
 <script type="text/javascript">
     jQuery("#validation2").validationEngine({promptPosition: 'inline'});
-    $('.select2').select2();
 
     $(document).ready(function() {
+        // Initialize regular select2
+        $('.select2').select2();
+
+        // Initialize select2 with tags mode for dynamic options
+        $('.select2-tags').each(function() {
+            var $select = $(this);
+            $select.select2({
+                tags: true,
+                allowClear: true,
+                placeholder: $select.data('placeholder') || 'Select or type new',
+                minimumResultsForSearch: 0,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                    if (term === '') {
+                        return null;
+                    }
+                    // Check if option already exists
+                    var exists = false;
+                    $select.find('option').each(function() {
+                        if ($(this).text().toLowerCase() === term.toLowerCase() ||
+                            $(this).val().toLowerCase() === term.toLowerCase()) {
+                            exists = true;
+                            return false;
+                        }
+                    });
+                    if (exists) {
+                        return null;
+                    }
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            });
+        });
         $('.summernote').summernote({
             tabsize: 2,
             height: 200

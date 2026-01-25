@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ICOOptionHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -100,59 +101,29 @@ class ICO extends Model
 
     /**
      * Get available blockchain networks
+     * Reads from config file, dynamically updated when new options are added
      */
     public static function getBlockchainNetworks()
     {
-        return [
-            'Binance-Smart-Chain' => 'Binance Smart Chain',
-            'Ethereum' => 'Ethereum',
-            'Polygon' => 'Polygon',
-            'Solana' => 'Solana',
-            'Avalanche' => 'Avalanche',
-            'Arbitrum' => 'Arbitrum',
-            'Base' => 'Base',
-            'TON' => 'TON Network',
-            'Cardano' => 'Cardano',
-            'Other' => 'Other',
-        ];
+        return ICOOptionHelper::getBlockchainNetworks();
     }
 
     /**
      * Get available project categories
+     * Reads from config file, dynamically updated when new options are added
      */
     public static function getProjectCategories()
     {
-        return [
-            'Web3' => 'Web3',
-            'DeFi' => 'DeFi',
-            'NFT' => 'NFT',
-            'Gaming' => 'Gaming',
-            'Metaverse' => 'Metaverse',
-            'AI' => 'AI',
-            'Infrastructure' => 'Infrastructure',
-            'Layer1' => 'Layer 1',
-            'Layer2' => 'Layer 2',
-            'DEX' => 'DEX',
-            'DAO' => 'DAO',
-            'SocialFi' => 'SocialFi',
-            'Other' => 'Other',
-        ];
+        return ICOOptionHelper::getProjectCategories();
     }
 
     /**
      * Get available stages
+     * Reads from config file, dynamically updated when new options are added
      */
     public static function getStages()
     {
-        return [
-            'Seed' => 'Seed',
-            'Private' => 'Private Sale',
-            'Pre-Sale' => 'Pre-Sale',
-            'ICO' => 'ICO',
-            'IEO' => 'IEO',
-            'IDO' => 'IDO',
-            'Public' => 'Public Sale',
-        ];
+        return ICOOptionHelper::getStages();
     }
 }
 

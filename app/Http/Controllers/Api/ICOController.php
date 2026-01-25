@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ICO;
+use App\Helpers\ICOOptionHelper;
 use App\Helpers\ImageHelper;
+use App\Models\ICO;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -278,7 +279,14 @@ class ICOController extends Controller
             $ico->name = $request->name;
             $ico->slug = Str::slug($request->name);
             $ico->launchpad = $request->launchpad;
-            $ico->stage = $request->stage;
+            
+            // Handle stage - auto-add if new
+            $stage = $request->stage;
+            if ($stage && !ICOOptionHelper::stageExists($stage)) {
+                ICOOptionHelper::addStage($stage);
+            }
+            $ico->stage = $stage;
+            
             $ico->total_supply_qty = $request->total_supply_qty;
             $ico->tokens_for_sale = $request->tokens_for_sale;
             $ico->supply_percentage = $request->supply_percentage;
@@ -286,9 +294,22 @@ class ICOController extends Controller
             $ico->ico_price_currency = $request->ico_price_currency ?? 'USDT';
             $ico->one_usdt_value = $request->one_usdt_value;
             $ico->fundraising_goal = $request->fundraising_goal;
-            $ico->project_category = $request->project_category;
+            
+            // Handle project_category - auto-add if new
+            $projectCategory = $request->project_category;
+            if ($projectCategory && !ICOOptionHelper::projectCategoryExists($projectCategory)) {
+                ICOOptionHelper::addProjectCategory($projectCategory);
+            }
+            $ico->project_category = $projectCategory;
+            
             $ico->contract_address = $request->contract_address;
-            $ico->blockchain_network = $request->blockchain_network;
+            
+            // Handle blockchain_network - auto-add if new
+            $blockchainNetwork = $request->blockchain_network;
+            if ($blockchainNetwork && !ICOOptionHelper::blockchainNetworkExists($blockchainNetwork)) {
+                ICOOptionHelper::addBlockchainNetwork($blockchainNetwork);
+            }
+            $ico->blockchain_network = $blockchainNetwork;
             $ico->buy_link = $request->buy_link;
             $ico->soft_cap = $request->soft_cap;
             $ico->hard_cap = $request->hard_cap;
