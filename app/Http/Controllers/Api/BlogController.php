@@ -30,23 +30,29 @@ class BlogController extends Controller
     try{
 
       $blog_details = BlogDetail::where('slug', $slug)->first();
-
-      if (!$blog_details) {
-        return response()->json(['status' => 'error', 'message' => 'Blog not found'], 404);
+      if ($blog_details) {
+        $blog_details->image = getFullPath('blog_images', $blog_details->image);
       }
 
-      $blog_details->image = getFullPath('blog_images', $blog_details->image);
+      // check exsits or not
 
-      // Update or create recent view record efficiently
-      RecentViewBlogs::updateOrCreate(
-        ['blog_id' => $blog_details->id],
-        ['blog_id' => $blog_details->id, 'updated_at' => now()]
-      );
+      $exsits = RecentViewBlogs::where('blog_id',$blog_details->id)->count();
 
-      return response()->json(['status'=>'success', 'data' => $blog_details]);
+      if($exsits == 0){
+
+        $RecentView = new  RecentViewBlogs();
+        $RecentView->blog_id = $blog_details->id;
+        $RecentView->save();
+      }else{
+
+        $RecentView =   RecentViewBlogs::where('blog_id',$blog_details->id)->first();
+        $RecentView->blog_id = $blog_details->id;
+        $RecentView->save();
+      }
+      return response()->json(['status'=>'success', $blog_details]);
 
     } catch(Exception $e){
-      return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+      return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
   }
 
