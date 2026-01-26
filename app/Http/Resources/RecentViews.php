@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RecentViews extends JsonResource
@@ -15,18 +16,20 @@ class RecentViews extends JsonResource
     public function toArray($request)
     {
         return [
-
-                'id'=>$this->getProducts->id,
-                'user_id'=>$this->getProducts->user_id,
-                'title'=>$this->getProducts->title,
-                'slug'=>$this->getProducts->slug,
-                'image'=>$this->getProducts->image,
-                'content'=>$this->getProducts->content,
-                'short_description'=>$this->getProducts->short_description,
-                'meta_keyword'=>$this->getProducts->meta_keyword,
-                'meta_title'=>$this->getProducts->meta_title,
-                'meta_description'=>$this->getProducts->meta_description,
-                'canonical'=>$this->getProducts->canonical
+            'id' => $this->id,
+            'user_id' => $this->getBlog->user_id,
+            'title' => ucwords($this->getBlog->title),
+            'slug' => $this->getBlog->slug,
+            'image' => getFullPath('blog_images', $this->getBlog->image),
+            'content' => $this->getBlog->content,
+            'short_description' => $this->getBlog->short_description,
+            'view_count' => $this->getBlog->view_count,
+            'meta_keyword' => $this->getBlog->meta_keyword,
+            'meta_title' => $this->getBlog->meta_title,
+            'meta_description' => $this->getBlog->meta_description,
+            'author' => $this->getBlog->user_id,
+            'canonical' => $this->getBlog->canonical,
+            'created_at' => Carbon::parse($this->created_at)->format('M d, Y'),
         ];
     }
 }
