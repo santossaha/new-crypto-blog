@@ -12,6 +12,7 @@ class RecentViewBlogs extends Model
 
     protected $table = 'recent_view_blogs';
     public $timestamps = true;
+    protected $fillable = ['id', 'blog_id'];
 
 
     public function getBlog()
