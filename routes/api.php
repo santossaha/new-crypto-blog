@@ -88,3 +88,4 @@ Route::post('details-airdrops/{name?}',[AirDropsController::class,'details_airdr
 Route::get('ico-list', [ICOController::class, 'ico_list']);
 Route::get('ico-detail/{slug}', [ICOController::class, 'ico_detail']);
 Route::post('create-ico', [ICOController::class, 'create_ico']);
+Route::get('get-ico-filters', [ICOController::class, 'get_ico_filters']);

@@ -279,14 +279,14 @@ class ICOController extends Controller
             $ico->name = $request->name;
             $ico->slug = Str::slug($request->name);
             $ico->launchpad = $request->launchpad;
-            
+
             // Handle stage - auto-add if new
             $stage = $request->stage;
             if ($stage && !ICOOptionHelper::stageExists($stage)) {
                 ICOOptionHelper::addStage($stage);
             }
             $ico->stage = $stage;
-            
+
             $ico->total_supply_qty = $request->total_supply_qty;
             $ico->tokens_for_sale = $request->tokens_for_sale;
             $ico->supply_percentage = $request->supply_percentage;
@@ -294,16 +294,16 @@ class ICOController extends Controller
             $ico->ico_price_currency = $request->ico_price_currency ?? 'USDT';
             $ico->one_usdt_value = $request->one_usdt_value;
             $ico->fundraising_goal = $request->fundraising_goal;
-            
+
             // Handle project_category - auto-add if new
             $projectCategory = $request->project_category;
             if ($projectCategory && !ICOOptionHelper::projectCategoryExists($projectCategory)) {
                 ICOOptionHelper::addProjectCategory($projectCategory);
             }
             $ico->project_category = $projectCategory;
-            
+
             $ico->contract_address = $request->contract_address;
-            
+
             // Handle blockchain_network - auto-add if new
             $blockchainNetwork = $request->blockchain_network;
             if ($blockchainNetwork && !ICOOptionHelper::blockchainNetworkExists($blockchainNetwork)) {
@@ -388,6 +388,34 @@ class ICOController extends Controller
         $end = $endDate ? date('d-m-Y', strtotime($endDate)) : 'TBA';
 
         return $start . ' to ' . $end;
+    }
+
+    /**
+     * Get ICO Filters Data
+     *
+     * Returns stages, statuses, categories, and networks
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get_ico_filters()
+    {
+        try {
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'stages' => ICO::getStages(),
+                    'ico_statuses' => ICO::getIcoStatuses(),
+                    'categories' => ICO::getProjectCategories(),
+                    'networks' => ICO::getBlockchainNetworks(),
+                ]
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
 
