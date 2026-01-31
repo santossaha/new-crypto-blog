@@ -24,7 +24,7 @@
                         <form id="validation2" action="{{route('saveICO')}}" class="form-horizontal" enctype="multipart/form-data" method="post">
                             {{csrf_field()}}
                             <div class="modal-body clearfix" style="max-height: 700px; overflow-y: auto;">
-                                
+
                                 <!-- Basic Information Section -->
                                 <div class="panel panel-default">
                                     <div class="panel-heading"><strong><i class="fa fa-info-circle"></i> Basic Information</strong></div>
@@ -341,7 +341,7 @@
     $(document).ready(function() {
         // Initialize regular select2
         $('.select2').select2();
-        
+
         // Initialize select2 with tags mode for dynamic options
         $('.select2-tags').each(function() {
             var $select = $(this);
@@ -358,7 +358,7 @@
                     // Check if option already exists
                     var exists = false;
                     $select.find('option').each(function() {
-                        if ($(this).text().toLowerCase() === term.toLowerCase() || 
+                        if ($(this).text().toLowerCase() === term.toLowerCase() ||
                             $(this).val().toLowerCase() === term.toLowerCase()) {
                             exists = true;
                             return false;
@@ -375,6 +375,7 @@
                 }
             });
         });
+        
         $('.summernote').summernote({
             tabsize: 2,
             height: 200
