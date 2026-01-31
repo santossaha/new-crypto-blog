@@ -34,7 +34,7 @@ use App\Http\Controllers\Backend\Galleries\GalleryController;
 use App\Http\Controllers\Backend\About\AboutController;
 use App\Http\Controllers\Backend\AdsImage\AdsController;
 use App\Http\Controllers\Backend\Contact\ContactController;
-use App\Http\Controllers\Backend\Airdrops\AirDropsController;
+use App\Http\Controllers\Backend\Airdrops\AirDropController;
 use App\Http\Controllers\Backend\ICO\ICOController;
 
 // Auth Routes
@@ -267,14 +267,16 @@ Route::group(['prefix' => 'control', 'middleware' => ['web', 'permission:access-
     });
 
     // Airdrops Management
+    // Airdrops Management
     Route::prefix('airdrops')->group(function () {
-        Route::get('/all', ['as' => 'allairdrops', 'uses' => AirDropsController::class.'@all']);
-        Route::get('/datatable', ['as' => 'allairdropsDatabase', 'uses' => AirDropsController::class.'@datatable']);
-        Route::get('/add', ['as' => 'addAirdrop', 'uses' => AirDropsController::class.'@add']);
-        Route::post('/save', ['as' => 'saveAirdrop', 'uses' => AirDropsController::class.'@save']);
-        Route::get('/edit/{id?}', ['as' => 'editAirDrop', 'uses' => AirDropsController::class.'@edit']);
-        Route::post('/update/{id?}', ['as' => 'updateAirDrop', 'uses' => AirDropsController::class.'@update']);
-        Route::get('delete/{id?}', ['as' => 'deleteairdrops', 'uses' => AirDropsController::class.'@delete']);
+        Route::get('/all', ['as' => 'allAirdrops', 'uses' => AirDropController::class.'@all']);
+        Route::get('/datatable', ['as' => 'dtableAirdrops', 'uses' => AirDropController::class.'@datatable']);
+        Route::get('/add', ['as' => 'addAirdrop', 'uses' => AirDropController::class.'@add']);
+        Route::post('/save', ['as' => 'saveAirdrop', 'uses' => AirDropController::class.'@save']);
+        Route::get('/edit/{id?}', ['as' => 'editAirdrop', 'uses' => AirDropController::class.'@edit']);
+        Route::post('/update/{id?}', ['as' => 'updateAirdrop', 'uses' => AirDropController::class.'@update']);
+        Route::get('/delete/{id?}', ['as' => 'deleteAirdrop', 'uses' => AirDropController::class.'@delete']);
+        Route::get('/{id}/status', ['as' => 'statusAirdrop', 'uses' => AirDropController::class.'@statusAirdrop']);
     });
 
     // ICO Management

@@ -15,40 +15,53 @@ class CreateAirDropsTable extends Migration
     {
         Schema::create('air_drops', function (Blueprint $table) {
             $table->id();
-            $table->enum('type',['Token','Coin','NFTs']);
             $table->string('name');
-            $table->string('coin_token_symbol');
-            $table->date('start_date');
-            $table->date('end_date'); 
-            $table->date('winner_announcement_date');
-            $table->string('coin_token_image');
-            $table->bigInteger('coin_token_qty');
-            $table->bigInteger('total_airdrop_qty');
-            $table->integer('no_of_winners');
-            $table->string('project_website')->comment('link');
-            $table->string('email')->nullable();
-            $table->longText('description_of_project');
-            $table->longText('task_details');
-            $table->string('project_based_on');
-            $table->string('country');
-            $table->string('tast_link');
-            $table->string('facebook_link')->nullable();
-            $table->string('facebook_url')->nullable();
-            $table->string('twitter_url')->nullable();
-            $table->string('instagram_url')->nullable();
-            $table->string('reddit_url')->nullable();
-            $table->string('medium_url')->nullable();
-            $table->string('telegram_url')->nullable();
-            $table->string('discord_url')->nullable();
-            $table->string('contract_address');
-            $table->enum('contact',['telegram_id','whatsapp_number']);
-            $table->string('contact_id')->nullable();
-            $table->enum('aprove_status',['Pending','Aproved'])->default('Pending');
-            $table->integer('upvote')->default(0);
-            $table->enum('airdrop_status',['Upcomming','Previous','Trending'])->default('Upcomming  ');
-            
-            // $table->bigInteger('total_air_drop_qty');
-            // $table->bigInteger('Total Token Supply');
+            $table->string('slug')->unique();
+            $table->string('image')->nullable();
+
+            // Platform & Participation
+            $table->string('platform')->nullable(); // e.g., Zealy
+            $table->string('participate_link')->nullable(); // "Participate Now" link
+
+            // Token Details
+            $table->decimal('total_supply', 20, 2)->nullable();
+            $table->decimal('total_airdrop_qty', 20, 2)->nullable();
+            $table->decimal('airdrop_value', 20, 2)->nullable()->comment('Value in USD');
+            $table->decimal('supply_percentage', 5, 2)->nullable();
+
+            // Winners
+            $table->integer('winner_count')->nullable();
+            $table->date('winner_announcement_date')->nullable();
+
+            // Dates
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+
+            // Categorization
+            $table->string('project_category')->nullable();
+            $table->string('blockchain_network')->nullable();
+
+            // Content
+            $table->longText('description')->nullable()->comment('About Project');
+            $table->longText('how_to_participate')->nullable();
+
+            // Social Links
+            $table->string('website_url', 500)->nullable();
+            $table->string('twitter_url', 500)->nullable();
+            $table->string('telegram_url', 500)->nullable();
+            $table->string('discord_url', 500)->nullable();
+            $table->string('whitepaper_url', 500)->nullable();
+
+            // Meta / SEO
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description', 500)->nullable();
+            $table->string('meta_keyword')->nullable();
+            $table->string('canonical', 500)->nullable();
+
+            // Statuses
+            $table->enum('status', ['Active', 'Inactive'])->default('Inactive');
+            $table->enum('airdrop_status', ['Upcoming', 'Ongoing', 'Ended'])->default('Upcoming');
+
             $table->timestamps();
         });
     }

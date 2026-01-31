@@ -407,7 +407,7 @@
 
 
                 <li>
-                    <a href="{{route('allairdrops')}}">
+                    <a href="{{route('allAirdrops')}}">
                         <i class="fa fa-cogs"></i> <span>Airdrops</span>
                     </a>
                 </li>
