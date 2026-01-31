@@ -81,6 +81,12 @@ Route::post('search-airdrops', [App\Http\Controllers\Api\AirDropsController::cla
 Route::get('all-airdrops', [App\Http\Controllers\Api\AirDropsController::class, 'allArirDrops']);
 Route::post('details-airdrops/{name?}', [App\Http\Controllers\Api\AirDropsController::class, 'details_airdrops']);
 
+// New Airdrop APIs
+Route::get('airdrop-list', [AirDropsController::class, 'airdrop_list']);
+Route::get('airdrop-detail/{slug}', [AirDropsController::class, 'airdrop_detail']);
+Route::post('create-airdrop', [AirDropsController::class, 'create_airdrop']);
+Route::get('get-airdrop-filters', [AirDropsController::class, 'get_airdrop_filters']);
+
 
 // ICO APIs
 Route::get('ico-list', [ICOController::class, 'ico_list']);
